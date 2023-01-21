@@ -41,6 +41,8 @@ func SetupDatabase() {
 		&Unit{},
 		&Order{}, 
 		&MedicineArrangement{},
+		&Pharmacy{},
+		&DispenseMedicine{},
 	 )
   	
 	 
@@ -166,4 +168,27 @@ func SetupDatabase() {
 		MedicineArrangementTime: time.Now(),
 	 }
 	 db.Model(&MedicineArrangement{}).Create(&medicinearrangement1)
+	 //ช่องจ่ายยา
+	pharmacy1 := Pharmacy{
+		PharmacyBox: 1,
+	}
+	db.Model(&Pharmacy{}).Create(&pharmacy1)
+	pharmacy2 := Pharmacy{
+		PharmacyBox: 2,
+	}
+	db.Model(&Pharmacy{}).Create(&pharmacy2)
+	pharmacy3 := Pharmacy{
+		PharmacyBox: 3,
+	}
+	db.Model(&Pharmacy{}).Create(&pharmacy3)
+	//ระบบจ่ายยา
+	dispensemedicine := DispenseMedicine{
+		DispenseNo:   100000,
+	 	ReceiveName:  "แสนดี มากมาย",
+		Pharmacy: pharmacy1,
+	 	Pharmacist:   pharmacist2,
+		DispenseTime: time.Now(),
+	}
+	db.Model(&DispenseMedicine{}).Create(&dispensemedicine)
+
 }
