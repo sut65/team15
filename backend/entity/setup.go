@@ -40,6 +40,7 @@ func SetupDatabase() {
 		&Company{},
 		&Unit{},
 		&Order{}, 
+		&MedicineArrangement{},
 	 )
   	
 	 
@@ -156,4 +157,13 @@ func SetupDatabase() {
 	Unit:		bottle,
 	}
 	db.Model(&Order{}).Create(&order1)
+
+	//ระบบจัดยา
+	medicinearrangement1 := MedicineArrangement{
+		MedicineArrangementNo: 200000,
+		Pharmacist: pharmacist2,
+		Note: "*มีการเปลี่ยนแปลงยี้ห้อยา",
+		MedicineArrangementTime: time.Now(),
+	 }
+	 db.Model(&MedicineArrangement{}).Create(&medicinearrangement1)
 }
