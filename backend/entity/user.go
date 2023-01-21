@@ -18,6 +18,7 @@ type User struct {
 	Password				string 
 
 	Orders					[]Order		`gorm:"foreignKey:PharmacistID"`
+	MedicineArrangements	[]MedicineArrangement `gorm:"foreignKey:PharmacistID"`
 	
 	RoleID					*uint
 	Role					Role `gorm:"foreignKey:RoleID"`
