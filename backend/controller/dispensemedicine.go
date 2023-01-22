@@ -20,7 +20,7 @@ func CreateDispenseMedicine(c *gin.Context)  {
 		}
 	// 9: ค้นหา Bill ด้วย id
 
-	
+
 	// 10: ค้นหา Pharmacy ด้วย id
 	if tx := entity.DB().Where("id = ?", dispensemedicine.PharmacistID).First(&pharmacy); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacy not found"})
@@ -85,7 +85,7 @@ func DeleteDispenseMedicine(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
 
-// PATCH /dispense_medicines
+// PATCH /dispensemedicines
 func UpdateDispenseMedicine(c *gin.Context) {
 	var dispensemedicines entity.DispenseMedicine
 	if err := c.ShouldBindJSON(&dispensemedicines); err != nil {
