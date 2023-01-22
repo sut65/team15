@@ -39,6 +39,9 @@ func SetupDatabase() {
 		&Medicine{},
 		&Company{},
 		&Unit{},
+		&MedicineLabel{},
+		&Suggestion{},
+		&Effect{},
 		&Order{}, 
 		&MedicineArrangement{},
 		&Pharmacy{},
@@ -159,6 +162,38 @@ func SetupDatabase() {
 	Unit:		bottle,
 	}
 	db.Model(&Order{}).Create(&order1)
+    
+	//Suggestion
+	sug1 := Suggestion{
+		SuggestionName: "ใช้ยาจนหมด",
+	}
+	db.Model(&Suggestion{}).Create(&sug1)
+
+	sug2 := Suggestion{
+		SuggestionName: "หยุดใช้เมื่อหาย",
+	}
+	db.Model(&Suggestion{}).Create(&sug2)
+
+	//Effect
+	effect1 := Effect{
+		EffectName: "ทานแล้วอาจทำให้ง่วงซึม",
+	}
+	db.Model(&Effect{}).Create(&effect1)
+
+	effect2 := Effect{
+		EffectName: "ทำให้รู้สึกขมคอ",
+	}
+	db.Model(&Effect{}).Create(&effect2)
+
+	effect3 := Effect{
+		EffectName: "ทานแล้วอาจทำให้อาเจียน",
+	}
+	db.Model(&Effect{}).Create(&effect3)
+
+	effect4 := Effect{
+		EffectName: "ทานแล้วอาจทำให้คลื่นไส้",
+	}
+	db.Model(&Effect{}).Create(&effect4)
 
 	//ระบบจัดยา
 	medicinearrangement1 := MedicineArrangement{
