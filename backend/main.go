@@ -15,10 +15,28 @@ func main() {
 	r := gin.Default()
 
 	r.Use(CORSMiddleware())
+	//role
+	r.GET("/roles", controller.ListRole)
+
 	// User
 	r.GET("/users", controller.ListUser)
 	r.POST("/user", controller.CreateUser)
 	r.GET("/users/:id", controller.GetUser)
+	
+	//medicine
+	r.GET("/medicines",controller.ListMedicine)
+
+	//company
+	r.GET("/companys",controller.ListCompany)
+
+	//Unit
+	r.GET("/units",controller.ListUnit)
+
+	//Order
+	r.POST("order",controller.CreateOrder)
+	r.GET("/orders",controller.ListOrder)
+	r.GET("/order/:id",controller.GetOrder)
+	r.PATCH("/order",controller.UpdateOrder)
 
 	// Run the server
 
