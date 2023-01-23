@@ -28,7 +28,7 @@ func CreateCompany(c *gin.Context) {
 func GetCompany(c *gin.Context) {
 	var company entity.Company
 	id := c.Param("id")
-	if err := entity.DB().Raw("SELECT * FROM companys WHERE id = ?", id).Find(&company).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM companies WHERE id = ?", id).Find(&company).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -44,7 +44,7 @@ func GetCompany(c *gin.Context) {
 func ListCompany(c *gin.Context) {
 
 	var companys []entity.Medicine
-	if err := entity.DB().Raw("SELECT * FROM companys").Find(&companys).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM companies").Find(&companys).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
