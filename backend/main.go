@@ -14,10 +14,12 @@ func main() {
 
 	r := gin.Default()
 
-	// User Routes
-	r.POST("/user",controller.CreateUser)
 	r.Use(CORSMiddleware())
-	
+	// User
+	r.GET("/users", controller.ListUser)
+	r.POST("/user", controller.CreateUser)
+	r.GET("/users/:id", controller.GetUser)
+
 	// Run the server
 
 	r.Run()
