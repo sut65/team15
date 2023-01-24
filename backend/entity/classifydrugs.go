@@ -26,6 +26,6 @@ type ClassifyDrugs struct{
 	CupboardID		 *uint
 	Cupboard		 Cupboard
 
-	medicinearrangements		[]MedicineArrangement `gorm:"foreignKey:ClassifyDrugsID"`
+	Medicinearrangements		[]MedicineArrangement `gorm:"foreignKey:ClassifyDrugsID"`
 
 }
