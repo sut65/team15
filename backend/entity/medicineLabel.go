@@ -22,6 +22,8 @@ type MedicineLabel struct {
 	EffectID *uint
 	Effect   Effect `gorm:"references:id" valid:"-"`
 
+	MedicineReceive		[]MedicineReceive`gorm:"foreignKey:MedicineLabelID"`
+
 }
 
 type Suggestion struct {
