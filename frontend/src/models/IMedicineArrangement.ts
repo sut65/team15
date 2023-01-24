@@ -1,4 +1,4 @@
-export interface MedicineArrangement {
+export interface MedicineArrangementInterface {
 
     ID: number,
 
