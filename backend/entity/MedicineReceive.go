@@ -9,7 +9,8 @@ import (
 type MedicineReceive struct {
 	gorm.Model
 
-	RecievedDate time.Time
+	MedicineReceiveNo int
+	RecievedDate      time.Time
 
 	PharmacistID *uint
 	Pharmacist   User
