@@ -35,7 +35,8 @@ func CreateMedicineArrangement(c *gin.Context)  {
 
 	// 13: สร้าง MedicineArrangement 
 	arrangement := entity.MedicineArrangement{
-		MedicineArrangementNo: 		medicinearrangement.MedicineArrangementNo,		
+		MedicineArrangementNo: 		medicinearrangement.MedicineArrangementNo,	
+		ClassifyDrugs: 				classifydrug,										// โยงความสัมพันธ์กับ Entity ClassifyDrug
 		Note: 						medicinearrangement.Note,
 		Pharmacist: 				pharmacist,       									// โยงความสัมพันธ์กับ Entity User
 		MedicineArrangementTime:	medicinearrangement.MedicineArrangementTime, 		// ตั้งค่าฟิลด์ watchedTime
