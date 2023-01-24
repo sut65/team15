@@ -222,7 +222,7 @@ func SetupDatabase() {
 	}
 	db.Model(&ClassifyDrugs{}).Create(&class2)
 
-	//ระบบจัดยา
+	//-------------------------------------ระบบจัดยา---------------------
 	medicinearrangement1 := MedicineArrangement{
 		MedicineArrangementNo:   200000,
 		ClassifyDrugs: class1,
