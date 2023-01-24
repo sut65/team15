@@ -23,6 +23,7 @@ func main() {
 	r.POST("/user", controller.CreateUser)
 	r.GET("/users/:id", controller.GetUser)
 	
+	//------------------------------------------ระบบย่อย ระบบบันทึกการสั่งซื้อยา--------------------------
 	//medicine
 	r.GET("/medicines",controller.ListMedicine)
 
@@ -37,6 +38,54 @@ func main() {
 	r.GET("/orders",controller.ListOrder)
 	r.GET("/order/:id",controller.GetOrder)
 	r.PATCH("/order",controller.UpdateOrder)
+
+	//-----------------------------------ระบบย่อย ระบบบันทึกฉลากยา---------------------------------------
+
+
+	//-----------------------------------ระบบย่อย ระบบบันทึกคลังยา----------------------------------------
+
+
+	//-----------------------------------ระบบย่อย ระบบบันทึกการทิ้งยา--------------------------------------
+
+
+	//-----------------------------------ระบบย่อย ระบบบันทึกการเบิกยา-------------------------------------
+
+
+	//-----------------------------------ระบบย่อย ระบบบันทึกการจัดชั้นยา------------------------------------
+
+
+	//-----------------------------------ระบบย่อย ระบบบันทึกการสั่งยา--------------------------------------
+
+
+	//-------------------------------ระบบย่อย ระบบบันทึกการจัดยา--------------------------------------
+	//MedicineArrangement
+	r.POST("/medicinearrangement",controller.CreateMedicineArrangement)
+	r.GET("/medicinearrangements",controller.ListMedicineArrangement)
+	r.GET("/medicinearrangements/:id",controller.GetMedicineArrangement)
+	r.PATCH("/medicinearrangements",controller.UpdateMedicineArrangement)
+	r.DELETE("/medicinearrangements/:id",controller.DeleteMedicineArrangement)
+
+	//-------------------------------------ระบบย่อย ระบบบันทึกการชำระเงิน--------------------------------
+
+
+
+	//--------------------------------ระบบย่อย ระบบบันทึกการจ่ายยา------------------------------------
+	//Pharmacy
+	r.GET("/pharmacys",controller.ListPharmacy)
+	
+	//DispenseMedicine
+	r.POST("/dispensemedicine",controller.CreateDispenseMedicine)
+	r.GET("/dispensemedicines",controller.ListDispenseMedicine)
+	r.GET("/dispensemedicines/:id",controller.GetMedicineArrangement)
+	r.PATCH("/dispensemedicines",controller.UpdateDispenseMedicine)
+	r.DELETE("/dispensemedicines/:id",controller.DeleteDispenseMedicine)
+	
+
+	//----------------------------------ระบบย่อย ระบบบันทึกการคืนยา-----------------------------------
+
+	
+	//-----------------------------------ระบบย่อย ระบบบันทึกการเข้าเวร---------------------------------
+
 
 	// Run the server
 

@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-// Post / submit
+// Post /dispensemedicine
 func CreateDispenseMedicine(c *gin.Context)  {
 	var pharmacist entity.User
 	var pharmacy entity.Pharmacy
