@@ -14,4 +14,7 @@ type MedicineArrangement struct {
 
 	PharmacistID					*uint
 	Pharmacist						User  
+
+	ClassifyDrugsID					*uint
+	ClassifyDrugs					ClassifyDrugs
 }

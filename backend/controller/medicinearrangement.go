@@ -12,6 +12,7 @@ import (
 func CreateMedicineArrangement(c *gin.Context)  {
 	var pharmacist entity.User
 	var medicinearrangement entity.MedicineArrangement
+	var classifydrug entity.ClassifyDrugs
 
 	if err := c.ShouldBindJSON(&medicinearrangement); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -20,6 +21,10 @@ func CreateMedicineArrangement(c *gin.Context)  {
 	// 9: ค้นหา Prescription ด้วย id
 
 	// 10: ค้นหา ClassifyMedicine ด้วย id
+	if tx := entity.DB().Where("id = ?", medicinearrangement.ClassifyDrugsID).First(&classifydrug); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "classifydrug not found"})
+		return
+	}
 
 
 	// 11:ค้นหา User ด้วย id

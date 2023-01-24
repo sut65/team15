@@ -225,11 +225,13 @@ func SetupDatabase() {
 	//ระบบจัดยา
 	medicinearrangement1 := MedicineArrangement{
 		MedicineArrangementNo:   200000,
+		ClassifyDrugs: class1,
 		Pharmacist:              pharmacist2,
 		Note:                    "*มีการเปลี่ยนแปลงยี้ห้อยา",
 		MedicineArrangementTime: time.Now(),
 	}
 	db.Model(&MedicineArrangement{}).Create(&medicinearrangement1)
+
 	//ช่องจ่ายยา
 	pharmacy1 := Pharmacy{
 		PharmacyBox: 1,
