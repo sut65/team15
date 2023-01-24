@@ -46,6 +46,8 @@ func SetupDatabase() {
 		&MedicineArrangement{},
 		&Pharmacy{},
 		&DispenseMedicine{},
+		&ClassifyDrugs{},
+		&Cupboard{},
 	 )
   	
 	 
@@ -116,6 +118,14 @@ func SetupDatabase() {
 		Role: role1,
 	 }
 	 db.Model(&User{}).Create(&pharmacist5)
+
+	 pharmacist6 := User{
+		Name: "kotthip",
+		UserName:  "B6221111",
+		Password: string(password1),
+		Role: role1,
+	 }
+	 db.Model(&User{}).Create(&pharmacist6)
 
 	//ยา
 	paracetamol := Medicine{
@@ -194,6 +204,38 @@ func SetupDatabase() {
 		EffectName: "ทานแล้วอาจทำให้คลื่นไส้",
 	}
 	db.Model(&Effect{}).Create(&effect4)
+
+	//ระบบจัดชั้นยา
+	//ตู้ยา
+	cupboard1 := Cupboard{
+		Name: "A",
+		Zone: "AA",
+		Floor: 2,
+	}
+	db.Model(&Cupboard{}).Create(&cupboard1)
+	cupboard2 := Cupboard{
+		Name: "B",
+		Zone: "BB",
+		Floor: 3,
+	}
+	db.Model(&Cupboard{}).Create(&cupboard2)
+
+	class1 := ClassifyDrugs{
+		Pharmacist: pharmacist6,
+		Cupboard:   cupboard2,
+		Note:       "-",
+		Datetime: time.Now(),
+	}
+	db.Model(&ClassifyDrugs{}).Create(&class1)
+
+	class2 := ClassifyDrugs{
+		Pharmacist: pharmacist6,
+		Cupboard:   cupboard1,
+		Note:       "-",
+		Datetime: time.Now(),
+	}
+	db.Model(&ClassifyDrugs{}).Create(&class2)
+
 
 	//ระบบจัดยา
 	medicinearrangement1 := MedicineArrangement{

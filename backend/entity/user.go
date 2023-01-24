@@ -20,6 +20,7 @@ type User struct {
 	Orders					[]Order		`gorm:"foreignKey:PharmacistID"`
 	MedicineArrangements	[]MedicineArrangement `gorm:"foreignKey:PharmacistID"`
 	DispenseMedicines		[]DispenseMedicine `gorm:"foreignKey:PharmacistID"`
+	ClassifyDrugs           []ClassifyDrugs `gorm:"foreignKey:PharmacistID"`
 	
 	RoleID					*uint
 	Role					Role `gorm:"foreignKey:RoleID"`
