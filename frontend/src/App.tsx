@@ -8,9 +8,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import DispenseMedicineCreate from './components/DispenseMedicineCreate';
 import Home from './components/Hom';
-
-
 import Orders from './components/Order';
+import MedicineArrangementCreate from './components/MedicineArrangementCreate';
 
 function App() {
   return (
@@ -22,6 +21,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/order" element={<OrderCreate />} />
       <Route path="/dispensemedicine" element={<DispenseMedicineCreate />} />
+      <Route path="/medicinearrangement" element={<MedicineArrangementCreate />} />
       <Route path="/Orderslist" element={<Orders />} />
 
       </Routes>
