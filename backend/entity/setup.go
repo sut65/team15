@@ -1,39 +1,31 @@
 package entity
 
- 
-
 import (
-			"time"
-           "gorm.io/gorm"
-		   "golang.org/x/crypto/bcrypt"
-           "gorm.io/driver/sqlite"
+	"time"
 
+	"golang.org/x/crypto/bcrypt"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
-
- 
 
 var db *gorm.DB
 
- 
-
 func DB() *gorm.DB {
 
-           return db
+	return db
 
 }
-
- 
 
 func SetupDatabase() {
 
 	database, err := gorm.Open(sqlite.Open("MedicineRoom.db"), &gorm.Config{})
-	 // Migrate the schema
-	 if err != nil {
+	// Migrate the schema
+	if err != nil {
 
-        panic("failed to connect database")
+		panic("failed to connect database")
 
-  }
-	 database.AutoMigrate(
+	}
+	database.AutoMigrate(
 		&Role{},
 		&User{},
 		&Medicine{},
@@ -42,90 +34,85 @@ func SetupDatabase() {
 		&MedicineLabel{},
 		&Suggestion{},
 		&Effect{},
-		&Order{}, 
+		&Order{},
 		&MedicineArrangement{},
 		&Pharmacy{},
 		&DispenseMedicine{},
-		&ClassifyDrugs{},
-		&Cupboard{},
-	 )
-  	
-	 
+		&Zone{},
+		&MedicineReceive{},
+	)
 
+	db = database
 
-	 db = database
-
-
-
-//ตำแหน่งงาน
-	 role1 := Role{
+	//ตำแหน่งงาน
+	role1 := Role{
 		Name: "Phaemacist",
-	 }
-	 db.Model(&Role{}).Create(&role1)
+	}
+	db.Model(&Role{}).Create(&role1)
 
-	 role2 := Role{
+	role2 := Role{
 		Name: "Dortor",
-	 }
-	 db.Model(&Role{}).Create(&role2)
+	}
+	db.Model(&Role{}).Create(&role2)
 
-	 // User
-	 password1, err := bcrypt.GenerateFromPassword([]byte("1234"), 14)
-	 password2, err := bcrypt.GenerateFromPassword([]byte("5678"), 14)
+	// User
+	password1, err := bcrypt.GenerateFromPassword([]byte("1234"), 14)
+	password2, err := bcrypt.GenerateFromPassword([]byte("5678"), 14)
 
-	 doctor := User{
-		Name: "sirinthip",
+	doctor := User{
+		Name:     "sirinthip",
 		UserName: "B6221126",
 		Password: string(password2),
-		Role: role2,
-	 }
-	 db.Model(&User{}).Create(&doctor)
+		Role:     role2,
+	}
+	db.Model(&User{}).Create(&doctor)
 
-	 pharmacist1 := User{
-		Name: "warangkana",
-		UserName:  "B6201562",
+	pharmacist1 := User{
+		Name:     "warangkana",
+		UserName: "B6201562",
 		Password: string(password1),
-		Role: role1,
-	 }
-	 db.Model(&User{}).Create(&pharmacist1)
+		Role:     role1,
+	}
+	db.Model(&User{}).Create(&pharmacist1)
 
-	 pharmacist2 := User{
-		Name: "supaporn",
-		UserName:  "B6216948",
+	pharmacist2 := User{
+		Name:     "supaporn",
+		UserName: "B6216948",
 		Password: string(password1),
-		Role: role1,
-	 }
-	 db.Model(&User{}).Create(&pharmacist2)
+		Role:     role1,
+	}
+	db.Model(&User{}).Create(&pharmacist2)
 
-	 pharmacist3 := User{
-		Name: "jirawat",
-		UserName:  "B6221928",
+	pharmacist3 := User{
+		Name:     "jirawat",
+		UserName: "B6221928",
 		Password: string(password1),
-		Role: role1,
-	 }
-	 db.Model(&User{}).Create(&pharmacist3)
+		Role:     role1,
+	}
+	db.Model(&User{}).Create(&pharmacist3)
 
-	 pharmacist4 := User{
-		Name: "woottikrai",
-		UserName:  "B6224356",
+	pharmacist4 := User{
+		Name:     "woottikrai",
+		UserName: "B6224356",
 		Password: string(password1),
-		Role: role1,
-	 }
-	 db.Model(&User{}).Create(&pharmacist4)
-	 pharmacist5 := User{
-		Name: "nawamin",
-		UserName:  "B6226916",
+		Role:     role1,
+	}
+	db.Model(&User{}).Create(&pharmacist4)
+	pharmacist5 := User{
+		Name:     "nawamin",
+		UserName: "B6226916",
 		Password: string(password1),
-		Role: role1,
-	 }
-	 db.Model(&User{}).Create(&pharmacist5)
+		Role:     role1,
+	}
+	db.Model(&User{}).Create(&pharmacist5)
 
-	 pharmacist6 := User{
-		Name: "kotthip",
-		UserName:  "B6221111",
+	pharmacist6 := User{
+		Name:     "kotthip",
+		UserName: "B6221111",
 		Password: string(password1),
-		Role: role1,
-	 }
-	 db.Model(&User{}).Create(&pharmacist6)
+		Role:     role1,
+	}
+	db.Model(&User{}).Create(&pharmacist6)
 
 	//ยา
 	paracetamol := Medicine{
@@ -138,7 +125,6 @@ func SetupDatabase() {
 	}
 	db.Model(&Medicine{}).Create(&lanolin)
 
- 
 	//company
 	neocosmed := Company{
 		Name: "neocosmed",
@@ -162,17 +148,17 @@ func SetupDatabase() {
 	db.Model(&Unit{}).Create(&bottle)
 
 	order1 := Order{
-	Quantity:		50,	
-	Priceperunit:	100,
-	Datetime:	time.Now(),	
+		Quantity:     50,
+		Priceperunit: 100,
+		Datetime:     time.Now(),
 
-	Pharmacist: 	pharmacist4,
-	Medicine:	paracetamol,
-	Company:	neocosmed,
-	Unit:		bottle,
+		Pharmacist: pharmacist4,
+		Medicine:   paracetamol,
+		Company:    neocosmed,
+		Unit:       bottle,
 	}
 	db.Model(&Order{}).Create(&order1)
-    
+
 	//Suggestion
 	sug1 := Suggestion{
 		SuggestionName: "ใช้ยาจนหมด",
@@ -208,14 +194,14 @@ func SetupDatabase() {
 	//ระบบจัดชั้นยา
 	//ตู้ยา
 	cupboard1 := Cupboard{
-		Name: "A",
-		Zone: "AA",
+		Name:  "A",
+		Zone:  "AA",
 		Floor: 2,
 	}
 	db.Model(&Cupboard{}).Create(&cupboard1)
 	cupboard2 := Cupboard{
-		Name: "B",
-		Zone: "BB",
+		Name:  "B",
+		Zone:  "BB",
 		Floor: 3,
 	}
 	db.Model(&Cupboard{}).Create(&cupboard2)
@@ -224,7 +210,7 @@ func SetupDatabase() {
 		Pharmacist: pharmacist6,
 		Cupboard:   cupboard2,
 		Note:       "-",
-		Datetime: time.Now(),
+		Datetime:   time.Now(),
 	}
 	db.Model(&ClassifyDrugs{}).Create(&class1)
 
@@ -232,20 +218,19 @@ func SetupDatabase() {
 		Pharmacist: pharmacist6,
 		Cupboard:   cupboard1,
 		Note:       "-",
-		Datetime: time.Now(),
+		Datetime:   time.Now(),
 	}
 	db.Model(&ClassifyDrugs{}).Create(&class2)
 
-
 	//ระบบจัดยา
 	medicinearrangement1 := MedicineArrangement{
-		MedicineArrangementNo: 200000,
-		Pharmacist: pharmacist2,
-		Note: "*มีการเปลี่ยนแปลงยี้ห้อยา",
+		MedicineArrangementNo:   200000,
+		Pharmacist:              pharmacist2,
+		Note:                    "*มีการเปลี่ยนแปลงยี้ห้อยา",
 		MedicineArrangementTime: time.Now(),
-	 }
-	 db.Model(&MedicineArrangement{}).Create(&medicinearrangement1)
-	 //ช่องจ่ายยา
+	}
+	db.Model(&MedicineArrangement{}).Create(&medicinearrangement1)
+	//ช่องจ่ายยา
 	pharmacy1 := Pharmacy{
 		PharmacyBox: 1,
 	}
@@ -261,11 +246,36 @@ func SetupDatabase() {
 	//ระบบจ่ายยา
 	dispensemedicine := DispenseMedicine{
 		DispenseNo:   100000,
-	 	ReceiveName:  "แสนดี มากมาย",
-		Pharmacy: pharmacy1,
-	 	Pharmacist:   pharmacist2,
+		ReceiveName:  "แสนดี มากมาย",
+		Pharmacy:     pharmacy1,
+		Pharmacist:   pharmacist2,
 		DispenseTime: time.Now(),
 	}
 	db.Model(&DispenseMedicine{}).Create(&dispensemedicine)
 
+	//Zone
+	Zone1 := Zone{
+		ZoneName: "A",
+	}
+	db.Model(&Zone{}).Create(&Zone1)
+
+	Zone2 := Zone{
+		ZoneName: "B",
+	}
+	db.Model(&Zone{}).Create(&Zone2)
+
+	Zone3 := Zone{
+		ZoneName: "C",
+	}
+	db.Model(&Zone{}).Create(&Zone3)
+
+	//ระบบคลังยา
+	medicineReceive := MedicineReceive{
+		MedicineReceiveNo: 0111,
+		Pharmacist:        pharmacist2,
+		Zone:              Zone1,
+		RecievedDate:      time.Now(),
+		//MedicineLabel:     MedicineLabel,
+	}
+	db.Model(&MedicineReceive{}).Create(&medicineReceive)
 }
