@@ -8,7 +8,7 @@ export interface OrderInterface {
     ID: number,
     Quantity: number,
     Priceperunit: number,
-    Date: Date,
+    Datetime: Date | null,
 
     PharmacistID: number,
     Pharmacist: UserInterface,

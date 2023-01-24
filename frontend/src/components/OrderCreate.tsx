@@ -23,19 +23,6 @@ import { UserInterface } from "../models/IUser";
 import { OrderInterface } from "../models/IOrder";
 
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    container: {
-      marginTop: theme.spacing(2),
-    },
-    table: {
-      minWidth: 650,
-    },
-    tableSpace: {
-      marginTop: 20,
-    },
-  })
-);
 
 export default function OrderCreate(this: any) {
   const [date, setDate] = React.useState<Date | null>(null);
@@ -43,7 +30,7 @@ export default function OrderCreate(this: any) {
   const [company, setCompany] = React.useState<CompanyInterface[]>([]);
   const [unit, setUnit] = React.useState<UnitInterface[]>([]);
   const [Order, setOrder] = React.useState<Partial<OrderInterface>>({})
-  const [user, setUser] = React.useState<UserInterface[]>([]);
+  const [user, setUser] = React.useState<UserInterface>();
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [ErrorMessage, setErrorMessage] = React.useState<String>();
@@ -148,20 +135,44 @@ export default function OrderCreate(this: any) {
       });
   }
 
+  //real useronline
+  function getUser() {
+    const UserID = localStorage.getItem("uid")
+    const apiUrl = `http://localhost:8080/users/${UserID}`;
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+    };
+    fetch(apiUrl, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+        console.log("Combobox_User", res)
+        if (res.data) {
+          setUser(res.data);
+        } else {
+          console.log("else");
+        }
+      });
+  }
+
   const convertType = (data: string | number | undefined | null) => {
     let val = typeof data === "string" ? parseInt(data) : data;
     return val;
-};
+  };
 
   function submit() {
     setLoading(true)
     let data = {
-      Date: Order.Date,
+      Date: date,
       Quantity: typeof Order.Quantity == "string" ? parseInt(Order.Quantity) : 0,
       Priceperunit: typeof Order.Priceperunit == "string" ? parseInt(Order.Priceperunit) : 0,
       MedicineID: convertType(Order.MedicineID),
       CompanyID: convertType(Order.CompanyID),
       UnitID: convertType(Order.UnitID),
+      PharmacistID: Number(localStorage.getItem("uid")),
     };
     console.log("Data", data)
     const apiUrl = "http://localhost:8080/order";
@@ -193,6 +204,7 @@ export default function OrderCreate(this: any) {
     getMedicine();
     getCompany();
     getUnit();
+    getUser();
 
   }, []);
 
@@ -203,13 +215,7 @@ export default function OrderCreate(this: any) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });
 
-  const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-      root: { flexGrow: 1 },
-      container: { marginTop: theme.spacing(2) },
-      paper: { padding: theme.spacing(2), color: theme.palette.text.secondary },
-      table: { minWidth: 20 }
-    }));
+
 
   return (
     <Container maxWidth="lg">
@@ -237,7 +243,7 @@ export default function OrderCreate(this: any) {
 
             <Button style={{ float: "right" }}
               component={RouterLink}
-              to="/Patientlist"
+              to="/Orderslist"
               variant="contained"
               color="primary">
               <SourceIcon />รายการสั่งซื้อ
@@ -275,7 +281,7 @@ export default function OrderCreate(this: any) {
             <p>จำนวน</p>
             <TextField style={{ width: '105%', }}
 
-              id="quantity"
+              id="Quantity"
               label="จำนวน"
               variant="outlined"
               type="number"
@@ -313,7 +319,7 @@ export default function OrderCreate(this: any) {
             <p>ราคาต่อหน่วย</p>
             <TextField style={{ width: '105%', }}
 
-              id="quantity"
+              id="Priceperunit"
               label="ราคาต่อหน่วย"
               variant="outlined"
               type="number"
@@ -335,7 +341,7 @@ export default function OrderCreate(this: any) {
                 <option aria-label="None" value="">
                   เลือกบริษัท
                 </option>
-                {company.map((item: UnitInterface) => (
+                {company.map((item: CompanyInterface) => (
                   <option value={item.ID} key={item.ID}>
                     {item.Name}
                   </option>
@@ -351,13 +357,32 @@ export default function OrderCreate(this: any) {
             <p>วันที่สั่งซื้อ</p>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
-                value={date}
+                className='StyledTextField'
+                value={Order.Datetime}
                 onChange={(newValue) => {
-                  setDate(newValue);
+                  setOrder({
+                    ...Order,
+                    Datetime: newValue,
+                  });
                 }}
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
+          </FormControl>
+        </Grid>
+
+        <Grid item xs={4}>
+          <FormControl fullWidth variant="outlined" style={{ width: '100%' }}>
+            <p>ผู้บันทึก</p>
+            <Select
+              disabled
+              native
+            >
+              <option>
+                {user?.Name}
+              </option>
+
+            </Select>
           </FormControl>
         </Grid>
 
