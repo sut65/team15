@@ -25,7 +25,7 @@ func CreatePharmacy(c *gin.Context) {
 // List /pharmacys
 func ListPharmacy(c *gin.Context) {
 	var pharmacys []entity.Pharmacy
-	if err := entity.DB().Raw("SELECT * FROM pharmacys").Find(&pharmacys).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM pharmacies").Find(&pharmacys).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -36,7 +36,7 @@ func ListPharmacy(c *gin.Context) {
 func GetPharmacy(c *gin.Context) {
 	var pharmacy entity.Pharmacy
 	id := c.Param("id")
-	if err := entity.DB().Raw("SELECT * FROM pharmacys WHERE id = ?", id).Find(&pharmacy).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM pharmacies WHERE id = ?", id).Find(&pharmacy).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
