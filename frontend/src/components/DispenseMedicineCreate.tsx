@@ -19,6 +19,7 @@ export default function DispenseMedicineCreate() {
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
 
+  const [user, setUser] = React.useState<UserInterface>();
   const [pharmacy, setPharmacy] = React.useState<PharmacyInterface[]>([]);
   const [dispensemedicine, setDispensemedicine] = React.useState<Partial<DispenseMedicineInterface>>({});
   const [loading, setLoading] = React.useState(false);
@@ -56,7 +57,7 @@ export default function DispenseMedicineCreate() {
 
   //ดึงข้อมูลช่องจ่ายยา
   function getPharmacy() {
-    const apiUrl = "http://localhost:8080/pharmacy";
+    const apiUrl = "http://localhost:8080/pharmacys";
     const requestOptions = {
       method: "GET",
       headers: {
@@ -70,6 +71,28 @@ export default function DispenseMedicineCreate() {
         console.log("Combobox_medicine", res)
         if (res.data) {
           setPharmacy(res.data);
+        } else {
+          console.log("else");
+        }
+      });
+  }
+
+  function getUser() {
+    const UserID = localStorage.getItem("uid")
+    const apiUrl = `http://localhost:8080/users/${UserID}`;
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+    };
+    fetch(apiUrl, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+        console.log("Combobox_User", res)
+        if (res.data) {
+          setUser(res.data);
         } else {
           console.log("else");
         }
@@ -114,10 +137,12 @@ export default function DispenseMedicineCreate() {
       });
   }
 
+  
     //ดึงข้อมูล ใส่ combobox
     React.useEffect(() => {
 
       getPharmacy();
+      getUser();
   
     }, []);
 
@@ -146,7 +171,7 @@ export default function DispenseMedicineCreate() {
 
             <Button style={{ float: "right" }}
               component={RouterLink}
-              to="/Patientlist"
+              to="/dispensemedicines"
               variant="contained"
               color="primary">
               <SourceIcon />รายการบันทึกการจ่ายยา
@@ -206,6 +231,20 @@ export default function DispenseMedicineCreate() {
                   />
                 </FormControl>
               </Grid>
+              <Grid item xs={4}>
+              <FormControl fullWidth variant="outlined" style={{ width: '100%' }}>
+                <p>ผู้บันทึก</p>
+                <TextField
+                    id="ReceiveName"
+                    variant="outlined"
+                    type="string"
+                    size="medium"
+                    placeholder="ผู้รับยา"
+                    value={user?.UserName || ""}
+                    onChange={handleInputChange}
+                  />
+              </FormControl>
+        </Grid>
               <Grid item xs={12}>
               <Stack
                     spacing={2}
@@ -218,7 +257,7 @@ export default function DispenseMedicineCreate() {
                         variant="contained"
                         color="error"
                         component={RouterLink}
-                        to="/"
+                        to="/dispensemedicines"
                     >
                         ถอยกลับ
                     </Button>
