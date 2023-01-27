@@ -40,6 +40,8 @@ func SetupDatabase() {
 		&DispenseMedicine{},
 		&Zone{},
 		&MedicineReceive{},
+		&ClassifyDrugs{},
+		&Cupboard{},
 	)
 
 	db = database
