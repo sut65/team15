@@ -52,6 +52,15 @@ func main() {
 
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกการจัดชั้นยา------------------------------------
+	//Cupboard
+	r.GET("/Cupboard",controller.ListMedicine)
+
+	//ClassifyDrug
+	r.POST("ClassifyDrugs",controller.CreateOrder)
+	r.GET("/ClassifyDrug",controller.ListOrder)
+	r.GET("/ClassifyDrug/:id",controller.GetOrder)
+	r.PATCH("/ClassifyDrug",controller.UpdateOrder)
+
 
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกการสั่งยา--------------------------------------
