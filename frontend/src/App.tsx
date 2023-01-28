@@ -9,6 +9,7 @@ import DispenseMedicines from './components/DispenseMedicine';
 import Home from './components/Hom';
 import Orders from './components/Order';
 import MedicineArrangementCreate from './components/MedicineArrangementCreate';
+import MedicineArrangement from './components/MedicineArrangement';
 import Signin from './components/Sigin';
 
 function App() {
@@ -26,7 +27,6 @@ function App() {
 
   return (
     <Router>
-      {/* <Route path="/login" element={<Signin />} /> */}
       <Navbar />
       <div>
       <Routes>
@@ -36,6 +36,7 @@ function App() {
       <Route path="/dispensemedicine" element={<DispenseMedicineCreate />} />
       <Route path="/dispensemedicines" element={<DispenseMedicines />} />
       <Route path="/medicinearrangement" element={<MedicineArrangementCreate />} />
+      <Route path="/medicinearrangements" element={<MedicineArrangement />} />
       <Route path="/Orderslist" element={<Orders />} />
 
       </Routes>

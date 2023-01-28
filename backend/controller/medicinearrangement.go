@@ -12,7 +12,7 @@ import (
 func CreateMedicineArrangement(c *gin.Context)  {
 	var pharmacist entity.User
 	var medicinearrangement entity.MedicineArrangement
-	var classifydrug entity.ClassifyDrugs
+	// var classifydrug entity.ClassifyDrugs
 
 	if err := c.ShouldBindJSON(&medicinearrangement); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -21,10 +21,10 @@ func CreateMedicineArrangement(c *gin.Context)  {
 	// 9: ค้นหา Prescription ด้วย id
 
 	// 10: ค้นหา ClassifyMedicine ด้วย id
-	if tx := entity.DB().Where("id = ?", medicinearrangement.ClassifyDrugsID).First(&classifydrug); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "classifydrug not found"})
-		return
-	}
+	// if tx := entity.DB().Where("id = ?", medicinearrangement.ClassifyDrugsID).First(&classifydrug); tx.RowsAffected == 0 {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "classifydrug not found"})
+	// 	return
+	// }
 
 
 	// 11:ค้นหา User ด้วย id
@@ -36,7 +36,7 @@ func CreateMedicineArrangement(c *gin.Context)  {
 	// 13: สร้าง MedicineArrangement 
 	arrangement := entity.MedicineArrangement{
 		MedicineArrangementNo: 		medicinearrangement.MedicineArrangementNo,	
-		ClassifyDrugs: 				classifydrug,										// โยงความสัมพันธ์กับ Entity ClassifyDrug
+		// ClassifyDrugs: 				classifydrug,										// โยงความสัมพันธ์กับ Entity ClassifyDrug
 		Note: 						medicinearrangement.Note,
 		Pharmacist: 				pharmacist,       									// โยงความสัมพันธ์กับ Entity User
 		MedicineArrangementTime:	medicinearrangement.MedicineArrangementTime, 		// ตั้งค่าฟิลด์ watchedTime
@@ -55,7 +55,7 @@ func CreateMedicineArrangement(c *gin.Context)  {
 func GetMedicineArrangement(c *gin.Context) {
 	var medicinearrangements entity.MedicineArrangement
 	id := c.Param("id")
-	if err := entity.DB().Preload("Pharmacist").Raw("SELECT * FROM medicinearrangements WHERE id = ?", id).Find(&medicinearrangements).Error; err != nil {
+	if err := entity.DB().Preload("Pharmacist").Raw("SELECT * FROM medicine_arrangements WHERE id = ?", id).Find(&medicinearrangements).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -65,7 +65,7 @@ func GetMedicineArrangement(c *gin.Context) {
 // GET /medicinearrangements
 func ListMedicineArrangement(c *gin.Context) {
 	var medicinearrangements []entity.MedicineArrangement
-	if err := entity.DB().Preload("Pharmacist").Raw("SELECT * FROM medicinearrangements ORDER BY medicinearranement_no").Find(&medicinearrangements).Error; err != nil {
+	if err := entity.DB().Preload("Pharmacist").Raw("SELECT * FROM medicine_arrangements").Find(&medicinearrangements).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -76,7 +76,7 @@ func ListMedicineArrangement(c *gin.Context) {
 // DELETE /medicinearrangements/:id
 func DeleteMedicineArrangement(c *gin.Context) {
 	id := c.Param("id")
-	if tx := entity.DB().Exec("DELETE FROM medicinearrangements WHERE id = ?", id); tx.RowsAffected == 0 {
+	if tx := entity.DB().Exec("DELETE FROM medicine_arrangements WHERE id = ?", id); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "medicinearrangements not found"})
 		return
 	}
