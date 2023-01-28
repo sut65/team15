@@ -56,7 +56,7 @@ func CreateDispenseMedicine(c *gin.Context)  {
 func GetDispenseMedicine(c *gin.Context) {
 	var dispensemedicines entity.DispenseMedicine
 	id := c.Param("id")
-	if err := entity.DB().Preload("Pharmacist").Preload("Pharmacy").Raw("SELECT * FROM dispensemedicines WHERE id = ?", id).Find(&dispensemedicines).Error; err != nil {
+	if err := entity.DB().Preload("Pharmacist").Preload("Pharmacy").Raw("SELECT * FROM dispense_medicines WHERE id = ?", id).Find(&dispensemedicines).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -77,7 +77,7 @@ func ListDispenseMedicine(c *gin.Context) {
 // DELETE /dispensemedicines/:id
 func DeleteDispenseMedicine(c *gin.Context) {
 	id := c.Param("id")
-	if tx := entity.DB().Exec("DELETE FROM dispensemedicines WHERE id = ?", id); tx.RowsAffected == 0 {
+	if tx := entity.DB().Exec("DELETE FROM dispense_medicines WHERE id = ?", id); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "dispensemedicines not found"})
 		return
 	}

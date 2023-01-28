@@ -241,7 +241,7 @@ export default function DispenseMedicineCreate() {
               </Grid>
               <Grid item xs={6}>
           <FormControl fullWidth variant="outlined">
-            <p>วันที่สั่งซื้อ</p>
+            <p>วันที่และเวลา</p>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                   value={dispensemedicine.DispenseTime}
@@ -261,16 +261,16 @@ export default function DispenseMedicineCreate() {
         </Grid>
               <Grid item xs={6}>
               <FormControl fullWidth variant="outlined" style={{ width: '100%' }}>
-                <p>ผู้บันทึก</p>
-                <TextField
-                    id="ReceiveName"
-                    variant="outlined"
-                    type="string"
-                    size="medium"
-                    placeholder="ผู้รับยา"
-                    value={user?.UserName || ""}
-                    onChange={handleInputChange}
-                  />
+                <p>ผู้จ่ายยา</p>
+                  <Select
+                  disabled
+                  native
+                >
+                  <option>
+                    {user?.Name}
+                  </option>
+
+            </Select>
               </FormControl>
         </Grid>
               <Grid item xs={12}>
