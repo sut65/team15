@@ -152,11 +152,8 @@ function Navbar() {
   ];
 
   const signout = () => {
-    // setSuccess(true);
     localStorage.clear();
-    setTimeout(() => {
-      window.location.reload();
-    }, 500);
+    window.location.href = "/login";
   };
 
   return (

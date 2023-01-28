@@ -66,7 +66,7 @@ func GetDispenseMedicine(c *gin.Context) {
 // GET /dispensemedicines
 func ListDispenseMedicine(c *gin.Context) {
 	var dispensemedicines []entity.DispenseMedicine
-	if err := entity.DB().Preload("Pharmacist").Preload("Pharmacy").Raw("SELECT * FROM dispense_medicines ORDER BY dispensemedicine_no").Find(&dispensemedicines).Error; err != nil {
+	if err := entity.DB().Preload("Pharmacist").Preload("Pharmacy").Raw("SELECT * FROM dispense_medicines").Find(&dispensemedicines).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
