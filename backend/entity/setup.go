@@ -264,7 +264,8 @@ func SetupDatabase() {
 	//-------------------------------------ระบบจัดยา---------------------
 	medicinearrangement1 := MedicineArrangement{
 		MedicineArrangementNo:   200000,
-		ClassifyDrugs: class1,
+		Prescription: 			prescription1,
+		ClassifyDrugs: 			 class1,
 		Pharmacist:              pharmacist2,
 		Note:                    "*มีการเปลี่ยนแปลงยี้ห้อยา",
 		MedicineArrangementTime: time.Now(),
