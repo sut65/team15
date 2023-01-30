@@ -12,15 +12,30 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import logo from './image/MedicineRoom.jpg';
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link as RouterLink } from "react-router-dom";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
-
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import { Container } from '@mui/system'
+import Snackbar from '@mui/material/Snackbar'
 
 import { SigninInterface } from "../models/ISignin";
-function Alert(props: AlertProps) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
- }
+import Alert from "@mui/material/Alert";
+
+function Copyright(props: any) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © by "}
+      <Link color="inherit" href="https://github.com/sut65/team15">
+        Team15
+      </Link>{" "}
+    </Typography>
+  );
+}
+
 
 export default function Signin() {
   const [signin, setSignin] = React.useState<Partial<SigninInterface>>();
@@ -56,6 +71,7 @@ export default function Signin() {
         }
       });
   };
+
   const handleInputChange = (
     event: React.ChangeEvent<{ id?: string; value: any }>
     ) => {
@@ -63,16 +79,29 @@ export default function Signin() {
     const { value } = event.target;
     setSignin({ ...signin, [id]: value });
     };
-    const handleClose = (event?: React.SyntheticEvent, reason?: string) => 
-   {
-    if (reason === "clickaway") {
-    return;
-    }
-    setSuccess(false);
-    setError(false);
+
+    const handleClose = (res: any) => {
+      if (res === "clickaway") {
+        return;
+      }
+      setSuccess(false);
+      setError(false);
+      
     };
 
   return (
+    <Container component="main" maxWidth="xs">
+    <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
+      <Alert onClose={handleClose} severity="success">
+        เข้าสู่ระบบสำเร็จ
+      </Alert>
+    </Snackbar>
+    <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
+      <Alert onClose={handleClose} severity="error">
+        ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง
+      </Alert>
+    </Snackbar>
+    <CssBaseline />
     <Paper elevation={0} style={{ width: "100%", textAlign: "center", fontSize: 36 }}>
         <Box
           sx={{
@@ -115,10 +144,6 @@ export default function Signin() {
               autoComplete="current-password"
               onChange={handleChange}
             />
-            {/* <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              /> */}
             <Button
               fullWidth
               variant="contained"
@@ -127,10 +152,10 @@ export default function Signin() {
             >
               Sign In
             </Button>
-
+          <Copyright />
           </Box>
         </Box>
       </Paper>
-    // </Grid>
+    </Container>
   );
 }
