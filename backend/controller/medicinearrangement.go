@@ -12,19 +12,24 @@ import (
 func CreateMedicineArrangement(c *gin.Context)  {
 	var pharmacist entity.User
 	var medicinearrangement entity.MedicineArrangement
-	// var classifydrug entity.ClassifyDrugs
+	var classifydrug entity.ClassifyDrugs
+	var prescription entity.Prescription
 
 	if err := c.ShouldBindJSON(&medicinearrangement); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 		}
 	// 9: ค้นหา Prescription ด้วย id
+	if tx := entity.DB().Where("id = ?", medicinearrangement.PrescriptionID).First(&prescription); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "prescription not found"})
+		return
+	}
 
 	// 10: ค้นหา ClassifyMedicine ด้วย id
-	// if tx := entity.DB().Where("id = ?", medicinearrangement.ClassifyDrugsID).First(&classifydrug); tx.RowsAffected == 0 {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "classifydrug not found"})
-	// 	return
-	// }
+	if tx := entity.DB().Where("id = ?", medicinearrangement.ClassifyDrugsID).First(&classifydrug); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "classifydrug not found"})
+		return
+	}
 
 
 	// 11:ค้นหา User ด้วย id
@@ -36,7 +41,8 @@ func CreateMedicineArrangement(c *gin.Context)  {
 	// 13: สร้าง MedicineArrangement 
 	arrangement := entity.MedicineArrangement{
 		MedicineArrangementNo: 		medicinearrangement.MedicineArrangementNo,	
-		// ClassifyDrugs: 				classifydrug,										// โยงความสัมพันธ์กับ Entity ClassifyDrug
+		Prescription: 				prescription,										// โยงความสัมพันธ์กับ Entity Prescription
+		ClassifyDrugs: 				classifydrug,										// โยงความสัมพันธ์กับ Entity ClassifyDrug
 		Note: 						medicinearrangement.Note,
 		Pharmacist: 				pharmacist,       									// โยงความสัมพันธ์กับ Entity User
 		MedicineArrangementTime:	medicinearrangement.MedicineArrangementTime, 		// ตั้งค่าฟิลด์ watchedTime
