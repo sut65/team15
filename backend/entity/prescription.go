@@ -28,4 +28,6 @@ type Prescription struct{
 	PatientID		*uint
 	Patient		  	Patient
 
+	MedicineArrangements 		[]MedicineArrangement  `gorm:"foreignKey: PrescriptionID"`
+
 }

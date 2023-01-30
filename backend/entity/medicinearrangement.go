@@ -17,4 +17,9 @@ type MedicineArrangement struct {
 
 	ClassifyDrugsID					*uint
 	ClassifyDrugs					ClassifyDrugs
+
+	PrescriptionID					*uint
+	Prescription					Prescription
+
+
 }
