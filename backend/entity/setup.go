@@ -42,6 +42,8 @@ func SetupDatabase() {
 		&MedicineReceive{},
 		&ClassifyDrugs{},
 		&Cupboard{},
+		&Prescription{},
+		&Patient{},
 	)
 
 	db = database
