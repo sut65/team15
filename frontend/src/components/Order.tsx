@@ -5,10 +5,11 @@ import { Box, Grid, Select, TextField, Typography, Table, TableHead, TableRow, T
 import Button from '@mui/material/Button'
 import { Link as RouterLink } from "react-router-dom";
 import TableContainer from '@mui/material/TableContainer';
-
+import moment from 'moment';
 
 
 import { OrderInterface } from "../models/IOrder";
+import { format } from "path";
 function Orders() {
 
     const [order, SetOrder] = React.useState<OrderInterface[]>([]);
@@ -59,7 +60,7 @@ function Orders() {
                             color="primary"
                             gutterBottom
                         >
-                            ข้อมูลผู้ป่วย
+                            ข้อมูลการสั่งซื้อ
                         </Typography>
                     </Box>
                     <Box>
@@ -68,7 +69,7 @@ function Orders() {
 
                             component={RouterLink}
 
-                            to="/"
+                            to="/order"
 
                             variant="contained"
 
@@ -76,7 +77,7 @@ function Orders() {
 
                         >
 
-                            เพิ่มข้อมูลผู้ป่วย
+                            เพิ่มการสั่งซื้อ
 
                         </Button>
 
@@ -90,26 +91,29 @@ function Orders() {
 
                         <TableHead>
                             <TableRow>
-                                <TableCell align="left" width="5%">
+                                <TableCell align="center" width="5%">
                                     ID
                                 </TableCell>
-                                <TableCell align="left" width="15%">
+                                <TableCell align="center" width="15%">
                                     ชื่อยา
                                 </TableCell>
-                                <TableCell align="left" width="5%">
+                                <TableCell align="center" width="5%">
                                     จำนวน
                                 </TableCell>
-                                <TableCell align="left" width="10%">
+                                <TableCell align="center" width="10%">
                                     ราคาต่อหน่วย
                                 </TableCell>
-                                <TableCell align="left" width="10%">
+                                <TableCell align="center" width="10%">
                                     หน่วย
                                 </TableCell>
-                                <TableCell align="left" width="20%">
+                                <TableCell align="center" width="20%">
                                     บริษัท
                                 </TableCell>
-                                <TableCell align="left" width="15%">
+                                <TableCell align="center" width="15%">
                                     ผู้บันทึก
+                                </TableCell>
+                                <TableCell align="center" width="15%">
+                                    วันที่บันทึก
                                 </TableCell>
                             </TableRow>
 
@@ -118,14 +122,15 @@ function Orders() {
                         <TableBody>
                             {order.map((order: OrderInterface) => (
                                 <TableRow key={order.ID}>
-                                    <TableCell align="left" size="medium"> {order.ID}            </TableCell>
-                                    <TableCell align="left" size="medium"> {order.Medicine.Name}    </TableCell>
-                                    <TableCell align="left" size="medium"> {order.Quantity}    </TableCell>
-                                    <TableCell align="left" size="medium"> {order.Unit.Name}     </TableCell>
-                                    <TableCell align="left" size="medium"> {order.Priceperunit}           </TableCell>
-                                    <TableCell align="left" size="medium"> {order.Company.Name}           </TableCell>
-                                    <TableCell align="left" size="medium"> {order.Pharmacist.Name}     </TableCell>
-                                    {/* <TableCell align="left" size="medium"> {order.Datetime}     </TableCell> */}
+                                    <TableCell align="center" > {order.ID}            </TableCell>
+                                    <TableCell align="center" > {order.Medicine.Name}    </TableCell>
+                                    <TableCell align="center" > {order.Quantity}    </TableCell>
+                                    <TableCell align="center" > {order.Priceperunit + " บาท"}         </TableCell>
+                                    <TableCell align="center" > {order.Unit.Name}     </TableCell>
+                                    <TableCell align="center" > {order.Company.Name}           </TableCell>
+                                    <TableCell align="center" > {order.Pharmacist.Name}     </TableCell>
+                                    {/* <TableCell align="center">  {format(Date(order.Datetime?), 'dd-mm-yyyy')}</TableCell> */}
+                                    <TableCell align="center" > {moment(order.Datetime).format('DD MMMM yyyy')}     </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

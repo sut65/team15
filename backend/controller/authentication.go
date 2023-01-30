@@ -11,7 +11,7 @@ import (
 
 // LoginPayload login body
 type LoginPayload struct {
-	Username string `json:"UserName"`
+	UserName string `json:"UserName"`
 	Password string `json:"Password"`
 }
 // LoginResponse token response
@@ -28,7 +28,7 @@ func Login(c *gin.Context) {
 		return
 	}
 	// ค้นหา user ด้วย username ที่ผู้ใช้กรอกเข้ามา
-	if err := entity.DB().Raw("SELECT * FROM users WHERE username = ?", payload.Username).Scan(&user).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM users WHERE user_name = ?", payload.UserName).Scan(&user).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

@@ -1,6 +1,6 @@
 import { Link as RouterLink } from "react-router-dom";
 import * as React from 'react';
-import Alert from '@mui/material/Alert'
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { Container } from '@mui/system'
 import Snackbar from '@mui/material/Snackbar'
 import Box from '@mui/material/Box';
@@ -18,8 +18,10 @@ export default function MedicineArrangementCreate() {
 
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
-
-  const [medicinearrangement, setMedicineArrangement] = React.useState<Partial<MedicineArrangementInterface>>({});
+  const [user, setUser] = React.useState<UserInterface>();
+  const [medicinearrangement, setMedicineArrangement] = React.useState<Partial<MedicineArrangementInterface>>({
+    MedicineArrangementTime: new Date(),
+  });
   const [loading, setLoading] = React.useState(false);
   const [ErrorMessage, setErrorMessage] = React.useState<String>();
 
@@ -53,6 +55,27 @@ export default function MedicineArrangementCreate() {
     });
   };
 
+   function getUser() {
+    const UserID = localStorage.getItem("uid")
+    const apiUrl = `http://localhost:8080/users/${UserID}`;
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+    };
+    fetch(apiUrl, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+        console.log("Combobox_User", res)
+        if (res.data) {
+          setUser(res.data);
+        } else {
+          console.log("else");
+        }
+      });
+  }
 
   const convertType = (data: string | number | undefined | null) => {
     let val = typeof data === "string" ? parseInt(data) : data;
@@ -63,7 +86,8 @@ export default function MedicineArrangementCreate() {
     setLoading(true)
     let data = {
       PharmacistID: Number(localStorage.getItem("uid")),
-      Note: typeof medicinearrangement.Note == "string" ? parseInt(medicinearrangement.Note) : 0,
+      Note: medicinearrangement.Note ?? "" ,
+      MedicineArrangementTime: medicinearrangement.MedicineArrangementTime,
       MedicineArrangementNo: typeof medicinearrangement.MedicineArrangementNo == "string" ? parseInt(medicinearrangement.MedicineArrangementNo) : 0,
     };
     console.log("Data", data)
@@ -90,6 +114,20 @@ export default function MedicineArrangementCreate() {
       });
   }
 
+  //ดึงข้อมูล ใส่ combobox
+  React.useEffect(() => {
+
+    getUser();
+
+  }, []);
+
+  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref,
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
     
     return (
       <Container maxWidth="lg">
@@ -115,7 +153,7 @@ export default function MedicineArrangementCreate() {
 
             <Button style={{ float: "right" }}
               component={RouterLink}
-              to="/Patientlist"
+              to="/medicinearrangements"
               variant="contained"
               color="primary">
               <SourceIcon />รายการบันทึกการจัดยา
@@ -124,7 +162,7 @@ export default function MedicineArrangementCreate() {
         </Box>
         </Box>
       <Grid container spacing={4}>
-        <Grid item xs={4}>
+        <Grid item xs={6}>
         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
            <p>เลขใบจัดยา</p>
           <FormControl fullWidth variant="outlined">
@@ -139,6 +177,55 @@ export default function MedicineArrangementCreate() {
                   </FormControl>
                   </FormControl>
                 </Grid>
+                <Grid item xs={6}>
+                <p>หมายเหตุ</p>
+                <FormControl fullWidth variant="outlined">
+                  <TextField
+                    id="Note"
+                    variant="outlined"
+                    type="string"
+                    size="medium"
+                    placeholder="*หมายเหตุ"
+                    value={medicinearrangement.Note|| ""}
+                    onChange={handleInputChange}
+                  />
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={6}>
+          <FormControl fullWidth variant="outlined">
+             <p>วันที่และเวลา</p>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                  value={medicinearrangement.MedicineArrangementTime}
+                  inputFormat="dd-mm-yyyy"
+                  onChange={(newValue) => {
+                    setMedicineArrangement({
+                      ...medicinearrangement,
+                      MedicineArrangementTime: newValue,
+                    });
+                    
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                  
+                />
+                </LocalizationProvider>
+          </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+              <FormControl fullWidth variant="outlined" style={{ width: '100%' }}>
+                <p>ผู้จัดยา</p>
+                <Select
+              disabled
+              native
+            >
+              <option>
+                {user?.Name}
+              </option>
+
+            </Select>
+              </FormControl>
+        </Grid>
               <Grid item xs={12}>
               <Stack
                     spacing={2}

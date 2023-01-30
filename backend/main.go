@@ -18,6 +18,8 @@ func main() {
 	//role
 	r.GET("/roles", controller.ListRole)
 
+	//authentication
+	r.POST("/login", controller.Login)
 	// User
 	r.GET("/users", controller.ListUser)
 	r.POST("/user", controller.CreateUser)

@@ -2,19 +2,19 @@ import React from "react";
 import { Box, FormControl, Grid, Select, TextField, Typography } from '@mui/material'
 import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
-import Container from '@mui/material/Container'
+import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper'
 import Snackbar from '@mui/material/Snackbar'
 import { Link as RouterLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
-// import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+
 import SaveIcon from '@mui/icons-material/Save';
 import Divider from '@mui/material/Divider';
 import SourceIcon from '@mui/icons-material/Source';
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { MedicineInterface } from "../models/IMedicine";
 import { CompanyInterface } from "../models/ICompany";
@@ -26,11 +26,12 @@ import { OrderInterface } from "../models/IOrder";
 
 
 export default function OrderCreate(this: any) {
-  const [date, setDate] = React.useState<Date | null>(null);
   const [medicine, setMedicine] = React.useState<MedicineInterface[]>([]);
   const [company, setCompany] = React.useState<CompanyInterface[]>([]);
   const [unit, setUnit] = React.useState<UnitInterface[]>([]);
-  const [Order, setOrder] = React.useState<Partial<OrderInterface>>({})
+  const [Order, setOrder] = React.useState<Partial<OrderInterface>>({
+    Datetime: new Date(),
+  })
   const [user, setUser] = React.useState<UserInterface>();
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
@@ -167,7 +168,7 @@ export default function OrderCreate(this: any) {
   function submit() {
     setLoading(true)
     let data = {
-      Date: date,
+      DateTime: Order.Datetime,
       Quantity: typeof Order.Quantity == "string" ? parseInt(Order.Quantity) : 0,
       Priceperunit: typeof Order.Priceperunit == "string" ? parseInt(Order.Priceperunit) : 0,
       MedicineID: convertType(Order.MedicineID),
@@ -176,6 +177,7 @@ export default function OrderCreate(this: any) {
       PharmacistID: Number(localStorage.getItem("uid")),
     };
     console.log("Data", data)
+
     const apiUrl = "http://localhost:8080/order";
     const requestOptions = {
       method: "POST",
@@ -359,7 +361,21 @@ export default function OrderCreate(this: any) {
             <p>วันที่สั่งซื้อ</p>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
-                className='StyledTextField'
+                  value={Order.Datetime}
+                  inputFormat="dd-mm-yyyy"
+                  onChange={(newValue) => {
+                    setOrder({
+                      ...Order,
+                      Datetime: newValue,
+                    });
+                    
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                  
+                />
+              {/* <DesktopDatePicker
+                label="Date"
+                inputFormat="MM/DD/YYYY" 
                 value={Order.Datetime}
                 onChange={(newValue) => {
                   setOrder({
@@ -368,7 +384,7 @@ export default function OrderCreate(this: any) {
                   });
                 }}
                 renderInput={(params) => <TextField {...params} />}
-              />
+              /> */}
             </LocalizationProvider>
           </FormControl>
         </Grid>

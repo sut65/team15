@@ -7,7 +7,7 @@ export interface DispenseMedicineInterface {
 
     DispenseNo: number,
     ReceiveName: string,
-    DispenseTime: Date,
+    DispenseTime: Date | null,
 
     PharmacistID: number,
     Pharmacist: UserInterface,
