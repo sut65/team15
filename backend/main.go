@@ -55,15 +55,25 @@ func main() {
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกการจัดชั้นยา------------------------------------
 	//Cupboard
-	r.GET("/Cupboard",controller.ListMedicine)
+	r.GET("/Cupboard",controller.ListCupboard)
 
 	//ClassifyDrug
-	r.POST("ClassifyDrugs",controller.CreateOrder)
-	r.GET("/ClassifyDrug",controller.ListOrder)
-	r.GET("/ClassifyDrug/:id",controller.GetOrder)
-	r.PATCH("/ClassifyDrug",controller.UpdateOrder)
+	r.POST("ClassifyDrugs",controller.CreateClassifyDrugs)
+	r.GET("/ClassifyDrug",controller.ListClassifyDrug)
+	r.GET("/ClassifyDrug/:id",controller.GetClassifyDrug)
+	r.PATCH("/ClassifyDrug",controller.UpdateClassifyDrug)
 
 
+
+	//-----------------------------------ระบบย่อย ระบบบันทึกการสั่งยา--------------------------------------
+	//Patient
+	r.GET("/Patient",controller.ListPatient)
+
+	//Prescription
+	r.POST("Prescription",controller.CreatePrescription)
+	r.GET("/Prescription",controller.ListPrescription)
+	r.GET("/Prescription/:id",controller.GetPrescription)
+	r.PATCH("/Prescription",controller.UpdatePrescription)
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกการสั่งยา--------------------------------------
 
