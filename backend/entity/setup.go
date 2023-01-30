@@ -193,7 +193,7 @@ func SetupDatabase() {
 	}
 	db.Model(&Effect{}).Create(&effect4)
 
-	//ระบบจัดชั้นยา
+	//----------------------ระบบจัดชั้นยา--------------------------
 	//ตู้ยา
 	cupboard1 := Cupboard{
 		Name:  "A",
@@ -223,6 +223,41 @@ func SetupDatabase() {
 		Datetime:   time.Now(),
 	}
 	db.Model(&ClassifyDrugs{}).Create(&class2)
+
+	//----------------------ระบบสั่งยา--------------------------
+	//ผู้ป่วย
+	patient1 := Patient{
+		FirstName:  "A",
+		LastName:   "AA",
+		Sex: 		"men",
+		Age: 		21,
+	}
+	db.Model(&Patient{}).Create(&patient1)
+	patient2 := Patient{
+		FirstName:  "B",
+		LastName:   "BB",
+		Sex: 		"men",
+		Age: 		22,
+	}
+	db.Model(&Patient{}).Create(&patient2)
+
+	prescription1 := Prescription{
+		Doctor: 	doctor,
+		Patient:    patient2,
+		Number:		10001,		
+		Note:       "-",
+		Datetime:   time.Now(),
+	}
+	db.Model(&Prescription{}).Create(&prescription1)
+
+	prescription2 := Prescription{
+		Doctor: 	doctor,
+		Patient:    patient1,
+		Number:		10002,		
+		Note:       "-",
+		Datetime:   time.Now(),
+	}
+	db.Model(&Prescription{}).Create(&prescription2)
 
 	//-------------------------------------ระบบจัดยา---------------------
 	medicinearrangement1 := MedicineArrangement{
