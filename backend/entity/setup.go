@@ -194,6 +194,19 @@ func SetupDatabase() {
 		EffectName: "ทานแล้วอาจทำให้คลื่นไส้",
 	}
 	db.Model(&Effect{}).Create(&effect4)
+	//--------------------ระบบบันทึกฉลากยา-----------------------------
+	// --- MedicineLabel Data
+	medicinelabel01 := MedicineLabel{
+		Order:                order1,
+		Suggestion:           sug1,
+		Effect:               effect1,
+		Instruction:          "ก่อนอาหาร",
+		Property:             "แก้ไอ",
+		Consumption:          "1",
+		Pharmacist:           pharmacist1,
+		Date:                 time.Now(),
+	}
+	db.Model(&MedicineLabel{}).Create(&medicinelabel01)
 
 	//----------------------ระบบจัดชั้นยา--------------------------
 	//ตู้ยา
