@@ -129,7 +129,7 @@ function Orders() {
                   <TableCell align="center">{medicineLabel.Consumption}</TableCell>
                   <TableCell align="center">{medicineLabel.Suggestion.SuggestionName}</TableCell>
                   <TableCell align="center">{medicineLabel.Effect.EffectName}</TableCell>
-                  <TableCell align="center" > {moment(medicineLabel.Date).format('DD MMMM yyyy')}     </TableCell>
+                  <TableCell align="center" > {moment(medicineLabel.ExpriedDate).format('MMMM DD yyyy')}     </TableCell>
                   <TableCell align="center" size="medium"> {medicineLabel.Pharmacist.Name}     </TableCell>
                   
                 </TableRow>

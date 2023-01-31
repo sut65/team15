@@ -12,6 +12,8 @@ import MedicineArrangementCreate from './components/MedicineArrangementCreate';
 import MedicineArrangement from './components/MedicineArrangement';
 import MedicineLabelCreate from './components/MedicineLabelCreate';
 import MedicineLabel from './components/MedicineLabel';
+import MedicineReturnCreate from './components/MedicineReturn';
+import MedicineReturnList from './components/MedicineReturnList'; 
 import Signin from './components/Sigin';
 
 function App() {
@@ -42,6 +44,9 @@ function App() {
       <Route path="/Orderslist" element={<Orders />} />
       <Route path="/MedicineLable" element={<MedicineLabelCreate />} />
       <Route path="/MedicineLabelscreate" element={<MedicineLabel />} />
+      <Route path="/MedicineReturn" element={<MedicineReturnCreate />} />
+      {/* /<Route path="/MedicineReturnList" element={<MedicineReturnList />} /> */}
+
 
       </Routes>
 

@@ -26,7 +26,7 @@ import { setDate } from "date-fns";
 
 
 export default function MedicineLabelCreate() {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [date, setDate] = React.useState<Date | null>(null);
   const [medicineLabel, setMedicineLabel] = React.useState<Partial<MedicineLabelsInterface>>({});
   const [effects, setEffects] = React.useState<EffectsInterface[]>([]);
   const [suggestions, setSuggestions] = React.useState<SuggestionsInterface[]>([]);
@@ -146,7 +146,8 @@ export default function MedicineLabelCreate() {
         SuggestionID: convertType(medicineLabel.SuggestionID),
         EffectID: convertType(medicineLabel.EffectID),
         PharmacistID: Number(localStorage.getItem("uid")),
-        selectedDate: new Date(),
+        ExpriedDate: Date,
+        //selectedDate: new Date(),
       };
     console.log("Data", data)
     const apiUrl = "http://localhost:8080/medicineLabels";
@@ -345,7 +346,7 @@ export default function MedicineLabelCreate() {
     </LocalizationProvider>
     </Grid>
                  */}
-        <Grid item xs={6}>
+        {/* <Grid item xs={6}>
             <FormControl fullWidth variant="standard">
               <p>วันที่ยืมหนังสือ</p>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -358,7 +359,21 @@ export default function MedicineLabelCreate() {
                 />
               </LocalizationProvider>
             </FormControl>
-          </Grid>
+          </Grid> */}
+          <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+            <p>วันหมดอายุ</p>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+             value={date}
+             onChange={(newValue) => {
+             setDate(newValue);
+      }}
+      renderInput={(params) => <TextField {...params} />}
+    />
+    </LocalizationProvider>
+      </FormControl>
+        </Grid>
            <Grid item xs={12}>
             <Button
               component={RouterLink}
