@@ -27,7 +27,9 @@ import { setDate } from "date-fns";
 
 export default function MedicineLabelCreate() {
   const [date, setDate] = React.useState<Date | null>(null);
-  const [medicineLabel, setMedicineLabel] = React.useState<Partial<MedicineLabelsInterface>>({});
+  const [medicineLabel, setMedicineLabel] = React.useState<Partial<MedicineLabelsInterface>>({
+    Date: new Date(),
+  });
   const [effects, setEffects] = React.useState<EffectsInterface[]>([]);
   const [suggestions, setSuggestions] = React.useState<SuggestionsInterface[]>([]);
   const [Order, setOrder] = React.useState<OrderInterface[]>([]);
@@ -146,7 +148,7 @@ export default function MedicineLabelCreate() {
         SuggestionID: convertType(medicineLabel.SuggestionID),
         EffectID: convertType(medicineLabel.EffectID),
         PharmacistID: Number(localStorage.getItem("uid")),
-        ExpriedDate: Date,
+        Date: medicineLabel.Date,
         //selectedDate: new Date(),
       };
     console.log("Data", data)
@@ -333,46 +335,26 @@ export default function MedicineLabelCreate() {
               </Select>
             </FormControl>
           </Grid>
-          {/* <Grid item xs={6}>
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <DatePicker
-        label="Basic example"
-        value={selectedDate}
-        onChange={(newValue) => {
-          setSelectedDate(newValue);
-        }}
-        renderInput={(params) => <TextField {...params} />}
-      />
-    </LocalizationProvider>
-    </Grid>
-                 */}
-        {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="standard">
-              <p>วันที่ยืมหนังสือ</p>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  value={selectedDate}
-                  onChange={(newValue) => {
-                    setSelectedDate(newValue);
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-            </FormControl>
-          </Grid> */}
+          
           <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
+          <FormControl fullWidth variant="outlined">
             <p>วันหมดอายุ</p>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-             value={date}
-             onChange={(newValue) => {
-             setDate(newValue);
-      }}
-      renderInput={(params) => <TextField {...params} />}
-    />
-    </LocalizationProvider>
-      </FormControl>
+              <DatePicker
+                  value={medicineLabel.Date}
+                  onChange={(newValue) => {
+                    setMedicineLabel({
+                      ...medicineLabel,
+                      Date: newValue,
+                    });
+                    
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                  
+                />
+              
+            </LocalizationProvider>
+          </FormControl>
         </Grid>
            <Grid item xs={12}>
             <Button
