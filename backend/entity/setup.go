@@ -44,6 +44,8 @@ func SetupDatabase() {
 		&Cupboard{},
 		&Prescription{},
 		&Patient{},
+		&Staff{},
+		&Return{},
 	)
 
 	db = database
@@ -333,4 +335,7 @@ func SetupDatabase() {
 		//MedicineLabel:     MedicineLabel,
 	}
 	db.Model(&MedicineReceive{}).Create(&medicineReceive)
+
+	//-------ระบบบันทึกการคืนยา-------------
+	
 }

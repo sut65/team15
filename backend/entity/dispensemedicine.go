@@ -24,4 +24,8 @@ type DispenseMedicine struct {
 
 	PharmacistID		*uint
 	Pharmacist			User
+
+	Return		[]Return `gorm:"foreignKey:DispenseMedicineID"`
+
+	
 }

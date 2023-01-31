@@ -122,6 +122,12 @@ func main() {
 	
 
 	//----------------------------------ระบบย่อย ระบบบันทึกการคืนยา-----------------------------------
+	r.POST("/medicinereturn",controller.CreateMedicineReturn)
+	r.GET("/medicinereturns",controller.ListMedicineReturn)
+	r.GET("/medicinereturns/:id",controller.GetMedicineReturn)
+	r.PATCH("/medicinereturns",controller.UpdateMedicineReturn)
+	r.DELETE("/medicinereturns/:id",controller.DeleteMedicineReturn)
+
 
 	
 	//-----------------------------------ระบบย่อย ระบบบันทึกการเข้าเวร---------------------------------
