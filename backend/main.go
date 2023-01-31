@@ -49,6 +49,20 @@ func main() {
 	r.PATCH("/medicineLabels", controller.UpdateMedicineLabel)
 	r.DELETE("/medicineLabels/:id", controller.DeleteMedicineLabel)
 
+	// Suggestion Routes
+	r.GET("/suggestions", controller.ListSuggestion)
+	r.GET("/suggestion/:id", controller.GetSuggestion)
+	r.POST("/suggestions", controller.CreateSuggestion)
+	r.PATCH("/suggestions", controller.UpdateSuggestion)
+	r.DELETE("/suggestions/:id", controller.DeleteSuggestion)
+
+
+// Effect Routes
+	r.GET("/effects", controller.ListEffect)
+	r.GET("/effect/:id", controller.GetEffect)
+	r.POST("/effects", controller.CreateEffect)
+	r.PATCH("/effects", controller.UpdateEffect)
+	r.DELETE("/effects/:id", controller.DeleteEffect)
 	//-----------------------------------ระบบย่อย ระบบบันทึกคลังยา----------------------------------------
 
 
