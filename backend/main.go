@@ -128,6 +128,12 @@ func main() {
 	r.PATCH("/medicinereturns",controller.UpdateMedicineReturn)
 	r.DELETE("/medicinereturns/:id",controller.DeleteMedicineReturn)
 
+	r.GET("/staffs", controller.ListStaffs)
+	r.GET("/staff/:id", controller.GetStaff)
+	r.POST("/staffs", controller.CreateStaff)
+	r.PATCH("/staffs", controller.UpdateStaff)
+	r.DELETE("/staffs/:id", controller.DeleteStaff)
+
 
 	
 	//-----------------------------------ระบบย่อย ระบบบันทึกการเข้าเวร---------------------------------
