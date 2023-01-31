@@ -17,6 +17,7 @@ type User struct {
 	Password string
 
 	Orders               []Order               `gorm:"foreignKey:PharmacistID"`
+	MedicineLabel        []MedicineLabel       `gorm:"foreignKey:PharmacistID"`
 	MedicineArrangements []MedicineArrangement `gorm:"foreignKey:PharmacistID"`
 	DispenseMedicines    []DispenseMedicine    `gorm:"foreignKey:PharmacistID"`
 	MedicineReceive      []MedicineReceive     `gorm:"foreignKey:PharmacistID"`

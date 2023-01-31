@@ -42,7 +42,12 @@ func main() {
 	r.PATCH("/order",controller.UpdateOrder)
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกฉลากยา---------------------------------------
-
+	//MedicineLabels Routes
+	r.GET("/medicineLabels", controller.ListMedicineLabel)
+	r.GET("/medicineLabel/:id", controller.GetMedicineLabel)
+	r.POST("/medicineLabels", controller.CreateMedicineLabel)
+	r.PATCH("/medicineLabels", controller.UpdateMedicineLabel)
+	r.DELETE("/medicineLabels/:id", controller.DeleteMedicineLabel)
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกคลังยา----------------------------------------
 
