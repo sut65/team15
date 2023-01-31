@@ -7,7 +7,7 @@ export interface MedicineLabelsInterface {
   Instruction: string,
   Property: string,
   Consumption: number,
-  Date: Date,
+  ExpriedDate: Date | null,
 
   PharmacistID: number,
   Pharmacist: UserInterface,
