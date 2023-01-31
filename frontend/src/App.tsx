@@ -10,6 +10,8 @@ import Home from './components/Hom';
 import Orders from './components/Order';
 import MedicineArrangementCreate from './components/MedicineArrangementCreate';
 import MedicineArrangement from './components/MedicineArrangement';
+import MedicineLabelCreate from './components/MedicineLabelCreate';
+import MedicineLabel from './components/MedicineLabel';
 import Signin from './components/Sigin';
 
 function App() {
@@ -38,6 +40,8 @@ function App() {
       <Route path="/medicinearrangement" element={<MedicineArrangementCreate />} />
       <Route path="/medicinearrangements" element={<MedicineArrangement />} />
       <Route path="/Orderslist" element={<Orders />} />
+      <Route path="/MedicineLable" element={<MedicineLabelCreate />} />
+      <Route path="/MedicineLabelscreate" element={<MedicineLabel />} />
 
       </Routes>
 
