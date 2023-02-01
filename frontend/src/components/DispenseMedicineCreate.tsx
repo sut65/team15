@@ -105,7 +105,7 @@ export default function DispenseMedicineCreate() {
   const convertType = (data: string | number | undefined | null) => {
     let val = typeof data === "string" ? parseInt(data) : data;
     return val;
-};
+  };
 
   function submit() {
     setLoading(true)
@@ -140,24 +140,24 @@ export default function DispenseMedicineCreate() {
       });
   }
 
-  
-    //ดึงข้อมูล ใส่ combobox
-    React.useEffect(() => {
 
-      getPharmacy();
-      getUser();
-  
-    }, []);
+  //ดึงข้อมูล ใส่ combobox
+  React.useEffect(() => {
 
-    const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-      props,
-      ref,
-    ) {
-      return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-    });
+    getPharmacy();
+    getUser();
 
-    return (
-      <Container maxWidth="lg">
+  }, []);
+
+  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref,
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
+  return (
+    <Container maxWidth="lg">
       <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success">
           บันทึกข้อมูลสำเร็จ
@@ -169,7 +169,7 @@ export default function DispenseMedicineCreate() {
         </Alert>
       </Snackbar>
       <Paper sx={{ p: 4, pb: 10 }}  >
-      <Box display="flex" > <Box flexGrow={1}>
+        <Box display="flex" > <Box flexGrow={1}>
           <Typography
             component="h2"
             variant="h5"
@@ -188,62 +188,62 @@ export default function DispenseMedicineCreate() {
           </Typography>
         </Box>
         </Box>
-      <Grid container spacing={4}>
-        <Grid item xs={6}>
-        <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
-           <p>เลขใบจ่ายยา</p>
-          <FormControl fullWidth variant="outlined">
-            <TextField
-                      id="DispenseNo"
-                      label="เลขใบจ่ายยา"
-                      variant="outlined"
-                      type="number"
-                      size="medium"
-                      onChange={handleInputChange} />
-                  </FormControl>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
-                    <p>ช่องจ่ายยา</p>
-                    <Select
-                      native
-                      value={dispensemedicine.PharmacyID}
-                      onChange={handleChange}
-                      inputProps={{
-                        name: "PharmacyID",
-                      }}
-                    >
-                      <option aria-label="None" value="">
-                        เลือกช่องจ่ายยา
-                      </option>
-                      {pharmacy.map((item: PharmacyInterface) => (
-                        <option value={item.ID} key={item.ID}>
-                          {item.PharmacyBox}
-                        </option>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                <p>ผู้รับยา</p>
-                <FormControl fullWidth variant="outlined">
-                  <TextField
-                    id="ReceiveName"
-                    variant="outlined"
-                    type="string"
-                    size="medium"
-                    placeholder="ผู้รับยา"
-                    value={dispensemedicine.ReceiveName || ""}
-                    onChange={handleInputChange}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={6}>
-          <FormControl fullWidth variant="outlined">
-            <p>วันที่และเวลา</p>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
+        <Grid container spacing={4}>
+          <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
+              <p>เลขใบจ่ายยา</p>
+              <FormControl fullWidth variant="outlined">
+                <TextField
+                  id="DispenseNo"
+                  label="เลขใบจ่ายยา"
+                  variant="outlined"
+                  type="number"
+                  size="medium"
+                  onChange={handleInputChange} />
+              </FormControl>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
+              <p>ช่องจ่ายยา</p>
+              <Select
+                native
+                value={dispensemedicine.PharmacyID}
+                onChange={handleChange}
+                inputProps={{
+                  name: "PharmacyID",
+                }}
+              >
+                <option aria-label="None" value="">
+                  เลือกช่องจ่ายยา
+                </option>
+                {pharmacy.map((item: PharmacyInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.PharmacyBox}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <p>ผู้รับยา</p>
+            <FormControl fullWidth variant="outlined">
+              <TextField
+                id="ReceiveName"
+                variant="outlined"
+                type="string"
+                size="medium"
+                placeholder="ผู้รับยา"
+                value={dispensemedicine.ReceiveName || ""}
+                onChange={handleInputChange}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+              <p>วันที่และเวลา</p>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
                   value={dispensemedicine.DispenseTime}
                   inputFormat="dd-mm-yyyy"
                   onChange={(newValue) => {
@@ -251,58 +251,58 @@ export default function DispenseMedicineCreate() {
                       ...dispensemedicine,
                       DispenseTime: newValue,
                     });
-                    
+
                   }}
                   renderInput={(params) => <TextField {...params} />}
-                  
+
                 />
-                </LocalizationProvider>
-          </FormControl>
-        </Grid>
-              <Grid item xs={6}>
-              <FormControl fullWidth variant="outlined" style={{ width: '100%' }}>
-                <p>ผู้จ่ายยา</p>
-                  <Select
-                  disabled
-                  native
-                >
-                  <option>
-                    {user?.Name}
-                  </option>
+              </LocalizationProvider>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined" style={{ width: '100%' }}>
+              <p>ผู้จ่ายยา</p>
+              <Select
+                disabled
+                native
+              >
+                <option>
+                  {user?.Name}
+                </option>
 
-            </Select>
-              </FormControl>
-        </Grid>
-              <Grid item xs={12}>
-              <Stack
-                    spacing={2}
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="flex-start"
-                    sx={{ mt: 3 }}
-                >
-                    <Button
-                        variant="contained"
-                        color="error"
-                        component={RouterLink}
-                        to="/dispensemedicines"
-                    >
-                        ถอยกลับ
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={submit}
-                    >
-                        บันทึกข้อมูล
-                    </Button>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <Stack
+              spacing={2}
+              direction="row"
+              justifyContent="space-between"
+              alignItems="flex-start"
+              sx={{ mt: 3 }}
+            >
+              <Button
+                variant="contained"
+                color="error"
+                component={RouterLink}
+                to="/dispensemedicines"
+              >
+                ถอยกลับ
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={submit}
+              >
+                บันทึกข้อมูล
+              </Button>
 
-                </Stack>
-                </Grid>
-              </Grid>
-              
-              </Paper >
-            </Container>
-          
-    );
-  }
+            </Stack>
+          </Grid>
+        </Grid>
+
+      </Paper >
+    </Container>
+
+  );
+}
