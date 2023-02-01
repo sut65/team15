@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, FormControl, Grid, Select, TextField, Typography } from '@mui/material'
+import { Box, FormControl, Grid, Select, TextField, Typography, Stack } from '@mui/material'
 import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container';
@@ -362,7 +362,7 @@ export default function OrderCreate(this: any) {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                   value={Order.Datetime}
-                  inputFormat="dd-mm-yyyy"
+
                   onChange={(newValue) => {
                     setOrder({
                       ...Order,
@@ -373,18 +373,7 @@ export default function OrderCreate(this: any) {
                   renderInput={(params) => <TextField {...params} />}
                   
                 />
-              {/* <DesktopDatePicker
-                label="Date"
-                inputFormat="MM/DD/YYYY" 
-                value={Order.Datetime}
-                onChange={(newValue) => {
-                  setOrder({
-                    ...Order,
-                    Datetime: newValue,
-                  });
-                }}
-                renderInput={(params) => <TextField {...params} />}
-              /> */}
+
             </LocalizationProvider>
           </FormControl>
         </Grid>
@@ -404,7 +393,7 @@ export default function OrderCreate(this: any) {
           </FormControl>
         </Grid>
 
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Button style={{ float: "right" }}
             variant="contained"
             color="primary"
@@ -414,7 +403,33 @@ export default function OrderCreate(this: any) {
           </Button>
 
 
-        </Grid>
+        </Grid> */}
+        <Grid item xs={12}>
+            <Stack
+              spacing={2}
+              direction="row"
+              justifyContent="space-between"
+              alignItems="flex-start"
+              sx={{ mt: 3 }}
+            >
+              <Button
+                variant="contained"
+                color="error"
+                component={RouterLink}
+                to="/dispensemedicines"
+              >
+                ถอยกลับ
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={submit}
+              >
+                บันทึกข้อมูล
+              </Button>
+
+            </Stack>
+            </Grid>
       </Paper >
     </Container>
   )
