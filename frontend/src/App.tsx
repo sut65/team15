@@ -10,6 +10,10 @@ import Home from './components/Hom';
 import Orders from './components/Order';
 import MedicineArrangementCreate from './components/MedicineArrangementCreate';
 import MedicineArrangement from './components/MedicineArrangement';
+import MedicineLabelCreate from './components/MedicineLabelCreate';
+import MedicineLabel from './components/MedicineLabel';
+import MedicineReturnCreate from './components/MedicineReturn';
+import MedicineReturnList from './components/MedicineReturnList'; 
 import Signin from './components/Sigin';
 import AttendanceCreate from './components/AttendanceCreate';
 import Attendances from './components/Attendance';
@@ -40,8 +44,16 @@ function App() {
       <Route path="/medicinearrangement" element={<MedicineArrangementCreate />} />
       <Route path="/medicinearrangements" element={<MedicineArrangement />} />
       <Route path="/Orderslist" element={<Orders />} />
+<<<<<<< HEAD
       <Route path="/attendance" element={<AttendanceCreate />} />
       <Route path="/attendanceslist" element={<Attendances />} />
+=======
+      <Route path="/MedicineLable" element={<MedicineLabelCreate />} />
+      <Route path="/MedicineLabelscreate" element={<MedicineLabel />} />
+      <Route path="/MedicineReturn" element={<MedicineReturnCreate />} />
+      {/* /<Route path="/MedicineReturnList" element={<MedicineReturnList />} /> */}
+
+>>>>>>> c66f9e12ecea759c2d15d073d6722a2b8c243898
 
       </Routes>
 

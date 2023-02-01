@@ -44,9 +44,14 @@ func SetupDatabase() {
 		&Cupboard{},
 		&Prescription{},
 		&Patient{},
+<<<<<<< HEAD
 		&Attendance{},
 		&Shift{},
 		&Stat{},
+=======
+		&Staff{},
+		&Return{},
+>>>>>>> c66f9e12ecea759c2d15d073d6722a2b8c243898
 	)
 
 	db = database
@@ -197,6 +202,19 @@ func SetupDatabase() {
 		EffectName: "ทานแล้วอาจทำให้คลื่นไส้",
 	}
 	db.Model(&Effect{}).Create(&effect4)
+	//--------------------ระบบบันทึกฉลากยา-----------------------------
+	// --- MedicineLabel Data
+	medicinelabel01 := MedicineLabel{
+		Order:                order1,
+		Suggestion:           sug1,
+		Effect:               effect1,
+		Instruction:          "ก่อนอาหาร",
+		Property:             "แก้ไอ",
+		Consumption:          "1",
+		Pharmacist:           pharmacist1,
+		Date:                 time.Now(),
+	}
+	db.Model(&MedicineLabel{}).Create(&medicinelabel01)
 
 	//----------------------ระบบจัดชั้นยา--------------------------
 	//ตู้ยา
@@ -324,6 +342,7 @@ func SetupDatabase() {
 	}
 	db.Model(&MedicineReceive{}).Create(&medicineReceive)
 
+<<<<<<< HEAD
 	//ช่วงเข้าเวร
 	morning := Shift{
 		Name: "9.00 - 16.00 น.",
@@ -361,4 +380,8 @@ func SetupDatabase() {
 	}
 	db.Model(&Attendance{}).Create(&attendance1)
 
+=======
+	//-------ระบบบันทึกการคืนยา-------------
+	
+>>>>>>> c66f9e12ecea759c2d15d073d6722a2b8c243898
 }
