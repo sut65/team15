@@ -9,7 +9,7 @@ import (
 )
 
 // Post /medicinearrangement
-func CreateMedicineArrangement(c *gin.Context)  {
+func CreateMedicineArrangement(c *gin.Context) {
 	var pharmacist entity.User
 	var medicinearrangement entity.MedicineArrangement
 	// var classifydrug entity.ClassifyDrugs
@@ -17,8 +17,12 @@ func CreateMedicineArrangement(c *gin.Context)  {
 	if err := c.ShouldBindJSON(&medicinearrangement); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
-		}
-	// 9: ค้นหา Prescription ด้วย id
+	}
+	// // 9: ค้นหา Prescription ด้วย id
+	// if tx := entity.DB().Where("id = ?", medicinearrangement.PrescriptionID).First(&prescription); tx.RowsAffected == 0 {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "prescription not found"})
+	// 	return
+	// }
 
 	// 10: ค้นหา ClassifyMedicine ด้วย id
 	// if tx := entity.DB().Where("id = ?", medicinearrangement.ClassifyDrugsID).First(&classifydrug); tx.RowsAffected == 0 {
@@ -26,20 +30,19 @@ func CreateMedicineArrangement(c *gin.Context)  {
 	// 	return
 	// }
 
-
 	// 11:ค้นหา User ด้วย id
 	if tx := entity.DB().Where("id = ?", medicinearrangement.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacist not found"})
 		return
 	}
 
-	// 13: สร้าง MedicineArrangement 
+	// 13: สร้าง MedicineArrangement
 	arrangement := entity.MedicineArrangement{
-		MedicineArrangementNo: 		medicinearrangement.MedicineArrangementNo,	
+		MedicineArrangementNo: medicinearrangement.MedicineArrangementNo,
 		// ClassifyDrugs: 				classifydrug,										// โยงความสัมพันธ์กับ Entity ClassifyDrug
-		Note: 						medicinearrangement.Note,
-		Pharmacist: 				pharmacist,       									// โยงความสัมพันธ์กับ Entity User
-		MedicineArrangementTime:	medicinearrangement.MedicineArrangementTime, 		// ตั้งค่าฟิลด์ watchedTime
+		Note:                    medicinearrangement.Note,
+		Pharmacist:              pharmacist,                                  // โยงความสัมพันธ์กับ Entity User
+		MedicineArrangementTime: medicinearrangement.MedicineArrangementTime, // ตั้งค่าฟิลด์ watchedTime
 	}
 
 	// 14: บันทึก

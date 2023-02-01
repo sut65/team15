@@ -24,79 +24,88 @@ func main() {
 	r.GET("/users", controller.ListUser)
 	r.POST("/user", controller.CreateUser)
 	r.GET("/users/:id", controller.GetUser)
-	
+
 	//------------------------------------------ระบบย่อย ระบบบันทึกการสั่งซื้อยา--------------------------
 	//medicine
-	r.GET("/medicines",controller.ListMedicine)
+	r.GET("/medicines", controller.ListMedicine)
 
 	//company
-	r.GET("/companys",controller.ListCompany)
+	r.GET("/companys", controller.ListCompany)
 
 	//Unit
-	r.GET("/units",controller.ListUnit)
+	r.GET("/units", controller.ListUnit)
 
 	//Order
-	r.POST("order",controller.CreateOrder)
-	r.GET("/orders",controller.ListOrder)
-	r.GET("/order/:id",controller.GetOrder)
-	r.PATCH("/order",controller.UpdateOrder)
+	r.POST("order", controller.CreateOrder)
+	r.GET("/orders", controller.ListOrder)
+	r.GET("/order/:id", controller.GetOrder)
+	r.PATCH("/order", controller.UpdateOrder)
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกฉลากยา---------------------------------------
 
-
 	//-----------------------------------ระบบย่อย ระบบบันทึกคลังยา----------------------------------------
-
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกการทิ้งยา--------------------------------------
 
-
 	//-----------------------------------ระบบย่อย ระบบบันทึกการเบิกยา-------------------------------------
-
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกการจัดชั้นยา------------------------------------
 	//Cupboard
-	r.GET("/Cupboard",controller.ListMedicine)
+	r.GET("/Cupboard", controller.ListCupboard)
 
 	//ClassifyDrug
-	r.POST("ClassifyDrugs",controller.CreateOrder)
-	r.GET("/ClassifyDrug",controller.ListOrder)
-	r.GET("/ClassifyDrug/:id",controller.GetOrder)
-	r.PATCH("/ClassifyDrug",controller.UpdateOrder)
+	r.POST("ClassifyDrugs", controller.CreateClassifyDrugs)
+	r.GET("/ClassifyDrug", controller.ListClassifyDrug)
+	r.GET("/ClassifyDrug/:id", controller.GetClassifyDrug)
+	r.PATCH("/ClassifyDrug", controller.UpdateClassifyDrug)
 
+	//-----------------------------------ระบบย่อย ระบบบันทึกการสั่งยา--------------------------------------
+	//Patient
+	r.GET("/Patient", controller.ListPatient)
 
+	//Prescription
+	r.POST("Prescription", controller.CreatePrescription)
+	r.GET("/Prescription", controller.ListPrescription)
+	r.GET("/Prescription/:id", controller.GetPrescription)
+	r.PATCH("/Prescription", controller.UpdatePrescription)
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกการสั่งยา--------------------------------------
 
-
 	//-------------------------------ระบบย่อย ระบบบันทึกการจัดยา--------------------------------------
 	//MedicineArrangement
-	r.POST("/medicinearrangement",controller.CreateMedicineArrangement)
-	r.GET("/medicinearrangements",controller.ListMedicineArrangement)
-	r.GET("/medicinearrangements/:id",controller.GetMedicineArrangement)
-	r.PATCH("/medicinearrangements",controller.UpdateMedicineArrangement)
-	r.DELETE("/medicinearrangements/:id",controller.DeleteMedicineArrangement)
+	r.POST("/medicinearrangement", controller.CreateMedicineArrangement)
+	r.GET("/medicinearrangements", controller.ListMedicineArrangement)
+	r.GET("/medicinearrangements/:id", controller.GetMedicineArrangement)
+	r.PATCH("/medicinearrangements", controller.UpdateMedicineArrangement)
+	r.DELETE("/medicinearrangements/:id", controller.DeleteMedicineArrangement)
 
 	//-------------------------------------ระบบย่อย ระบบบันทึกการชำระเงิน--------------------------------
 
-
-
 	//--------------------------------ระบบย่อย ระบบบันทึกการจ่ายยา------------------------------------
 	//Pharmacy
-	r.GET("/pharmacys",controller.ListPharmacy)
-	
+	r.GET("/pharmacys", controller.ListPharmacy)
+
 	//DispenseMedicine
-	r.POST("/dispensemedicine",controller.CreateDispenseMedicine)
-	r.GET("/dispensemedicines",controller.ListDispenseMedicine)
-	r.GET("/dispensemedicines/:id",controller.GetMedicineArrangement)
-	r.PATCH("/dispensemedicines",controller.UpdateDispenseMedicine)
-	r.DELETE("/dispensemedicines/:id",controller.DeleteDispenseMedicine)
-	
+	r.POST("/dispensemedicine", controller.CreateDispenseMedicine)
+	r.GET("/dispensemedicines", controller.ListDispenseMedicine)
+	r.GET("/dispensemedicines/:id", controller.GetMedicineArrangement)
+	r.PATCH("/dispensemedicines", controller.UpdateDispenseMedicine)
+	r.DELETE("/dispensemedicines/:id", controller.DeleteDispenseMedicine)
 
 	//----------------------------------ระบบย่อย ระบบบันทึกการคืนยา-----------------------------------
 
-	
 	//-----------------------------------ระบบย่อย ระบบบันทึกการเข้าเวร---------------------------------
+	//shift
+	r.GET("/shifts", controller.ListShift)
 
+	//Status
+	r.GET("/stats", controller.ListStat)
+
+	//Attendance
+	r.POST("attendance", controller.CreateAttendance)
+	r.GET("/attendances", controller.ListAttendance)
+	r.GET("/attendance/:id", controller.GetAttendance)
+	r.PATCH("/attendance", controller.UpdateAttendance)
 
 	// Run the server
 
@@ -106,28 +115,22 @@ func main() {
 func CORSMiddleware() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
-  
-		  c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		  c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-		  c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		  c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
-  
-   
-  
-		  if c.Request.Method == "OPTIONS" {
-  
+
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+
 			c.AbortWithStatus(204)
-  
+
 			return
-  
-		  }
-  
-   
-  
-		  c.Next()
-  
+
+		}
+
+		c.Next()
+
 	}
-  
-  }
-  
-   
+
+}

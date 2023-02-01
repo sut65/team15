@@ -42,6 +42,11 @@ func SetupDatabase() {
 		&MedicineReceive{},
 		&ClassifyDrugs{},
 		&Cupboard{},
+		&Prescription{},
+		&Patient{},
+		&Attendance{},
+		&Shift{},
+		&Stat{},
 	)
 
 	db = database
@@ -193,7 +198,7 @@ func SetupDatabase() {
 	}
 	db.Model(&Effect{}).Create(&effect4)
 
-	//ระบบจัดชั้นยา
+	//----------------------ระบบจัดชั้นยา--------------------------
 	//ตู้ยา
 	cupboard1 := Cupboard{
 		Name:  "A",
@@ -224,10 +229,46 @@ func SetupDatabase() {
 	}
 	db.Model(&ClassifyDrugs{}).Create(&class2)
 
+	//----------------------ระบบสั่งยา--------------------------
+	//ผู้ป่วย
+	patient1 := Patient{
+		FirstName: "A",
+		LastName:  "AA",
+		Sex:       "men",
+		Age:       21,
+	}
+	db.Model(&Patient{}).Create(&patient1)
+	patient2 := Patient{
+		FirstName: "B",
+		LastName:  "BB",
+		Sex:       "men",
+		Age:       22,
+	}
+	db.Model(&Patient{}).Create(&patient2)
+
+	prescription1 := Prescription{
+		Doctor:   doctor,
+		Patient:  patient2,
+		Number:   10001,
+		Note:     "-",
+		Datetime: time.Now(),
+	}
+	db.Model(&Prescription{}).Create(&prescription1)
+
+	prescription2 := Prescription{
+		Doctor:   doctor,
+		Patient:  patient1,
+		Number:   10002,
+		Note:     "-",
+		Datetime: time.Now(),
+	}
+	db.Model(&Prescription{}).Create(&prescription2)
+
 	//-------------------------------------ระบบจัดยา---------------------
 	medicinearrangement1 := MedicineArrangement{
 		MedicineArrangementNo:   200000,
-		ClassifyDrugs: class1,
+		Prescription:            prescription1,
+		ClassifyDrugs:           class1,
 		Pharmacist:              pharmacist2,
 		Note:                    "*มีการเปลี่ยนแปลงยี้ห้อยา",
 		MedicineArrangementTime: time.Now(),
@@ -282,4 +323,42 @@ func SetupDatabase() {
 		//MedicineLabel:     MedicineLabel,
 	}
 	db.Model(&MedicineReceive{}).Create(&medicineReceive)
+
+	//ช่วงเข้าเวร
+	morning := Shift{
+		Name: "9.00 - 16.00 น.",
+	}
+	db.Model(&Shift{}).Create(&morning)
+
+	evening := Shift{
+		Name: "16.00 - 0.00 น.",
+	}
+	db.Model(&Shift{}).Create(&evening)
+	night := Shift{
+		Name: "0.00 - 9.00 น.",
+	}
+	db.Model(&Shift{}).Create(&night)
+
+	//หน้าที่
+	m1 := Stat{
+		Name: "จัดสรรยา",
+	}
+	db.Model(&Stat{}).Create(&m1)
+
+	m2 := Stat{
+		Name: "การเงิน",
+	}
+	db.Model(&Stat{}).Create(&m2)
+
+	attendance1 := Attendance{
+		Phone:       "09999",
+		Description: "เกือบไม่ได้มา",
+		Datetime:    time.Now(),
+
+		Pharmacist: pharmacist4,
+		Shift:      night,
+		Stat:       m2,
+	}
+	db.Model(&Attendance{}).Create(&attendance1)
+
 }

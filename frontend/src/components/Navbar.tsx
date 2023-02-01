@@ -22,7 +22,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import LogoutTwoToneIcon from '@mui/icons-material/LogoutTwoTone';
-import PeopleIcon from '@mui/icons-material/People';
+import DnsIcon from '@mui/icons-material/Dns';
 import AddCommentIcon from '@mui/icons-material/AddComment';
 import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
@@ -102,7 +102,7 @@ function Navbar() {
 
     {
         name: "รายการบันทึกการจัดชั้นวาง",
-        icon: <PeopleIcon/>,
+        icon: <DnsIcon/>,
         path: "/ClassifyMedicine"
     },
 

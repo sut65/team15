@@ -11,6 +11,8 @@ import Orders from './components/Order';
 import MedicineArrangementCreate from './components/MedicineArrangementCreate';
 import MedicineArrangement from './components/MedicineArrangement';
 import Signin from './components/Sigin';
+import AttendanceCreate from './components/AttendanceCreate';
+import Attendances from './components/Attendance';
 
 function App() {
   const [token, setToken] = React.useState<String>("");
@@ -38,6 +40,8 @@ function App() {
       <Route path="/medicinearrangement" element={<MedicineArrangementCreate />} />
       <Route path="/medicinearrangements" element={<MedicineArrangement />} />
       <Route path="/Orderslist" element={<Orders />} />
+      <Route path="/attendance" element={<AttendanceCreate />} />
+      <Route path="/attendanceslist" element={<Attendances />} />
 
       </Routes>
 
