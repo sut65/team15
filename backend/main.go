@@ -56,16 +56,12 @@ func main() {
 	r.PATCH("/suggestions", controller.UpdateSuggestion)
 	r.DELETE("/suggestions/:id", controller.DeleteSuggestion)
 
-<<<<<<< HEAD
-=======
-
-// Effect Routes
+	// Effect Routes
 	r.GET("/effects", controller.ListEffect)
 	r.GET("/effect/:id", controller.GetEffect)
 	r.POST("/effects", controller.CreateEffect)
 	r.PATCH("/effects", controller.UpdateEffect)
 	r.DELETE("/effects/:id", controller.DeleteEffect)
->>>>>>> c66f9e12ecea759c2d15d073d6722a2b8c243898
 	//-----------------------------------ระบบย่อย ระบบบันทึกคลังยา----------------------------------------
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกการทิ้งยา--------------------------------------
@@ -116,18 +112,17 @@ func main() {
 	r.DELETE("/dispensemedicines/:id", controller.DeleteDispenseMedicine)
 
 	//----------------------------------ระบบย่อย ระบบบันทึกการคืนยา-----------------------------------
-	r.POST("/medicinereturn",controller.CreateMedicineReturn)
-	r.GET("/medicinereturns",controller.ListMedicineReturn)
-	r.GET("/medicinereturns/:id",controller.GetMedicineReturn)
-	r.PATCH("/medicinereturns",controller.UpdateMedicineReturn)
-	r.DELETE("/medicinereturns/:id",controller.DeleteMedicineReturn)
+	r.POST("/medicinereturn", controller.CreateMedicineReturn)
+	r.GET("/medicinereturns", controller.ListMedicineReturn)
+	r.GET("/medicinereturns/:id", controller.GetMedicineReturn)
+	r.PATCH("/medicinereturns", controller.UpdateMedicineReturn)
+	r.DELETE("/medicinereturns/:id", controller.DeleteMedicineReturn)
 
 	r.GET("/staffs", controller.ListStaffs)
 	r.GET("/staff/:id", controller.GetStaff)
 	r.POST("/staffs", controller.CreateStaff)
 	r.PATCH("/staffs", controller.UpdateStaff)
 	r.DELETE("/staffs/:id", controller.DeleteStaff)
-
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกการเข้าเวร---------------------------------
 	//shift
