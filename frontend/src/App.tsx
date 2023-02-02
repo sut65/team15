@@ -19,6 +19,7 @@ import AttendanceCreate from './components/AttendanceCreate';
 import Attendances from './components/Attendance';
 
 function App() {
+  
   const [token, setToken] = React.useState<String>("");
   useEffect(() => {
     const getToken = localStorage.getItem("token");

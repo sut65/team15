@@ -49,6 +49,8 @@ func SetupDatabase() {
 		&Stat{},
 		&Staff{},
 		&Return{},
+		&Paymentmethod{},
+		&Bill{},
 	)
 
 	db = database
@@ -377,5 +379,31 @@ func SetupDatabase() {
 	db.Model(&Attendance{}).Create(&attendance1)
 
 	//-------ระบบบันทึกการคืนยา-------------
+
+	//-------ระบบบันทึกการชำระเงิน
+
+	//Paymentmethod รูปแบบการชำระเงิน
+	cash := Paymentmethod{
+		ConditionsOfPayments: "ชำระด้วยเงินสด",
+	}
+	db.Model(&Paymentmethod{}).Create(&cash)
+
+	payment := Paymentmethod{
+		ConditionsOfPayments: "โอนพร้อมเพย์",
+	}
+	db.Model(&Paymentmethod{}).Create(&payment)
+
+	// Bill
+	bill1 := Bill{
+		BillNo:   1000,
+		BillTime: time.Date(2022, 2, 15, 2, 0, 0, 0, time.UTC),
+		Payer:    "AWESOME08",
+		Total:    6 * 980,
+
+		Pharmacist:    pharmacist5,
+		Prescription:  prescription1,
+		Paymentmethod: cash,
+	}
+	db.Model(&Bill{}).Create(&bill1)
 
 }
