@@ -127,6 +127,7 @@ func SetupDatabase() {
 	}
 	db.Model(&User{}).Create(&pharmacist6)
 
+	//-------------------------------------------------------------ระบบบันทึกการจัดซื้อยา-------------------------------------------
 	//ยา
 	paracetamol := Medicine{
 		Name: "paracetamol",
@@ -172,6 +173,7 @@ func SetupDatabase() {
 	}
 	db.Model(&Order{}).Create(&order1)
 
+	//-------------------------------------------------------------ระบบบันทึกฉลากยา-------------------------------------------
 	//Suggestion
 	sug1 := Suggestion{
 		SuggestionName: "ใช้ยาจนหมด",
@@ -203,7 +205,7 @@ func SetupDatabase() {
 		EffectName: "ทานแล้วอาจทำให้คลื่นไส้",
 	}
 	db.Model(&Effect{}).Create(&effect4)
-	//--------------------ระบบบันทึกฉลากยา-----------------------------
+
 	// --- MedicineLabel Data
 	medicinelabel01 := MedicineLabel{
 		Order:       order1,
@@ -217,7 +219,64 @@ func SetupDatabase() {
 	}
 	db.Model(&MedicineLabel{}).Create(&medicinelabel01)
 
-	//----------------------ระบบจัดชั้นยา--------------------------
+		//-----------------------------------------------------------ระบบบันทึกคลังยา------------------------------------------
+	//Zone
+	Zone1 := Zone{
+		ZoneName: "A",
+	}
+	db.Model(&Zone{}).Create(&Zone1)
+
+	Zone2 := Zone{
+		ZoneName: "B",
+	}
+	db.Model(&Zone{}).Create(&Zone2)
+
+	Zone3 := Zone{
+		ZoneName: "C",
+	}
+	db.Model(&Zone{}).Create(&Zone3)
+
+	//ระบบคลังยา
+	medicineReceive := MedicineReceive{
+		MedicineReceiveNo: 0111,
+		Pharmacist:        pharmacist2,
+		Zone:              Zone1,
+		RecievedDate:      time.Now(),
+		//MedicineLabel:     MedicineLabel,
+	}
+	db.Model(&MedicineReceive{}).Create(&medicineReceive)
+
+	//---------------------------------------------------------ระบบบันทึกการคืนยา--------------------------------------------
+
+	Cause1 := Cause{
+		Name: "ยาหมดสภาพ",
+	}
+	db.Model(&Cause{}).Create(&Cause1)
+
+	Cause2 := Cause{
+		Name: "ยาหมดอายุ",
+	}
+	db.Model(&Cause{}).Create(&Cause2)
+
+	discard1 := Discardmedicine{
+
+		Cause:    Cause1,
+		Note:     "ยาหก",
+		Datetime: time.Now(),
+
+		MedicineReceive: medicineReceive,
+		Pharmacist:      pharmacist4,
+	}
+	db.Model(&Discardmedicine{}).Create(&discard1)
+
+
+	//------------------------------------------------------------ระบบบันทึกการเบิกยา-------------------------------------
+
+
+
+
+
+	//------------------------------------------------------------ระบบบันทึกการจัดชั้นยา-------------------------------------
 	//ตู้ยา
 	cupboard1 := Cupboard{
 		Name:  "A",
@@ -248,7 +307,7 @@ func SetupDatabase() {
 	}
 	db.Model(&ClassifyDrugs{}).Create(&class2)
 
-	//----------------------ระบบสั่งยา--------------------------
+	//-----------------------------------------------------------ระบบบันทึกการสั่งยา-----------------------------------
 	//ผู้ป่วย
 	patient1 := Patient{
 		FirstName: "A",
@@ -283,7 +342,7 @@ func SetupDatabase() {
 	}
 	db.Model(&Prescription{}).Create(&prescription2)
 
-	//-------------------------------------ระบบจัดยา---------------------
+	//-----------------------------------------------------------ระบบบันทึกการจัดยา------------------------------------------
 	medicinearrangement1 := MedicineArrangement{
 		MedicineArrangementNo:   200000,
 		Prescription:            prescription1,
@@ -293,7 +352,33 @@ func SetupDatabase() {
 		MedicineArrangementTime: time.Now(),
 	}
 	db.Model(&MedicineArrangement{}).Create(&medicinearrangement1)
+	
+	//-----------------------------------------------------------ระบบบันทึกการชำระเงิน---------------------------------------
+	//Paymentmethod รูปแบบการชำระเงิน
+	cash := Paymentmethod{
+		ConditionsOfPayments: "ชำระด้วยเงินสด",
+	}
+	db.Model(&Paymentmethod{}).Create(&cash)
 
+	payment := Paymentmethod{
+		ConditionsOfPayments: "โอนพร้อมเพย์",
+	}
+	db.Model(&Paymentmethod{}).Create(&payment)
+
+	// Bill
+	bill1 := Bill{
+		BillNo:   1000,
+		BillTime: time.Date(2022, 2, 15, 2, 0, 0, 0, time.UTC),
+		Payer:    "AWESOME08",
+		Total:    6 * 980,
+
+		Pharmacist:    pharmacist5,
+		Prescription:  prescription1,
+		Paymentmethod: cash,
+	}
+	db.Model(&Bill{}).Create(&bill1)
+
+	//-----------------------------------------------------ระบบบันทึกการจ่ายยา-------------------------------------
 	//ช่องจ่ายยา
 	pharmacy1 := Pharmacy{
 		PharmacyBox: 1,
@@ -307,9 +392,11 @@ func SetupDatabase() {
 		PharmacyBox: 3,
 	}
 	db.Model(&Pharmacy{}).Create(&pharmacy3)
+	
 	//ระบบจ่ายยา
 	dispensemedicine := DispenseMedicine{
 		DispenseNo:   100000,
+		Bill:		  bill1,
 		ReceiveName:  "แสนดี มากมาย",
 		Pharmacy:     pharmacy1,
 		Pharmacist:   pharmacist2,
@@ -317,32 +404,14 @@ func SetupDatabase() {
 	}
 	db.Model(&DispenseMedicine{}).Create(&dispensemedicine)
 
-	//Zone
-	Zone1 := Zone{
-		ZoneName: "A",
-	}
-	db.Model(&Zone{}).Create(&Zone1)
 
-	Zone2 := Zone{
-		ZoneName: "B",
-	}
-	db.Model(&Zone{}).Create(&Zone2)
+	//------------------------------------------------------------ระบบบันทึกการคืนยา-------------------------------------
 
-	Zone3 := Zone{
-		ZoneName: "C",
-	}
-	db.Model(&Zone{}).Create(&Zone3)
 
-	//ระบบคลังยา
-	medicineReceive := MedicineReceive{
-		MedicineReceiveNo: 0111,
-		Pharmacist:        pharmacist2,
-		Zone:              Zone1,
-		RecievedDate:      time.Now(),
-		//MedicineLabel:     MedicineLabel,
-	}
-	db.Model(&MedicineReceive{}).Create(&medicineReceive)
+	
 
+	
+	//------------------------------------------------------------ระบบบันทึกการเข้าเวร-------------------------------------
 	//ช่วงเข้าเวร
 	morning := Shift{
 		Name: "9.00 - 16.00 น.",
@@ -380,53 +449,5 @@ func SetupDatabase() {
 	}
 	db.Model(&Attendance{}).Create(&attendance1)
 
-	//-------ระบบบันทึกการคืนยา-------------
-
-	//-------ระบบบันทึกการชำระเงิน
-
-	//Paymentmethod รูปแบบการชำระเงิน
-	cash := Paymentmethod{
-		ConditionsOfPayments: "ชำระด้วยเงินสด",
-	}
-	db.Model(&Paymentmethod{}).Create(&cash)
-
-	payment := Paymentmethod{
-		ConditionsOfPayments: "โอนพร้อมเพย์",
-	}
-	db.Model(&Paymentmethod{}).Create(&payment)
-
-	// Bill
-	bill1 := Bill{
-		BillNo:   1000,
-		BillTime: time.Date(2022, 2, 15, 2, 0, 0, 0, time.UTC),
-		Payer:    "AWESOME08",
-		Total:    6 * 980,
-
-		Pharmacist:    pharmacist5,
-		Prescription:  prescription1,
-		Paymentmethod: cash,
-	}
-	db.Model(&Bill{}).Create(&bill1)
-
-	Cause1 := Cause{
-		Name: "ยาหมดสภาพ",
-	}
-	db.Model(&Cause{}).Create(&Cause1)
-
-	Cause2 := Cause{
-		Name: "ยาหมดอายุ",
-	}
-	db.Model(&Cause{}).Create(&Cause2)
-
-	discard1 := Discardmedicine{
-
-		Cause:    Cause1,
-		Note:     "ยาหก",
-		Datetime: time.Now(),
-
-		MedicineReceive: medicineReceive,
-		Pharmacist:      pharmacist4,
-	}
-	db.Model(&Discardmedicine{}).Create(&discard1)
-
+	
 }

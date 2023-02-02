@@ -17,13 +17,16 @@ type DispenseMedicine struct {
 
 	DispenseNo			uint					`valid:"matches(^\\d{6}$)~DispenseNo dose not validate as matches(^\\d{6}$), required~DispenseNo: non zero value required, range(100000|999999)~DispenseNo: range 100000|999999"`
 	ReceiveName			string					`valid:"required~ReceiveName cannot be blank"`
-	DispenseTime		time.Time
+	DispenseTime		time.Time				
 
 	PharmacyID 			*uint
 	Pharmacy			Pharmacy
 
 	PharmacistID		*uint
 	Pharmacist			User
+
+	BillID				*uint
+	Bill				Bill
 
 	Return		[]Return `gorm:"foreignKey:DispenseMedicineID"`
 
