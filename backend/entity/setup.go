@@ -51,6 +51,8 @@ func SetupDatabase() {
 		&Return{},
 		&Paymentmethod{},
 		&Bill{},
+		&Cause{},
+		&Discardmedicine{},
 	)
 
 	db = database
@@ -405,5 +407,26 @@ func SetupDatabase() {
 		Paymentmethod: cash,
 	}
 	db.Model(&Bill{}).Create(&bill1)
+
+	Cause1 := Cause{
+		Name: "ยาหมดสภาพ",
+	}
+	db.Model(&Cause{}).Create(&Cause1)
+
+	Cause2 := Cause{
+		Name: "ยาหมดอายุ",
+	}
+	db.Model(&Cause{}).Create(&Cause2)
+
+	discard1 := Discardmedicine{
+
+		Cause:    Cause1,
+		Note:     "ยาหก",
+		Datetime: time.Now(),
+
+		MedicineReceive: medicineReceive,
+		Pharmacist:      pharmacist4,
+	}
+	db.Model(&Discardmedicine{}).Create(&discard1)
 
 }
