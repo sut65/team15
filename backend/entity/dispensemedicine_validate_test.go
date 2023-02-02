@@ -57,7 +57,7 @@ func TestNoDispenseMedicine2(t *testing.T) {
 	g := NewGomegaWithT(t)
 	t.Run("check pattern DispenseNo non zero", func(t *testing.T) {
 		dispense := DispenseMedicine{
-			DispenseNo: 		0,		//ผิด
+				DispenseNo: 		0,		//ผิด
 				ReceiveName:		"แสนดี มากมาย"	,	                  		
 				DispenseTime:	time.Now(),
 			}
