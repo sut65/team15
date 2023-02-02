@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/asaskevich/govalidator"
 	"github.com/sut65/team15/entity"
 
 	"github.com/gin-gonic/gin"
@@ -12,6 +13,7 @@ import (
 func CreateMedicineArrangement(c *gin.Context) {
 	var pharmacist entity.User
 	var medicinearrangement entity.MedicineArrangement
+	// var prescription	entity.Prescription
 	// var classifydrug entity.ClassifyDrugs
 
 	if err := c.ShouldBindJSON(&medicinearrangement); err != nil {
@@ -39,10 +41,15 @@ func CreateMedicineArrangement(c *gin.Context) {
 	// 13: สร้าง MedicineArrangement
 	arrangement := entity.MedicineArrangement{
 		MedicineArrangementNo: medicinearrangement.MedicineArrangementNo,
-		// ClassifyDrugs: 				classifydrug,										// โยงความสัมพันธ์กับ Entity ClassifyDrug
+		// Prescription: 				prescription,								// โยงความสัมพันธ์กับ Entity Prescription
+		// ClassifyDrugs: 				classifydrug,							  // โยงความสัมพันธ์กับ Entity ClassifyDrugs
 		Note:                    medicinearrangement.Note,
 		Pharmacist:              pharmacist,                                  // โยงความสัมพันธ์กับ Entity User
 		MedicineArrangementTime: medicinearrangement.MedicineArrangementTime, // ตั้งค่าฟิลด์ watchedTime
+	}
+	if _, err := govalidator.ValidateStruct(arrangement); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	// 14: บันทึก
@@ -58,7 +65,7 @@ func CreateMedicineArrangement(c *gin.Context) {
 func GetMedicineArrangement(c *gin.Context) {
 	var medicinearrangements entity.MedicineArrangement
 	id := c.Param("id")
-	if err := entity.DB().Preload("Pharmacist").Raw("SELECT * FROM medicine_arrangements WHERE id = ?", id).Find(&medicinearrangements).Error; err != nil {
+	if err := entity.DB().Preload("Pharmacist")/*.Preload("Prescription").Preload("ClassifyDrugs").Preload("ClassifyDrugs.Cupboard")*/.Raw("SELECT * FROM medicine_arrangements WHERE id = ?", id).Find(&medicinearrangements).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -68,7 +75,7 @@ func GetMedicineArrangement(c *gin.Context) {
 // GET /medicinearrangements
 func ListMedicineArrangement(c *gin.Context) {
 	var medicinearrangements []entity.MedicineArrangement
-	if err := entity.DB().Preload("Pharmacist").Raw("SELECT * FROM medicine_arrangements").Find(&medicinearrangements).Error; err != nil {
+	if err := entity.DB().Preload("Pharmacist")/*.Preload("Prescription").Preload("ClassifyDrugs").Preload("ClassifyDrugs.Cupboard")*/.Raw("SELECT * FROM medicine_arrangements").Find(&medicinearrangements).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
