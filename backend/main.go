@@ -36,7 +36,7 @@ func main() {
 	r.GET("/units", controller.ListUnit)
 
 	//Order
-	r.POST("order", controller.CreateOrder)
+	r.POST("/order", controller.CreateOrder)
 	r.GET("/orders", controller.ListOrder)
 	r.GET("/order/:id", controller.GetOrder)
 	r.PATCH("/order", controller.UpdateOrder)

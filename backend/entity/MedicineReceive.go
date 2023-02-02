@@ -19,7 +19,7 @@ type MedicineReceive struct {
 	MedicineLabel   MedicineLabel
 
 	//MedicineDisbursement		[]MedicineDisbursement`gorm:"foreignKey:MedicineReceiveID"`
-
+	Discardmedicine []Discardmedicine	`gorm:"foreignkey:MedicineReceiveID"`
 	ZoneID *uint
 	Zone   Zone
 }
