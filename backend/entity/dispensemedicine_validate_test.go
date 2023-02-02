@@ -22,20 +22,20 @@ func TestDataDispenseMedicineCorrect(t *testing.T) {
 	})
 }
 
-// func TestNoteDispenseMedicineNotBlank(t *testing.T) {
-// 	g := NewGomegaWithT(t)
-// 	t.Run("check ReceiveName not blank", func(t *testing.T) {
-// 		dispense := DispenseMedicine{
-// 			DispenseNo: 		200000,
-// 			ReceiveName:		""	,	//ผิด                		
-// 			DispenseTime:	time.Now(),
-// 		}
-// 		ok, err := govalidator.ValidateStruct(dispense)
-// 		g.Expect(ok).NotTo(BeTrue())			
-// 		g.Expect(err).ToNot(BeNil())			
-// 		g.Expect(err.Error()).To(Equal("ReceiveName cannot be blank"))
-// 	})
-// }
+func TestNoteDispenseMedicineNotBlank(t *testing.T) {
+	g := NewGomegaWithT(t)
+	t.Run("check ReceiveName not blank", func(t *testing.T) {
+		dispense := DispenseMedicine{
+			DispenseNo: 		200000,
+			ReceiveName:		""	,	//ผิด                		
+			DispenseTime:	time.Now(),
+		}
+		ok, err := govalidator.ValidateStruct(dispense)
+		g.Expect(ok).NotTo(BeTrue())			
+		g.Expect(err).ToNot(BeNil())			
+		g.Expect(err.Error()).To(Equal("ReceiveName cannot be blank"))
+	})
+}
 
 func TestNoDispenseMedicine1(t *testing.T) {
 	g := NewGomegaWithT(t)
