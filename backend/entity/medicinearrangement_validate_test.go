@@ -22,20 +22,20 @@ func TestDataMedicineArrangementCorrect(t *testing.T) {
 	})
 }
 
-// func TestNoteMedicineArrangementNotBlank(t *testing.T) {
-// 	g := NewGomegaWithT(t)
-// 	t.Run("check note not blank", func(t *testing.T) {
-// 		arrangement := MedicineArrangement{
-// 			MedicineArrangementNo: 		200000,
-// 			Note:						""	,	//ผิด                		
-// 			MedicineArrangementTime:	time.Now(),
-// 		}
-// 		ok, err := govalidator.ValidateStruct(arrangement)
-// 		g.Expect(ok).NotTo(BeTrue())			
-// 		g.Expect(err).ToNot(BeNil())			
-// 		g.Expect(err.Error()).To(Equal("Note cannot be blank"))
-// 	})
-// }
+func TestNoteMedicineArrangementNotBlank(t *testing.T) {
+	g := NewGomegaWithT(t)
+	t.Run("check note not blank", func(t *testing.T) {
+		arrangement := MedicineArrangement{
+			MedicineArrangementNo: 		200000,
+			Note:						""	,	//ผิด                		
+			MedicineArrangementTime:	time.Now(),
+		}
+		ok, err := govalidator.ValidateStruct(arrangement)
+		g.Expect(ok).NotTo(BeTrue())			
+		g.Expect(err).ToNot(BeNil())			
+		g.Expect(err.Error()).To(Equal("Note cannot be blank"))
+	})
+}
 
 func TestNoMedicineArrangement1(t *testing.T) {
 	g := NewGomegaWithT(t)
