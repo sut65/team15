@@ -22,6 +22,8 @@ type Bill struct {
 
 	PrescriptionID *uint
 	Prescription   Prescription
+
+	DispenseMedicines	[]DispenseMedicine `gorm:"foreignKey:BillID"`
 }
 
 type Paymentmethod struct {

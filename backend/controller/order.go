@@ -50,10 +50,7 @@ func CreateOrder(c *gin.Context) {
 
 	entity.DB().Joins("Role").Find(&pharmacist)
 
-	// if pharmacist.Role.Name != "Nurse" {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "only for dentsit"})
-	// 	return
-	// }
+	
 
 	// 13: สร้าง Order
 	wp := entity.Order{

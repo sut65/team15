@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/asaskevich/govalidator"
 	"github.com/sut65/team15/entity"
 
 	"github.com/gin-gonic/gin"
@@ -13,13 +14,17 @@ func CreateDispenseMedicine(c *gin.Context)  {
 	var pharmacist entity.User
 	var pharmacy entity.Pharmacy
 	var dispensemedicine entity.DispenseMedicine
+	var bill entity.Bill
 
 	if err := c.ShouldBindJSON(&dispensemedicine); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 		}
 	// 9: ค้นหา Bill ด้วย id
-
+	if tx := entity.DB().Where("id = ?", dispensemedicine.BillID).First(&bill); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacy not found"})
+		return
+	}
 
 	// 10: ค้นหา Pharmacy ด้วย id
 	if tx := entity.DB().Where("id = ?", dispensemedicine.PharmacyID).First(&pharmacy); tx.RowsAffected == 0 {
@@ -36,13 +41,18 @@ func CreateDispenseMedicine(c *gin.Context)  {
 	// 13: สร้าง DispenseMedicine 
 	dispense := entity.DispenseMedicine{
 		DispenseNo: 	dispensemedicine.DispenseNo,		
-
+		Bill:			bill,								// โยงความสัมพันธ์กับ Entity Bill
 		Pharmacy:   	pharmacy, 							// โยงความสัมพันธ์กับ Entity Pharmacy
 		Pharmacist: 	pharmacist,       					// โยงความสัมพันธ์กับ Entity User
 		ReceiveName:	dispensemedicine.ReceiveName,
 		DispenseTime:	dispensemedicine.DispenseTime, 		// ตั้งค่าฟิลด์ watchedTime
 	}
 
+	if _, err := govalidator.ValidateStruct(dispense); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	
 	// 14: บันทึก
 	if err := entity.DB().Create(&dispense).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -56,7 +66,7 @@ func CreateDispenseMedicine(c *gin.Context)  {
 func GetDispenseMedicine(c *gin.Context) {
 	var dispensemedicines entity.DispenseMedicine
 	id := c.Param("id")
-	if err := entity.DB().Preload("Pharmacist").Preload("Pharmacy").Raw("SELECT * FROM dispense_medicines WHERE id = ?", id).Find(&dispensemedicines).Error; err != nil {
+	if err := entity.DB().Preload("Pharmacist").Preload("Pharmacy").Preload("Bill").Raw("SELECT * FROM dispense_medicines WHERE id = ?", id).Find(&dispensemedicines).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -66,7 +76,7 @@ func GetDispenseMedicine(c *gin.Context) {
 // GET /dispensemedicines
 func ListDispenseMedicine(c *gin.Context) {
 	var dispensemedicines []entity.DispenseMedicine
-	if err := entity.DB().Preload("Pharmacist").Preload("Pharmacy").Raw("SELECT * FROM dispense_medicines").Find(&dispensemedicines).Error; err != nil {
+	if err := entity.DB().Preload("Pharmacist").Preload("Pharmacy").Preload("Bill").Raw("SELECT * FROM dispense_medicines").Find(&dispensemedicines).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

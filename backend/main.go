@@ -66,6 +66,13 @@ func main() {
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกการทิ้งยา--------------------------------------
 
+	r.GET("/causes", controller.ListCause)
+
+	r.GET("/discardmedicine/:id", controller.Discardmedicine)
+	r.GET("/discardmedicine", controller.ListDiscardmedicine)
+	r.PATCH("/discardmedicine", controller.UpdateDiscardmedicine)
+	r.DELETE("/discardmedicine/:id", controller.DeleteDiscardmedicine)
+
 	//-----------------------------------ระบบย่อย ระบบบันทึกการเบิกยา-------------------------------------
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกการจัดชั้นยา------------------------------------
