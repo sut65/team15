@@ -63,6 +63,13 @@ func main() {
 	r.PATCH("/effects", controller.UpdateEffect)
 	r.DELETE("/effects/:id", controller.DeleteEffect)
 	//-----------------------------------ระบบย่อย ระบบบันทึกคลังยา----------------------------------------
+	r.POST("/medicineReceives", controller.CreatemedicineReceive)
+	r.GET("/medicineReceive", controller.ListMedicineReceive)
+	r.GET("/medicineReceive/:id", controller.GetMedicineReceive)
+	r.PATCH("/medicineReceive", controller.UpdateMedicineReceive)
+
+	//Zone
+	r.GET("/Zones", controller.ListZone)
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกการทิ้งยา--------------------------------------
 

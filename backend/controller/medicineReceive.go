@@ -40,8 +40,8 @@ func CreatemedicineReceive(c *gin.Context) {
 	// 14: สร้าง MedicineReceive
 	wv := entity.MedicineReceive{
 
-		RecievedDate:      medicineReceive.RecievedDate,
-		Pharmacist:        pharmacist,
+		RecievedDate: medicineReceive.RecievedDate,
+		Pharmacist:   pharmacist,
 		// MedicineLabel:     medicineLabel,
 		Zone:              zone,
 		MedicineReceiveNo: medicineReceive.MedicineReceiveNo,
