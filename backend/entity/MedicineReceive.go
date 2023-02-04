@@ -28,5 +28,5 @@ type Zone struct {
 
 	ZoneName string
 
-	MedicineReceive []MedicineReceive `gorm:"foreignKey:ZoneID"`
+	MedicineReceives []MedicineReceive `gorm:"foreignKey:ZoneID"`
 }
