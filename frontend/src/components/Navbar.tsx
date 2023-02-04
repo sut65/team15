@@ -85,7 +85,7 @@ function Navbar() {
     {
       name: "รายการบันทึกคลังยา",
       icon: <StoreIcon/>,
-      path: "/MedicineStorage",
+      path: "/MedicineReceive",
     },
 
     {
