@@ -13,12 +13,12 @@ import MedicineArrangement from './components/MedicineArrangement';
 import MedicineLabelCreate from './components/MedicineLabelCreate';
 import MedicineLabel from './components/MedicineLabel';
 import MedicineReturnCreate from './components/MedicineReturn';
-import MedicineReturnList from './components/MedicineReturnList'; 
 import Signin from './components/Sigin';
 import AttendanceCreate from './components/AttendanceCreate';
 import Attendances from './components/Attendance';
 import MedicineReceiveCreate from './components/MedicineReceiveCreate';
 import MedicineReceive from './components/MedicineReceive';
+import MedicineReturnList from './components/MedicineReturnList'; 
 
 function App() {
   
@@ -54,6 +54,8 @@ function App() {
       <Route path="/MedicineReturn" element={<MedicineReturnCreate />} />
       <Route path="/MedicineReceive" element={<MedicineReceiveCreate />} />
       <Route path="/MedicineReceives" element={<MedicineReceive />} />
+      <Route path="/MedicineReturn" element={<MedicineReturnCreate />} />
+      <Route path="/MedicineReturnList" element={<MedicineReturnList />}/> 
 
       {/* /<Route path="/MedicineReturnList" element={<MedicineReturnList />} /> */}
 

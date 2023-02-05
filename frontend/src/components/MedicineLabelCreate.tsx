@@ -251,7 +251,7 @@ export default function MedicineLabelCreate() {
                   variant="outlined"
                   type="string"
                   size="medium"
-                  placeholder="กรุณากรอกข้อมูลสรรพคุณของยยา"
+                  placeholder="กรุณากรอกข้อมูลสรรพคุณของยา"
                   value={medicineLabel.Property || ""}
                   onChange={handleInputChange}
                 />
