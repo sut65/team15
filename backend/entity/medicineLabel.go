@@ -10,17 +10,17 @@ type MedicineLabel struct {
 	gorm.Model
 	Instruction string    `valid:"required~Instruction cannot be blank"`
 	Property    string    `valid:"required~Property cannot be blank"`
-	Consumption string    `valid:"range(0|100)~Consumption must be Positive"`
+	Consumption string    `valid:"range(0|100)~Consumption must be Positive, required~Consumption cannot be blank"`
 	Date        time.Time 
-	// Date        time.Time  `valid:"notpast~Date not be past"`
+	//  Date        time.Time  `valid:"notpast~Date not be past"`
 
 	OrderID *uint
 	Order  Order `gorm:"references:id" valid:"-"`
 
-	SuggestionID *uint
+	SuggestionID *uint  
 	Suggestion   Suggestion `gorm:"references:id" valid:"-"`
 
-	EffectID *uint
+	EffectID *uint  
 	Effect   Effect `gorm:"references:id" valid:"-"`
 	
 	PharmacistID *uint
