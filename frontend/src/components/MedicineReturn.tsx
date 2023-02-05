@@ -22,10 +22,12 @@ import { SatffInterface } from "../models/IStaff";
 import { EffectsInterface } from "../models/IEffect";
 import { UserInterface } from "../models/IUser";
 import { ReturnInterface } from "../models/IReturn";
+import { ReasonInterface } from "../models/IReason";
 import { setDate } from "date-fns";
 
 export default function MedicineReturnCreate(){
     const [Return, setReturn] = React.useState<Partial<ReturnInterface>>({});
+    const [reason, setReason] = React.useState<ReasonInterface[]>([]);
     const [staff, setStaff] = React.useState<SatffInterface[]>([]);
     const [user, setUser] = React.useState<UserInterface>();
     const [dispensemedicine, setDispensemedicine] = React.useState<DispenseMedicineInterface[]>([]);
@@ -95,6 +97,19 @@ export default function MedicineReturnCreate(){
           });
       };
 
+      const getReason = async () => {
+        fetch(`${apiUrl}/reasons`, requestOptions)
+          .then((response) => response.json())
+          .then((res) => {
+            if (res.data) {
+              setReason(res.data);
+            } else {
+              console.log("else");
+            }
+          });
+      };
+
+
       function getUser() {
         const UserID = localStorage.getItem("uid")
         const apiUrl = `http://localhost:8080/users/${UserID}`;
@@ -125,10 +140,11 @@ export default function MedicineReturnCreate(){
         setLoading(true)
         let data = {
             DispensemedicineID: convertType(Return.DispenseMedicineID),
-            Reason: Return.Reason ?? "",
+            Reason: convertType(Return.ReasonID),
             StaffID: convertType(Return.StaffID),
             PharmacistID: Number(localStorage.getItem("uid")),
             ReturnDate: new Date(),
+          
           };
 
           console.log("Data", data)
@@ -158,7 +174,7 @@ export default function MedicineReturnCreate(){
 
             getUser();
             getdispensemedicine();
-            
+            getReason();
             getStaff();
         
           }, []);
@@ -198,9 +214,133 @@ export default function MedicineReturnCreate(){
         </Box>
         <Divider />
         <Grid container spacing={3} >
-                  <Grid item xs={6}>
-                  </Grid>
-                  </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+              <p>หมายเลขสั่งซื้อยา</p>
+              <Select
+                native
+                value={Return.DispenseMedicineID}
+                onChange={handleChange}
+                inputProps={{
+                  name: "DispenseMedicineID",
+                }}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือกหมายเลข
+                </option>
+                {dispensemedicine.map((item: DispenseMedicineInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.DispenseNo.valueOf()}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+              <p>ชื่อยา</p>
+              <Select
+                native
+                // value={Return.DispenseMedicineID}
+                onChange={handleChange}
+                inputProps={{
+                  name: "DispenseMedicineID",
+                }}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือกชื่อยา
+                </option>
+                {dispensemedicine.map((item: DispenseMedicineInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.DispenseNo.valueOf()}
+                  </option> 
+                 ))}
+              </Select>
+            </FormControl>
+          </Grid> 
+          <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+              <p>เจ้าหน้าที่รับคืนยา</p>
+              <Select
+                native
+                value={Return.StaffID}
+                onChange={handleChange}
+                inputProps={{
+                  name: "StaffID",
+                }}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือกเจ้าหน้าที่
+                </option>
+                {staff.map((item: SatffInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.StaffName}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+              <p>สาเหตุที่คืน</p>
+              <Select
+                native
+                value={Return.ReasonID}
+                onChange={handleChange}
+                inputProps={{
+                  name: "ReasonID",
+                }}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือกสาเหตุ
+                </option>
+                {reason.map((item: ReasonInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.ReasonName}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={6}>
+          <FormControl fullWidth variant="outlined">
+            <p>วันหมดอายุ</p>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                  value={Return.ReturnDate}
+                  onChange={(newValue) => {
+                    setReturn({
+                      ...Return,
+                      ReturnDate: newValue,
+                    });
+                    
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                  
+                />
+              
+            </LocalizationProvider>
+          </FormControl>
+        </Grid>
+           <Grid item xs={12}>
+            <Button
+              component={RouterLink}
+              to="/medicineLabel"
+              variant="contained"
+            >
+              กลับ
+            </Button>
+            <Button
+              style={{ float: "right" }}
+              variant="contained"
+              onClick={submit}
+              color="primary"
+            >
+              บันทึก
+            </Button>
+          </Grid> 
+          </Grid>
         </Paper >
         </Container>
             

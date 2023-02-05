@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Container from '@mui/material/Container'
 import TableCell from '@mui/material/TableCell';
 import { Box, Grid, Select, TextField, Typography, Table, TableHead, TableRow, TableBody } from '@mui/material'
@@ -6,12 +6,29 @@ import Button from '@mui/material/Button'
 import { Link as RouterLink } from "react-router-dom";
 import TableContainer from '@mui/material/TableContainer';
 import moment from 'moment';
-
-
+import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
+import Alert from '@mui/material/Alert'
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { MedicineLabelsInterface } from "../models/IMedicineLabel";
+import { IconButton, Snackbar } from "@mui/material";
+
 function Orders() {
 
   const [medicineLabels, setAmbulances] = React.useState<MedicineLabelsInterface[]>([]);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+  const [ErrorMessage, setErrorMessage] = React.useState("");
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+setSuccess(false);
+setError(false);
+};
+
+  const Alert = (props: AlertProps) => {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  };
 
     
       const apiUrl = "http://localhost:8080";
@@ -20,6 +37,7 @@ function Orders() {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
+          
         },
       };
     
@@ -36,28 +54,61 @@ function Orders() {
           });
       };
 
+      const DeleteMedicineLabel = async (id: string | number | undefined) => {
+        const apiUrl = "http://localhost:8080";
+        const requestOptions = {
+    
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        };
+      
+        fetch(`${apiUrl}/medicineLabels/${id}`, requestOptions)
+        .then((response) => response.json())
+        .then(
+          (res) => {
+            if (res.data) {
+              setSuccess(true)
+              console.log("ยกเลิกสำเร็จ")
+              setErrorMessage("")
+            } 
+            else { 
+              setErrorMessage(res.error)
+              setError(true)
+              console.log("ยกเลิกไม่สำเร็จ")
+            }  
+            getMedicineLabels
+            (); 
+          }
+        )
+      }
+
     useEffect(() => {
       getMedicineLabels();
     }, []);
 
     return (
 
+      
         <div>
-<Container maxWidth="md">
+         <Container maxWidth="md">
+         {/* <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
+      <Alert onClose={handleClose} severity="success">
+        บันทึกข้อมูลสำเร็จ
+      </Alert>
+    </Snackbar>
+    <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
+      <Alert onClose={handleClose} severity="error">
+        บันทึกข้อมูลไม่สำเร็จ: {ErrorMessage}
+      </Alert>
+    </Snackbar> */}
 
-<Box
-
-    display="flex"
-
-    sx={{
-
-        marginTop: 2,
-
-    }}
+         <Box display="flex" sx={{ marginTop: 2, }}
 
 >
-
-    <Box flexGrow={1}>
+<Box flexGrow={1}>
 
         <Typography
             component="h2"
@@ -89,6 +140,8 @@ function Orders() {
     </Box>
 
 </Box>
+
+
         <TableContainer >
 
                     <Table aria-label="simple table">
@@ -121,17 +174,22 @@ function Orders() {
               </TableRow>
             </TableHead>
                         <TableBody>
-              {medicineLabels.map((medicineLabel: MedicineLabelsInterface) => (
+
+                        {medicineLabels.map((medicineLabel: MedicineLabelsInterface) => (
                 <TableRow key={medicineLabel.ID}>
+  
                   <TableCell align="center">{medicineLabel.Order.Medicine.Name}</TableCell>
                   <TableCell align="center">{medicineLabel.Property}</TableCell>
                   <TableCell align="center">{medicineLabel.Instruction}</TableCell>
                   <TableCell align="center">{medicineLabel.Consumption}</TableCell>
                   <TableCell align="center">{medicineLabel.Suggestion.SuggestionName}</TableCell>
                   <TableCell align="center">{medicineLabel.Effect.EffectName}</TableCell>
-                  <TableCell align="center" > {moment(medicineLabel.Date).format('MMMM DD yyyy')}     </TableCell>
+                  <TableCell align="center" > {moment(medicineLabel.Date).format('DD MMMM yyyy')}     </TableCell>
                   <TableCell align="center" size="medium"> {medicineLabel.Pharmacist.Name}     </TableCell>
-                  
+                  <TableCell align="center"> 
+                  <IconButton aria-label="delete" onClick={() => DeleteMedicineLabel(medicineLabel.ID)}><CancelTwoToneIcon/></IconButton>
+                  </TableCell>
+        
                 </TableRow>
               ))}
             </TableBody>

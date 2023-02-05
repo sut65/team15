@@ -1,9 +1,10 @@
 import { DispenseMedicineInterface } from "./IDispenseMedicine";
 import { SatffInterface } from "./IStaff";
+import { ReasonInterface } from "./IReason";
 import { UserInterface } from "./IUser";
 export interface ReturnInterface {
     ID: number,
-    Reason: string,
+
     ReturnDate: Date | null,
   
     PharmacistID: number,
@@ -14,4 +15,7 @@ export interface ReturnInterface {
   
     StaffID: number,
     Staff: SatffInterface,
+
+    ReasonID: number,
+    Reason: ReasonInterface,
 }
