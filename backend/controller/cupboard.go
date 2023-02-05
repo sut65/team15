@@ -43,7 +43,7 @@ func GetCupboard(c *gin.Context) {
 //List
 func ListCupboard(c *gin.Context) {
 
-	var cupboard []entity.Medicine
+	var cupboard []entity.Cupboard
 	if err := entity.DB().Raw("SELECT * FROM cupboards").Find(&cupboard).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

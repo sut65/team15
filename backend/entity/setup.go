@@ -42,6 +42,8 @@ func SetupDatabase() {
 		&MedicineReceive{},
 		&ClassifyDrugs{},
 		&Cupboard{},
+		&Zonee{},
+		&Floor{},
 		&Prescription{},
 		&Patient{},
 		&Attendance{},
@@ -283,20 +285,38 @@ func SetupDatabase() {
 	//ตู้ยา
 	cupboard1 := Cupboard{
 		Name:  "A",
-		Zone:  "AA",
-		Floor: 2,
 	}
 	db.Model(&Cupboard{}).Create(&cupboard1)
 	cupboard2 := Cupboard{
 		Name:  "B",
-		Zone:  "BB",
-		Floor: 3,
 	}
 	db.Model(&Cupboard{}).Create(&cupboard2)
+
+	//โซนยา
+	zonee1 := Zonee{
+		Name:  "AA",
+	}
+	db.Model(&Zonee{}).Create(&zonee1)
+	zonee2 := Zonee{
+		Name:  "BB",
+	}
+	db.Model(&Zonee{}).Create(&zonee2)
+
+	//ชั้นยา
+	floor1 := Floor{
+		Number: 1,
+	}
+	db.Model(&Floor{}).Create(&floor1)
+	floor2 := Floor{
+		Number: 2,
+	}
+	db.Model(&Floor{}).Create(&floor2)
 
 	class1 := ClassifyDrugs{
 		Pharmacist: pharmacist6,
 		Cupboard:   cupboard2,
+		Zonee:   	zonee2,
+		Floor:   	floor2,
 		Note:       "-",
 		Datetime:   time.Now(),
 	}
@@ -305,6 +325,8 @@ func SetupDatabase() {
 	class2 := ClassifyDrugs{
 		Pharmacist: pharmacist6,
 		Cupboard:   cupboard1,
+		Zonee:   	zonee1,
+		Floor:   	floor1,
 		Note:       "-",
 		Datetime:   time.Now(),
 	}

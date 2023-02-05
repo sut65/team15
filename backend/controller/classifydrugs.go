@@ -12,18 +12,36 @@ import (
 func CreateClassifyDrugs(c *gin.Context)  {
 	var pharmacist entity.User
 	var cupboard entity.Cupboard
+	var zonee entity.Zonee
+	var floor entity.Floor
 	var classifydrugs entity.ClassifyDrugs
+	// var medicinedisbursement entity.MedicineDisbursement
 
 	if err := c.ShouldBindJSON(&classifydrugs); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 		}
 	// 9: ค้นหา Bill ด้วย id
-
+	// if tx := entity.DB().Where("id = ?", classifydrugs.MedicineDisbursementID).First(&medicinedisbursement); tx.RowsAffected == 0 {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "medicinedisbursement not found"})
+	// 	return
+	// }
 
 	// 10: ค้นหา cupboard ด้วย id
-	if tx := entity.DB().Where("id = ?", classifydrugs.PharmacistID).First(&cupboard); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", classifydrugs.CupboardID).First(&cupboard); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "cupboard not found"})
+		return
+	}
+
+	// 10: ค้นหา zonee ด้วย id
+	if tx := entity.DB().Where("id = ?", classifydrugs.ZoneeID).First(&zonee); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "zonee not found"})
+		return
+	}
+
+	// 10: ค้นหา floor ด้วย id
+	if tx := entity.DB().Where("id = ?", classifydrugs.FloorID).First(&floor); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "floor not found"})
 		return
 	}
 
@@ -37,7 +55,10 @@ func CreateClassifyDrugs(c *gin.Context)  {
 	classifydrug := entity.ClassifyDrugs{
 		
 		Cupboard:   	cupboard, 							// โยงความสัมพันธ์กับ Entity cupboard
+		Zonee:   		zonee, 								// โยงความสัมพันธ์กับ Entity zonee
+		Floor:   		floor, 								// โยงความสัมพันธ์กับ Entity floor
 		Pharmacist: 	pharmacist,       					// โยงความสัมพันธ์กับ Entity User
+		// MedicineDisbursement: medicinedisbursement,
 		Note:			classifydrugs.Note,
 		Datetime:		classifydrugs.Datetime, 		// ตั้งค่าฟิลด์ watchedTime
 	}
@@ -55,7 +76,7 @@ func CreateClassifyDrugs(c *gin.Context)  {
 func GetClassifyDrug(c *gin.Context) {
 	var classifydrug entity.ClassifyDrugs
 	id := c.Param("id")
-	if err := entity.DB().Preload("Pharmacist").Preload("Cupboard").Raw("SELECT * FROM classifydrugs WHERE id = ?", id).Find(&classifydrug).Error; err != nil {
+	if err := entity.DB().Preload("Pharmacist").Preload("Cupboard").Preload("Zonee").Preload("Floor")/*.Preload("MedicineDisbursement")*/.Raw("SELECT * FROM classify_drugs WHERE id = ?", id).Find(&classifydrug).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -65,7 +86,7 @@ func GetClassifyDrug(c *gin.Context) {
 // GET /classifydrug
 func ListClassifyDrug(c *gin.Context) {
 	var classifydrug []entity.ClassifyDrugs
-	if err := entity.DB().Preload("Pharmacist").Preload("Cipboard").Raw("SELECT * FROM classifydrug ORDER BY cupboard").Find(&classifydrug).Error; err != nil {
+	if err := entity.DB().Preload("Pharmacist").Preload("Cupboard").Preload("Zonee").Preload("Floor")/*.Preload("MedicineDisbursement")*/.Raw("SELECT * FROM classify_drugs").Find(&classifydrug).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -76,7 +97,7 @@ func ListClassifyDrug(c *gin.Context) {
 // DELETE /classifydrug/:id
 func DeleteClassifyDrug(c *gin.Context) {
 	id := c.Param("id")
-	if tx := entity.DB().Exec("DELETE FROM classifydrugs WHERE id = ?", id); tx.RowsAffected == 0 {
+	if tx := entity.DB().Exec("DELETE FROM classify_drugs WHERE id = ?", id); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "classifydrugs not found"})
 		return
 	}
