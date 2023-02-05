@@ -53,6 +53,9 @@ func SetupDatabase() {
 		&Bill{},
 		&Cause{},
 		&Discardmedicine{},
+		&Staff{},
+		&Return{},
+		&Reason{},
 	)
 
 	db = database
@@ -449,5 +452,38 @@ func SetupDatabase() {
 	}
 	db.Model(&Attendance{}).Create(&attendance1)
 
+	//-------ระบบบันทึกการคืนยา-------------
+	//Staff
+	stff1 := Staff{
+		StaffName: "Mana Manee",
+	}
+	db.Model(&Staff{}).Create(&stff1)
+
+	stff2 := Staff{
+		StaffName: "Pithi Chujai",
+	}
+	db.Model(&Staff{}).Create(&stff2)
+
+	//Reason
+	Reason1 := Reason{
+		ReasonName: "หมดอายุ",
+	}
+	db.Model(&Reason{}).Create(&Reason1)
+
+	Reason2 := Reason{
+		ReasonName: "รับประทานไม่หมด",
+	}
+	db.Model(&Reason{}).Create(&Reason2)
+
+	// --- MedicineLabel Data
+	Return1 := Return{
+		DispenseMedicine:     dispensemedicine,
+		Staff:                stff1,
+		Reason:               Reason1,
+		Note:                  "ยามีความชื้น",
+		Pharmacist:           pharmacist1,	
+		ReturnDate:           time.Now(),
+	}
+	db.Model(&Return{}).Create(&Return1)
 	
 }
