@@ -58,30 +58,30 @@ export default function MedicineReceiveCreate() {
         });
     };
 
-    function getMedicineLable() {
-        const apiUrl = "http://localhost:8080/medicineLabels";
-        const requestOptions = {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-                "Content-Type": "application/json",
-            },
-        };
-        fetch(apiUrl, requestOptions)
-            .then((response) => response.json())
-            .then((res) => {
-                console.log("Combobox_medicine", res)
-                if (res.data) {
-                    setzone(res.data);
-                } else {
-                    console.log("else");
-                }
-            });
-    }
+    // function getMedicineLable() {
+    //     const apiUrl = "http://localhost:8080/medicineLabels";
+    //     const requestOptions = {
+    //         method: "GET",
+    //         headers: {
+    //             Authorization: `Bearer ${localStorage.getItem("token")}`,
+    //             "Content-Type": "application/json",
+    //         },
+    //     };
+    //     fetch(apiUrl, requestOptions)
+    //         .then((response) => response.json())
+    //         .then((res) => {
+    //             console.log("Combobox_medicine", res)
+    //             if (res.data) {
+    //                 setzone(res.data);
+    //             } else {
+    //                 console.log("else");
+    //             }
+    //         });
+    // }
 
-    //ดึงข้อมูลช่องจ่ายยา
+    //ดึงข้อมูลโซนยา
     function getzone() {
-        const apiUrl = "http://localhost:8080/zones";
+        const apiUrl = "http://localhost:8080/Zones";
         const requestOptions = {
             method: "GET",
             headers: {
@@ -167,7 +167,7 @@ export default function MedicineReceiveCreate() {
     React.useEffect(() => {
 
         getzone();
-        getMedicineLable();
+        // getMedicineLable();
         getUser();
 
     }, []);
@@ -218,7 +218,7 @@ export default function MedicineReceiveCreate() {
                             <p>เลขใบคลังยา</p>
                             <FormControl fullWidth variant="outlined">
                                 <TextField
-                                    id="DispensemedicineNo"
+                                    id="MedicineReceiveNo"
                                     variant="outlined"
                                     type="number"
                                     size="medium"
@@ -228,7 +228,7 @@ export default function MedicineReceiveCreate() {
                             </FormControl>
                         </FormControl>
                         </Grid>
-                    {/* <Grid item xs={4}>
+                    <Grid item xs={4}>
                         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
                             <p>ชื่อยา</p>
                             <Select
@@ -249,7 +249,7 @@ export default function MedicineReceiveCreate() {
                                 ))}
                             </Select>
                         </FormControl>
-                    </Grid> */}
+                    </Grid>
                     <Grid item xs={4}>
 
                         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
@@ -267,7 +267,7 @@ export default function MedicineReceiveCreate() {
                                 </option>
                                 {zone.map((item: ZoneInterface) => (
                                     <option value={item.ID} key={item.ID}>
-                                        {item.Zonename}
+                                        {item.ZoneName}
                                     </option>
                                 ))}
                             </Select>
