@@ -18,11 +18,10 @@ func CreatePrescription(c *gin.Context)  {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 		}
-	// 9: ค้นหา Bill ด้วย id
 
 
-	// 10: ค้นหา cupboard ด้วย id
-	if tx := entity.DB().Where("id = ?", prescription.DoctorID).First(&doctor); tx.RowsAffected == 0 {
+	// 10: ค้นหา patient ด้วย id
+	if tx := entity.DB().Where("id = ?", prescription.PatientID).First(&patient); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "patient not found"})
 		return
 	}
@@ -36,7 +35,7 @@ func CreatePrescription(c *gin.Context)  {
 	// 13: สร้าง DispenseMedicine 
 	prescriptionmedicine := entity.Prescription{
 		
-		Patient:   		patient, 							// โยงความสัมพันธ์กับ Entity cupboard
+		Patient:   		patient, 							// โยงความสัมพันธ์กับ Entity patient
 		Doctor: 		doctor,								// โยงความสัมพันธ์กับ Entity User
 		Number: 		prescription.Number,       					
 		Note:			prescription.Note,

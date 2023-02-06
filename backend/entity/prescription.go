@@ -9,8 +9,7 @@ import (
 type Patient struct {
 	gorm.Model
 
-	FirstName    string
-	LastName     string
+	Name    	 string
 	Sex          string
 	Age          int
 	Prescription []Prescription `gorm:"foreignKey: PatientID"`

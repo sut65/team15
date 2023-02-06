@@ -335,15 +335,13 @@ func SetupDatabase() {
 	//-----------------------------------------------------------ระบบบันทึกการสั่งยา-----------------------------------
 	//ผู้ป่วย
 	patient1 := Patient{
-		FirstName: "A",
-		LastName:  "AA",
+		Name: 	   "กอไก่ ว่องไว",
 		Sex:       "men",
 		Age:       21,
 	}
 	db.Model(&Patient{}).Create(&patient1)
 	patient2 := Patient{
-		FirstName: "B",
-		LastName:  "BB",
+		Name: 	   "ขอใข่ ช้าจัง",
 		Sex:       "men",
 		Age:       22,
 	}
