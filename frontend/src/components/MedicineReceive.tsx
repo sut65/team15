@@ -5,8 +5,9 @@ import { Box, Grid, Select, TextField, Typography, Table, TableHead, TableRow, T
 import Button from '@mui/material/Button'
 import { Link as RouterLink } from "react-router-dom";
 import TableContainer from '@mui/material/TableContainer';
-//import moment from 'moment';
+import moment from 'moment';
 
+import { MedicineLabelsInterface} from "../models/IMedicineLabel";
 import { MedicineReceiveInterface } from "../models/IMedicineReceive";
 
 function MedicineReceive() {
@@ -96,12 +97,12 @@ function MedicineReceive() {
                                 <TableCell align="center" width="15%">
                                 เลขใบคลังยา
                                 </TableCell>
-                                <TableCell align="left" width="5%">
+                                {/* <TableCell align="left" width="5%">
                                     ชื่อยา
                                 </TableCell>
                                 <TableCell align="left" width="10%">
                                     จำนวนยา
-                                </TableCell>
+                                </TableCell> */}
                                 <TableCell align="center" width="10%">
                                     โซนยา
                                 </TableCell>
@@ -121,11 +122,10 @@ function MedicineReceive() {
                             <TableRow key={medicineReceive.ID}>
                                  <TableCell align="center" size="medium"> {medicineReceive.ID}            </TableCell>
                                  <TableCell align="center" size="medium"> {medicineReceive.MedicineReceiveNo}    </TableCell>
-                                 {/* <TableCell align="left" size="medium"> {dispensemedicine.Bill.BillNo}    </TableCell> */}
-                                 {/* <TableCell align="left" size="medium"> {dispensemedicine.}     </TableCell> */}
-                                 <TableCell align="center" size="medium"> {medicineReceive.ZoneID}           </TableCell>
-                                 {/* <TableCell align="center" size="medium"> {medicineReceive.Pharmacy.PharmacyBox}     </TableCell> */}
-                                 {/* <TableCell align="center" > {moment(medicineReceive.RecievedDate).format('DD MMMM yyyy')} </TableCell> */}
+                                 {/* <TableCell align="center" size="medium"> {.Zone.ZoneName}           </TableCell> */}
+                                 <TableCell align="center" size="medium"> {medicineReceive.Zone.ZoneName}           </TableCell>
+                                 <TableCell align="center" size="medium"> {medicineReceive.Pharmacist.Name}           </TableCell>
+                                 <TableCell align="center" > {moment(medicineReceive.RecievedDate).format('DD MMMM yyyy')} </TableCell>
                             </TableRow>
                         ))}
 
