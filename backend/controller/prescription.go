@@ -65,7 +65,7 @@ func GetPrescription(c *gin.Context) {
 // GET /prescription
 func ListPrescription(c *gin.Context) {
 	var prescription []entity.Prescription
-	if err := entity.DB().Preload("Doctor").Preload("Patient").Raw("SELECT * FROM prescription ORDER BY cupboard").Find(&prescription).Error; err != nil {
+	if err := entity.DB().Preload("Doctor").Preload("Patient").Raw("SELECT * FROM prescription ").Find(&prescription).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
