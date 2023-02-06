@@ -120,12 +120,10 @@ function Classifydrugs() {
                             <TableRow key={classifydrugs.ID}>
                                  <TableCell align="center" size="medium"> {classifydrugs.ID}            </TableCell>
                                  <TableCell align="center" size="medium"> {classifydrugs.Pharmacist.Name}    </TableCell>
-
-                                 {/* <TableCell align="left" size="medium"> {dispensemedicine.Bill.BillNo}    </TableCell> */}
-                                 {/* <TableCell align="left" size="medium"> {dispensemedicine.}     </TableCell> */}
                                  <TableCell align="center" size="medium"> {classifydrugs.Cupboard.Name}     </TableCell>
                                  <TableCell align="center" size="medium"> {classifydrugs.Zonee.Name}           </TableCell>
                                  <TableCell align="center" size="medium"> {classifydrugs.Floor.Number}           </TableCell>
+                                 <TableCell align="center" size="medium"> {classifydrugs.Note}    </TableCell>
                                  <TableCell align="center" > {moment(classifydrugs.Datetime).format('DD MMMM yyyy')} </TableCell>
                             </TableRow>
                         ))}
