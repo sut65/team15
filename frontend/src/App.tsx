@@ -21,6 +21,9 @@ import MedicineReceive from './components/MedicineReceive';
 import MedicineReturnList from './components/MedicineReturnList'; 
 import ClassifiesCreate from './components/ClassifiesCreate';
 import Classifies from './components/Classifies';
+import Prescription from './components/Prescription';
+import PrescriptionCreate from './components/PrescriptionCreate';
+
 
 function App() {
   
@@ -60,6 +63,8 @@ function App() {
       <Route path="/MedicineReturnList" element={<MedicineReturnList />}/> 
       <Route path="/ClassifyDrugs" element={<ClassifiesCreate />} />
       <Route path="/ClassifyDrug" element={<Classifies />} />
+      <Route path="/Prescription" element={<PrescriptionCreate />} />
+      <Route path="/Prescription" element={<Prescription />} />
       
 
       {/* /<Route path="/MedicineReturnList" element={<MedicineReturnList />} /> */}

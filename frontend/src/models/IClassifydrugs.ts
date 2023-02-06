@@ -1,4 +1,3 @@
-import { CompanyInterface } from "./ICompany";
 import { CupboardInterface } from "./ICupboard";
 import { ZoneeInterface } from "./IZonee";
 import { FloorInterface } from "./IFloor";
