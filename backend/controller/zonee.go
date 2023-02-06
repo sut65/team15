@@ -28,7 +28,7 @@ func CreateZonee(c *gin.Context) {
 func GetZonee(c *gin.Context) {
 	var zonee entity.Zonee
 	id := c.Param("id")
-	if err := entity.DB().Raw("SELECT * FROM zonee WHERE id = ?", id).Find(&zonee).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM zonees WHERE id = ?", id).Find(&zonee).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -44,7 +44,7 @@ func GetZonee(c *gin.Context) {
 func ListZonee(c *gin.Context) {
 
 	var zonee []entity.Zonee
-	if err := entity.DB().Raw("SELECT * FROM Zonee").Find(&zonee).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM zonees").Find(&zonee).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

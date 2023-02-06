@@ -28,7 +28,7 @@ func CreateFloor(c *gin.Context) {
 func GetFloor(c *gin.Context) {
 	var floor entity.Floor
 	id := c.Param("id")
-	if err := entity.DB().Raw("SELECT * FROM Floor WHERE id = ?", id).Find(&floor).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM floors WHERE id = ?", id).Find(&floor).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -44,7 +44,7 @@ func GetFloor(c *gin.Context) {
 func ListFloor(c *gin.Context) {
 
 	var floor []entity.Floor
-	if err := entity.DB().Raw("SELECT * FROM floor").Find(&floor).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM floors").Find(&floor).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

@@ -85,7 +85,10 @@ func main() {
 	//-----------------------------------ระบบย่อย ระบบบันทึกการจัดชั้นยา------------------------------------
 	//Cupboard
 	r.GET("/Cupboard", controller.ListCupboard)
-
+	//Zonee
+	r.GET("/Zonee", controller.ListZonee)
+	//Floor
+	r.GET("/Floor", controller.ListFloor)
 	//ClassifyDrug
 	r.POST("ClassifyDrugs", controller.CreateClassifyDrugs)
 	r.GET("/ClassifyDrug", controller.ListClassifyDrug)
