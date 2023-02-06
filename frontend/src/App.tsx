@@ -58,8 +58,8 @@ function App() {
       <Route path="/MedicineReceives" element={<MedicineReceive />} />
       <Route path="/MedicineReturn" element={<MedicineReturnCreate />} />
       <Route path="/MedicineReturnList" element={<MedicineReturnList />}/> 
-      <Route path="/Classifies" element={<ClassifiesCreate />} />
-      <Route path="/Classifies" element={<Classifies />} />
+      <Route path="/ClassifyDrugs" element={<ClassifiesCreate />} />
+      <Route path="/ClassifyDrug" element={<Classifies />} />
       
 
       {/* /<Route path="/MedicineReturnList" element={<MedicineReturnList />} /> */}
