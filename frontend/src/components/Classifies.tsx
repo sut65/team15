@@ -7,14 +7,14 @@ import { Link as RouterLink } from "react-router-dom";
 import TableContainer from '@mui/material/TableContainer';
 import moment from 'moment';
 
-import { DispenseMedicineInterface } from "../models/IDispenseMedicine";
+import { ClassifydrugsInterface } from "../models/IClassifydrugs";
 
-function DispenseMedicines() {
+function Classifydrugs() {
 
-    const [dispensemedicine, SetDispenseMedicine] = React.useState<DispenseMedicineInterface[]>([]);
+    const [classifydrugs, setClassifydrugs] = React.useState<ClassifydrugsInterface[]>([]);
 
-    const getDispenseMedicine = async () => {
-        const apiUrl = "http://localhost:8080/dispensemedicines";
+    const getClassifydrugs = async () => {
+        const apiUrl = "http://localhost:8080/ClassifyDrug";
         const requestOptions = {
             method: "GET",
             headers: { "Content-Type": "application/json" },
@@ -24,13 +24,13 @@ function DispenseMedicines() {
             .then((res) => {
                 console.log(res.data);
                 if (res.data) {
-                    SetDispenseMedicine(res.data);
+                    setClassifydrugs(res.data);
                 }
             });
     };
 
     useEffect(() => {
-        getDispenseMedicine();
+        getClassifydrugs();
     }, []);
 
     return (
@@ -59,7 +59,7 @@ function DispenseMedicines() {
                             color="primary"
                             gutterBottom
                         >
-                            ข้อมูลจ่ายยา
+                            ข้อมูลการจัดชั้นยา
                         </Typography>
                     </Box>
                     <Box>
@@ -68,7 +68,7 @@ function DispenseMedicines() {
 
                             component={RouterLink}
 
-                            to="/dispensemedicine"
+                            to="/ClassifyDrugs"
 
                             variant="contained"
 
@@ -76,7 +76,7 @@ function DispenseMedicines() {
 
                         >
 
-                            เพิ่มข้อมูลการจ่ายยา
+                            เพิ่มข้อมูลการจัดชั้นยา
 
                         </Button>
 
@@ -93,42 +93,40 @@ function DispenseMedicines() {
                                 <TableCell align="center" width="5%">
                                     ID
                                 </TableCell>
-                                <TableCell align="center" width="15%">
-                                    เลขใบจ่ายยา
-                                </TableCell>
-                                <TableCell align="left" width="15%">
-                                    ใบชำระเงิน
-                                </TableCell>
-                                <TableCell align="left" width="10%">
-                                    ผู้ชำระเงิน
-                                </TableCell>
                                 <TableCell align="center" width="10%">
-                                    ช่องจ่ายยา
+                                    เภสัชกร
                                 </TableCell>
                                 <TableCell align="center" width="20%">
-                                    ผู้รับยา
-                                </TableCell>
-                                <TableCell align="center" width="20%">
-                                    วันที่และเวลา
+                                    ตู้ยา
                                 </TableCell>
                                 <TableCell align="center" width="15%">
-                                    ผู้จ่ายยา
+                                    โซนยา
+                                </TableCell>
+                                <TableCell align="center" width="15%">
+                                    ชั้นยา
+                                </TableCell>
+                                <TableCell align="center" width="15%">
+                                    หมายเหตุ
+                                </TableCell>
+                                <TableCell align="center" width="15%">
+                                    วันที่และเวลา
                                 </TableCell>
                             </TableRow>
 
                         </TableHead>
 
                         <TableBody>
-                            {dispensemedicine.map((dispensemedicine: DispenseMedicineInterface) => (
-                            <TableRow key={dispensemedicine.ID}>
-                                 <TableCell align="center" size="medium"> {dispensemedicine.ID}            </TableCell>
-                                 <TableCell align="center" size="medium"> {dispensemedicine.DispenseNo}    </TableCell>
+                            {classifydrugs.map((classifydrugs: ClassifydrugsInterface) => (
+                            <TableRow key={classifydrugs.ID}>
+                                 <TableCell align="center" size="medium"> {classifydrugs.ID}            </TableCell>
+                                 <TableCell align="center" size="medium"> {classifydrugs.Pharmacist.Name}    </TableCell>
+
                                  {/* <TableCell align="left" size="medium"> {dispensemedicine.Bill.BillNo}    </TableCell> */}
-                                 {/* <TableCell align="left" size="medium"> {dispensemedicine.Bill,Payer}     </TableCell> */}
-                                 <TableCell align="center" size="medium"> {dispensemedicine.Pharmacy.PharmacyBox}     </TableCell>
-                                 <TableCell align="center" size="medium"> {dispensemedicine.ReceiveName}           </TableCell>
-                                 <TableCell align="center" > {moment(dispensemedicine.DispenseTime).format('DD MMMM yyyy')} </TableCell>
-                                 <TableCell align="center" size="medium"> {dispensemedicine.Pharmacist.Name}     </TableCell>
+                                 {/* <TableCell align="left" size="medium"> {dispensemedicine.}     </TableCell> */}
+                                 <TableCell align="center" size="medium"> {classifydrugs.Cupboard.Name}     </TableCell>
+                                 <TableCell align="center" size="medium"> {classifydrugs.Zonee.Name}           </TableCell>
+                                 <TableCell align="center" size="medium"> {classifydrugs.Floor.Number}           </TableCell>
+                                 <TableCell align="center" > {moment(classifydrugs.Datetime).format('DD MMMM yyyy')} </TableCell>
                             </TableRow>
                         ))}
 
@@ -146,4 +144,4 @@ function DispenseMedicines() {
 
 
 
-export default DispenseMedicines;
+export default Classifydrugs;

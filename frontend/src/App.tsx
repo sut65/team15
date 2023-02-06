@@ -19,6 +19,8 @@ import Attendances from './components/Attendance';
 import MedicineReceiveCreate from './components/MedicineReceiveCreate';
 import MedicineReceive from './components/MedicineReceive';
 import MedicineReturnList from './components/MedicineReturnList'; 
+import ClassifiesCreate from './components/ClassifiesCreate';
+import Classifies from './components/Classifies';
 
 function App() {
   
@@ -56,6 +58,9 @@ function App() {
       <Route path="/MedicineReceives" element={<MedicineReceive />} />
       <Route path="/MedicineReturn" element={<MedicineReturnCreate />} />
       <Route path="/MedicineReturnList" element={<MedicineReturnList />}/> 
+      <Route path="/Classifies" element={<ClassifiesCreate />} />
+      <Route path="/Classifies" element={<Classifies />} />
+      
 
       {/* /<Route path="/MedicineReturnList" element={<MedicineReturnList />} /> */}
 
