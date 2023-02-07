@@ -101,7 +101,7 @@ func main() {
 
 	//Prescription
 	r.POST("Prescription", controller.CreatePrescription)
-	r.GET("/Prescription", controller.ListPrescription)
+	r.GET("/Prescriptions", controller.ListPrescription)
 	r.GET("/Prescription/:id", controller.GetPrescription)
 	r.PATCH("/Prescription", controller.UpdatePrescription)
 

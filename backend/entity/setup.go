@@ -352,6 +352,7 @@ func SetupDatabase() {
 		Patient:  patient2,
 		Number:   10001,
 		Note:     "-",
+		MedicineLabel: medicinelabel01,
 		Datetime: time.Now(),
 	}
 	db.Model(&Prescription{}).Create(&prescription1)
@@ -361,10 +362,10 @@ func SetupDatabase() {
 		Patient:  patient1,
 		Number:   10002,
 		Note:     "-",
+		MedicineLabel: medicinelabel01,
 		Datetime: time.Now(),
 	}
 	db.Model(&Prescription{}).Create(&prescription2)
-
 	//-----------------------------------------------------------ระบบบันทึกการจัดยา------------------------------------------
 	medicinearrangement1 := MedicineArrangement{
 		MedicineArrangementNo:   200000,
