@@ -227,7 +227,7 @@ export default function PrescriptionCreate() {
           </Grid>
           <Grid item xs={6}>
             <p>หมายเหตุ</p>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%' }}>
+            <FormControl fullWidth variant="outlined" style={{ width: '40%', float: 'left' }}>
               <TextField
                 id="Note"
                 variant="outlined"
