@@ -123,7 +123,7 @@ func UpdateOrder(c *gin.Context) {
 // DELETE /orders/:id
 func DeleteOrder(c *gin.Context) {
 	id := c.Param("id")
-	if tx := entity.DB().Exec("DELETE FROM orsers WHERE id = ?", id); tx.RowsAffected == 0 {
+	if tx := entity.DB().Exec("DELETE FROM orders WHERE id = ?", id); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "orsers not found"})
 		return
 	}
