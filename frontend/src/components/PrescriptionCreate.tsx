@@ -216,7 +216,7 @@ export default function PrescriptionCreate() {
         </Box>
         </Box>
         <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
+            <FormControl fullWidth variant="outlined" style={{ width: '40%', float: 'left' }}>
               <p>เลขใบสั่งยา</p>
               <FormControl fullWidth variant="outlined">
                 <TextField
@@ -236,7 +236,7 @@ export default function PrescriptionCreate() {
             </FormControl>
           </Grid>
           <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
+            <FormControl fullWidth variant="outlined" style={{ width: '40%' }}>
               <p>ชื่อยา</p>
               <Select
                 native
