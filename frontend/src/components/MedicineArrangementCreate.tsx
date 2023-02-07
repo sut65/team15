@@ -13,7 +13,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { UserInterface } from "../models/IUser";
 import { MedicineArrangementInterface } from "../models/IMedicineArrangement";
 import { ClassifydrugsInterface } from "../models/IClassifydrugs";
-import { CupboardInterface } from "../models/ICupboard";
+import { PrescriptionInterface } from "../models/IPrescription";
 
 
 export default function MedicineArrangementCreate() {
@@ -22,7 +22,7 @@ export default function MedicineArrangementCreate() {
   const [error, setError] = React.useState(false);
   const [user, setUser] = React.useState<UserInterface>();
   const [cupboard, setCupboard] = React.useState<ClassifydrugsInterface[]>([]);
-  // const [prescription, setPrescription] = React.useState<PrescriptionInterface[]>([]);
+  const [prescription, setPrescription] = React.useState<PrescriptionInterface[]>([]);
   const [medicinearrangement, setMedicineArrangement] = React.useState<Partial<MedicineArrangementInterface>>({
     MedicineArrangementTime: new Date(),
   });
@@ -74,26 +74,26 @@ export default function MedicineArrangementCreate() {
             }
         });
 };
-  // function getPrescription() {
-  //   const apiUrl = "http://localhost:8080/Prescription";
-  //   const requestOptions = {
-  //     method: "GET",
-  //     headers: {
-  //       Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       "Content-Type": "application/json",
-  //     },
-  //   };
-  //   fetch(apiUrl, requestOptions)
-  //     .then((response) => response.json())
-  //     .then((res) => {
-  //       console.log("Combobox_prescriptionNo", res)
-  //       if (res.data) {
-  //         setCupboard(res.data);
-  //       } else {
-  //         console.log("else");
-  //       }
-  //     });
-  // }
+  function getPrescription() {
+    const apiUrl = "http://localhost:8080/Prescriptions";
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+    };
+    fetch(apiUrl, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+        console.log("Combobox_prescriptionNo", res)
+        if (res.data) {
+          setPrescription(res.data);
+        } else {
+          console.log("else");
+        }
+      });
+  }
 
    function getUser() {
     const UserID = localStorage.getItem("uid")
@@ -128,9 +128,9 @@ export default function MedicineArrangementCreate() {
       PharmacistID: Number(localStorage.getItem("uid")),
       Note: medicinearrangement.Note ?? "" ,
       MedicineArrangementTime: medicinearrangement.MedicineArrangementTime,
-      MedicineArrangementNo: typeof medicinearrangement.MedicineArrangementNo == "string" ? parseInt(medicinearrangement.MedicineArrangementNo) : 0,
-      CupboardID: convertType(medicinearrangement.ClassifyDrugsID),
-      // PrescriptionID: convertType(medicinearrangement.PrescriptionID),
+      MedicineArrangementNo: convertType(medicinearrangement.MedicineArrangementNo ?? "" ),
+      ClassifyDrugsID: convertType(medicinearrangement.ClassifyDrugsID),
+      PrescriptionID: convertType(medicinearrangement.PrescriptionID),
     };
     console.log("Data", data)
     const apiUrl = "http://localhost:8080/medicinearrangement";
@@ -160,7 +160,7 @@ export default function MedicineArrangementCreate() {
   React.useEffect(() => {
 
     getUser();
-    // getPrescription();
+    getPrescription();
     getCupboard();
 
   }, []);
@@ -227,29 +227,9 @@ export default function MedicineArrangementCreate() {
                   </FormControl>
                   </FormControl>
                 </Grid>
-                <Grid item xs={6}>
+          <Grid item xs={6}>
             <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
-              <p>เลือกตู้ยา | ชื่อยา</p>
-              <Select 
-                variant="outlined"
-                defaultValue={0}
-                value={medicinearrangement.ClassifyDrugsID}
-                onChange={handleChange}
-                inputProps={{ name: "CupboardID" }}
-                >
-                <MenuItem value={0} key={0}>เลือกตู้ยา | ชื่อยา</MenuItem>
-                {cupboard.map((item: ClassifydrugsInterface) => 
-                (
-                <MenuItem value={item.ID} key={item.ID}>
-                {item.Cupboard.Name}  {"|"}  {item.Cupboard.Name}
-                </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
-              <p>เลือกใบสั่งยา | ชื่อยา</p>
+              <p>ใบสั่งยา | ชื่อยา</p>
               <Select 
                 variant="outlined"
                 defaultValue={0}
@@ -261,13 +241,32 @@ export default function MedicineArrangementCreate() {
                 {prescription.map((item: PrescriptionInterface) => 
                 (
                 <MenuItem value={item.ID} key={item.ID}>
-                {item.PrescriptionNo}  {"|"}  {item.Cupboard.Name}
+                {item.Number}  {"|"}
                 </MenuItem>
                 ))}
               </Select>
             </FormControl>
-          </Grid> */}
-
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
+              <p>ตู้ยา | ชื่อยา</p>
+              <Select 
+                variant="outlined"
+                defaultValue={0}
+                value={medicinearrangement.ClassifyDrugsID}
+                onChange={handleChange}
+                inputProps={{ name: "ClassifyDrugsID" }}
+                >
+                <MenuItem value={0} key={0}>เลือกตู้ยา | ชื่อยา</MenuItem>
+                {cupboard.map((item: ClassifydrugsInterface) => 
+                (
+                <MenuItem value={item.ID} key={item.ID}>
+                {item.Cupboard.Name}  {"|"}  {/*item.Cupboard.Name*/}
+                </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
                 <Grid item xs={6}>
                 <p>หมายเหตุ</p>
                 <FormControl fullWidth variant="outlined">
