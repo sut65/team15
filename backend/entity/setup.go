@@ -372,7 +372,7 @@ func SetupDatabase() {
 		Prescription:            prescription1,
 		ClassifyDrugs:           class1,
 		Pharmacist:              pharmacist2,
-		Note:                    "*มีการเปลี่ยนแปลงยี้ห้อยา",
+		Note:                    "*มีการเปลี่ยนแปลงยี่ห้อยา",
 		MedicineArrangementTime: time.Now(),
 	}
 	db.Model(&MedicineArrangement{}).Create(&medicinearrangement1)
