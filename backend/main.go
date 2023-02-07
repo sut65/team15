@@ -40,6 +40,7 @@ func main() {
 	r.GET("/orders", controller.ListOrder)
 	r.GET("/order/:id", controller.GetOrder)
 	r.PATCH("/order", controller.UpdateOrder)
+	r.DELETE("/order/:id", controller.DeleteOrder)
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกฉลากยา---------------------------------------
 	//MedicineLabels Routes
