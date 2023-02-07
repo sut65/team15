@@ -14,6 +14,7 @@ import { UserInterface } from "../models/IUser";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { PatientInterface } from "../models/IPatient";
 import { PrescriptionInterface } from "../models/IPrescription";
+import { MedicineLabelsInterface } from "../models/IMedicineLabel";
 
 
 
@@ -23,6 +24,7 @@ export default function PrescriptionCreate() {
   const [error, setError] = React.useState(false);
   const [user, setUser] = React.useState<UserInterface>();
   const [Patient, setPatient] = React.useState<PatientInterface[]>([]);
+  const [medicine, setMedicine] = React.useState<MedicineLabelsInterface[]>([]);
   const [Prescription, setPrescription] = React.useState<Partial<PrescriptionInterface>>({
     Datetime: new Date(),
   });
@@ -80,7 +82,28 @@ export default function PrescriptionCreate() {
         }
       });
   }
-  
+    //ดึงข้อมูล medicine
+    function getMedicine() {
+      const apiUrl = "http://localhost:8080/medicineLabels";
+      const requestOptions = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+      };
+      fetch(apiUrl, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+          console.log("Combobox_bill", res)
+          if (res.data) {
+            setMedicine(res.data);
+          } else {
+            console.log("else");
+          }
+        });
+    }
+    
 
   function getUser() {
     const UserID = localStorage.getItem("uid")
@@ -112,10 +135,12 @@ export default function PrescriptionCreate() {
   function submit() {
     setLoading(true)
     let data = {
-      PharmacistID: Number(localStorage.getItem("uid")),
+      DOctorID: Number(localStorage.getItem("uid")),
+      Number: convertType(Prescription.Number ?? ""),
       Datetime: Prescription.Datetime,
       Note: Prescription.Note ?? "",
       PatientID: convertType(Prescription.PatientID),
+      MedicineLabelID: convertType(Prescription.MedicineLabelID),
     };
     console.log("Data", data)
     const apiUrl = "http://localhost:8080/Prescription";
@@ -146,6 +171,7 @@ export default function PrescriptionCreate() {
   React.useEffect(() => {
 
     getPatient();
+    getMedicine();
     getUser();
 
   }, []);
@@ -181,7 +207,7 @@ export default function PrescriptionCreate() {
 
             <Button style={{ float: "right" }}
               component={RouterLink}
-              to="/ClassifyDrug"
+              to="/Prescriptions"
               variant="contained"
               color="primary">
               <SourceIcon />รายการบันทึกการสั่งยา
@@ -189,6 +215,49 @@ export default function PrescriptionCreate() {
           </Typography>
         </Box>
         </Box>
+        <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+              <p>เลขใบสั่งยา</p>
+              <FormControl fullWidth variant="outlined">
+                <TextField
+                  id="Number"
+                  variant="outlined"
+                  type="number"
+                  size="medium"
+                  placeholder="กรอกหมายเลขยา"
+                  value={Prescription.Number || ""}
+                  InputProps={{
+                    inputProps: { min: 10000,
+                                  max: 99999 }
+                  }}
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+              <p>ชื่อยา</p>
+              <Select
+                native
+                value={Prescription.MedicineLabelID}
+                onChange={handleChange}
+                inputProps={{
+                  name: "MedicineLabelID",
+                }}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือกชื่อยา
+                </option>
+                {medicine.map((item: MedicineLabelsInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.Order.Medicine.Name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+      
         <Grid item xs={6}>
             <FormControl fullWidth variant="outlined" style={{ width: '40%', float: 'left' }}>
               <p>แพทย์</p>
@@ -227,7 +296,7 @@ export default function PrescriptionCreate() {
           </Grid>
           <Grid item xs={6}>
             <p>หมายเหตุ</p>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%', float: 'left' }}>
+            <FormControl fullWidth variant="outlined" style={{ width: '40%' }}>
               <TextField
                 id="Note"
                 variant="outlined"
