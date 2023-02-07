@@ -1,3 +1,4 @@
+import { MedicineLabelsInterface } from "./IMedicineLabel";
 import { PatientInterface } from "./IPatient";
 import { UserInterface } from "./IUser";
 
@@ -13,5 +14,8 @@ export interface PrescriptionInterface {
 
     PatientID: number,
     Patient: PatientInterface,
+
+    MedicineLabelID: number,
+    MedicineLabel:  MedicineLabelsInterface,
 
 }

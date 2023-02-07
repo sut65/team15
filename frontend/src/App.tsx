@@ -64,7 +64,7 @@ function App() {
       <Route path="/ClassifyDrugs" element={<ClassifiesCreate />} />
       <Route path="/ClassifyDrug" element={<Classifies />} />
       <Route path="/Prescription" element={<PrescriptionCreate />} />
-      <Route path="/Prescription" element={<Prescription />} />
+      <Route path="/Prescriptions" element={<Prescription />} />
       
 
       {/* /<Route path="/MedicineReturnList" element={<MedicineReturnList />} /> */}
