@@ -1,3 +1,4 @@
+import { ClassifydrugsInterface } from "./IClassifydrugs";
 import { UserInterface } from "./IUser";
 
 export interface MedicineArrangementInterface {
@@ -10,5 +11,8 @@ export interface MedicineArrangementInterface {
 
     PharmacistID: number,
     Pharmacist:   UserInterface,
+
+    ClassifyDrugsID: number,
+    ClassifyDrugs:      ClassifydrugsInterface,
 
 }

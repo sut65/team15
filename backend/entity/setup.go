@@ -42,6 +42,8 @@ func SetupDatabase() {
 		&MedicineReceive{},
 		&ClassifyDrugs{},
 		&Cupboard{},
+		&Zonee{},
+		&Floor{},
 		&Prescription{},
 		&Patient{},
 		&Attendance{},
@@ -53,6 +55,9 @@ func SetupDatabase() {
 		&Bill{},
 		&Cause{},
 		&Discardmedicine{},
+		&Staff{},
+		&Return{},
+		&Reason{},
 	)
 
 	db = database
@@ -280,20 +285,38 @@ func SetupDatabase() {
 	//ตู้ยา
 	cupboard1 := Cupboard{
 		Name:  "A",
-		Zone:  "AA",
-		Floor: 2,
 	}
 	db.Model(&Cupboard{}).Create(&cupboard1)
 	cupboard2 := Cupboard{
 		Name:  "B",
-		Zone:  "BB",
-		Floor: 3,
 	}
 	db.Model(&Cupboard{}).Create(&cupboard2)
+
+	//โซนยา
+	zonee1 := Zonee{
+		Name:  "AA",
+	}
+	db.Model(&Zonee{}).Create(&zonee1)
+	zonee2 := Zonee{
+		Name:  "BB",
+	}
+	db.Model(&Zonee{}).Create(&zonee2)
+
+	//ชั้นยา
+	floor1 := Floor{
+		Number: 1,
+	}
+	db.Model(&Floor{}).Create(&floor1)
+	floor2 := Floor{
+		Number: 2,
+	}
+	db.Model(&Floor{}).Create(&floor2)
 
 	class1 := ClassifyDrugs{
 		Pharmacist: pharmacist6,
 		Cupboard:   cupboard2,
+		Zonee:   	zonee2,
+		Floor:   	floor2,
 		Note:       "-",
 		Datetime:   time.Now(),
 	}
@@ -302,6 +325,8 @@ func SetupDatabase() {
 	class2 := ClassifyDrugs{
 		Pharmacist: pharmacist6,
 		Cupboard:   cupboard1,
+		Zonee:   	zonee1,
+		Floor:   	floor1,
 		Note:       "-",
 		Datetime:   time.Now(),
 	}
@@ -310,15 +335,13 @@ func SetupDatabase() {
 	//-----------------------------------------------------------ระบบบันทึกการสั่งยา-----------------------------------
 	//ผู้ป่วย
 	patient1 := Patient{
-		FirstName: "A",
-		LastName:  "AA",
+		Name: 	   "กอไก่ ว่องไว",
 		Sex:       "men",
 		Age:       21,
 	}
 	db.Model(&Patient{}).Create(&patient1)
 	patient2 := Patient{
-		FirstName: "B",
-		LastName:  "BB",
+		Name: 	   "ขอใข่ ช้าจัง",
 		Sex:       "men",
 		Age:       22,
 	}
@@ -449,5 +472,38 @@ func SetupDatabase() {
 	}
 	db.Model(&Attendance{}).Create(&attendance1)
 
+	//-------ระบบบันทึกการคืนยา-------------
+	//Staff
+	stff1 := Staff{
+		StaffName: "Mana Manee",
+	}
+	db.Model(&Staff{}).Create(&stff1)
+
+	stff2 := Staff{
+		StaffName: "Pithi Chujai",
+	}
+	db.Model(&Staff{}).Create(&stff2)
+
+	//Reason
+	Reason1 := Reason{
+		ReasonName: "หมดอายุ",
+	}
+	db.Model(&Reason{}).Create(&Reason1)
+
+	Reason2 := Reason{
+		ReasonName: "รับประทานไม่หมด",
+	}
+	db.Model(&Reason{}).Create(&Reason2)
+
+	// --- MedicineLabel Data
+	Return1 := Return{
+		DispenseMedicine:     dispensemedicine,
+		Staff:                stff1,
+		Reason:               Reason1,
+		Note:                  "ยามีความชื้น",
+		Pharmacist:           pharmacist1,	
+		ReturnDate:           time.Now(),
+	}
+	db.Model(&Return{}).Create(&Return1)
 	
 }

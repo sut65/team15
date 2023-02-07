@@ -96,19 +96,19 @@ function DispenseMedicines() {
                                 <TableCell align="center" width="15%">
                                     เลขใบจ่ายยา
                                 </TableCell>
-                                {/* <TableCell align="left" width="5%">
+                                <TableCell align="left" width="15%">
                                     ใบชำระเงิน
                                 </TableCell>
                                 <TableCell align="left" width="10%">
                                     ผู้ชำระเงิน
-                                </TableCell> */}
+                                </TableCell>
                                 <TableCell align="center" width="10%">
                                     ช่องจ่ายยา
                                 </TableCell>
                                 <TableCell align="center" width="20%">
                                     ผู้รับยา
                                 </TableCell>
-                                <TableCell align="center" width="15%">
+                                <TableCell align="center" width="20%">
                                     วันที่และเวลา
                                 </TableCell>
                                 <TableCell align="center" width="15%">
@@ -124,7 +124,7 @@ function DispenseMedicines() {
                                  <TableCell align="center" size="medium"> {dispensemedicine.ID}            </TableCell>
                                  <TableCell align="center" size="medium"> {dispensemedicine.DispenseNo}    </TableCell>
                                  {/* <TableCell align="left" size="medium"> {dispensemedicine.Bill.BillNo}    </TableCell> */}
-                                 {/* <TableCell align="left" size="medium"> {dispensemedicine.}     </TableCell> */}
+                                 {/* <TableCell align="left" size="medium"> {dispensemedicine.Bill,Payer}     </TableCell> */}
                                  <TableCell align="center" size="medium"> {dispensemedicine.Pharmacy.PharmacyBox}     </TableCell>
                                  <TableCell align="center" size="medium"> {dispensemedicine.ReceiveName}           </TableCell>
                                  <TableCell align="center" > {moment(dispensemedicine.DispenseTime).format('DD MMMM yyyy')} </TableCell>

@@ -8,10 +8,12 @@ import SourceIcon from '@mui/icons-material/Source';
 import Paper from '@mui/material/Paper'
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { Button, CssBaseline, FormControl, Grid, Select, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material'
+import { Button, CssBaseline, Divider, FormControl, Grid, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { UserInterface } from "../models/IUser";
 import { MedicineArrangementInterface } from "../models/IMedicineArrangement";
+import { ClassifydrugsInterface } from "../models/IClassifydrugs";
+import { CupboardInterface } from "../models/ICupboard";
 
 
 export default function MedicineArrangementCreate() {
@@ -19,6 +21,8 @@ export default function MedicineArrangementCreate() {
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [user, setUser] = React.useState<UserInterface>();
+  const [cupboard, setCupboard] = React.useState<ClassifydrugsInterface[]>([]);
+  // const [prescription, setPrescription] = React.useState<PrescriptionInterface[]>([]);
   const [medicinearrangement, setMedicineArrangement] = React.useState<Partial<MedicineArrangementInterface>>({
     MedicineArrangementTime: new Date(),
   });
@@ -54,6 +58,42 @@ export default function MedicineArrangementCreate() {
       [name]: event.target.value,
     });
   };
+  //ดึงข้อมูลตู้ยา
+  const getCupboard = async () => {
+    const apiUrl = "http://localhost:8080/ClassifyDrug";
+    const requestOptions = {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+    };
+    fetch(apiUrl, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            console.log(res.data);
+            if (res.data) {
+              setCupboard(res.data);
+            }
+        });
+};
+  // function getPrescription() {
+  //   const apiUrl = "http://localhost:8080/Prescription";
+  //   const requestOptions = {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       "Content-Type": "application/json",
+  //     },
+  //   };
+  //   fetch(apiUrl, requestOptions)
+  //     .then((response) => response.json())
+  //     .then((res) => {
+  //       console.log("Combobox_prescriptionNo", res)
+  //       if (res.data) {
+  //         setCupboard(res.data);
+  //       } else {
+  //         console.log("else");
+  //       }
+  //     });
+  // }
 
    function getUser() {
     const UserID = localStorage.getItem("uid")
@@ -89,6 +129,8 @@ export default function MedicineArrangementCreate() {
       Note: medicinearrangement.Note ?? "" ,
       MedicineArrangementTime: medicinearrangement.MedicineArrangementTime,
       MedicineArrangementNo: typeof medicinearrangement.MedicineArrangementNo == "string" ? parseInt(medicinearrangement.MedicineArrangementNo) : 0,
+      CupboardID: convertType(medicinearrangement.ClassifyDrugsID),
+      // PrescriptionID: convertType(medicinearrangement.PrescriptionID),
     };
     console.log("Data", data)
     const apiUrl = "http://localhost:8080/medicinearrangement";
@@ -118,6 +160,8 @@ export default function MedicineArrangementCreate() {
   React.useEffect(() => {
 
     getUser();
+    // getPrescription();
+    getCupboard();
 
   }, []);
 
@@ -141,6 +185,7 @@ export default function MedicineArrangementCreate() {
           บันทึกข้อมูลไม่สำเร็จ: {ErrorMessage}
         </Alert>
       </Snackbar>
+
       <Paper sx={{ p: 4, pb: 10 }}  >
       <Box display="flex" > <Box flexGrow={1}>
           <Typography
@@ -161,6 +206,7 @@ export default function MedicineArrangementCreate() {
           </Typography>
         </Box>
         </Box>
+        <Divider />
       <Grid container spacing={4}>
         <Grid item xs={6}>
         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
@@ -172,11 +218,56 @@ export default function MedicineArrangementCreate() {
                       type="number"
                       size="medium"
                       placeholder="เลขใบจัดยา"
+                      InputProps={{
+                        inputProps: { min: 200000,
+                                      max: 999999 }
+                      }}
                       onChange={handleInputChange}
                     />
                   </FormControl>
                   </FormControl>
                 </Grid>
+                <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
+              <p>เลือกตู้ยา | ชื่อยา</p>
+              <Select 
+                variant="outlined"
+                defaultValue={0}
+                value={medicinearrangement.ClassifyDrugsID}
+                onChange={handleChange}
+                inputProps={{ name: "CupboardID" }}
+                >
+                <MenuItem value={0} key={0}>เลือกตู้ยา | ชื่อยา</MenuItem>
+                {cupboard.map((item: ClassifydrugsInterface) => 
+                (
+                <MenuItem value={item.ID} key={item.ID}>
+                {item.Cupboard.Name}  {"|"}  {item.Cupboard.Name}
+                </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          {/* <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
+              <p>เลือกใบสั่งยา | ชื่อยา</p>
+              <Select 
+                variant="outlined"
+                defaultValue={0}
+                value={medicinearrangement.PrescriptionID}
+                onChange={handleChange}
+                inputProps={{ name: "PrescriptionID" }}
+                >
+                <MenuItem value={0} key={0}>เลือกใบสั่งยา | ชื่อยา</MenuItem>
+                {prescription.map((item: PrescriptionInterface) => 
+                (
+                <MenuItem value={item.ID} key={item.ID}>
+                {item.PrescriptionNo}  {"|"}  {item.Cupboard.Name}
+                </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid> */}
+
                 <Grid item xs={6}>
                 <p>หมายเหตุ</p>
                 <FormControl fullWidth variant="outlined">
@@ -198,7 +289,6 @@ export default function MedicineArrangementCreate() {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                   value={medicinearrangement.MedicineArrangementTime}
-                  inputFormat="dd-mm-yyyy"
                   onChange={(newValue) => {
                     setMedicineArrangement({
                       ...medicinearrangement,

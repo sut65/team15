@@ -8,12 +8,13 @@ import SourceIcon from '@mui/icons-material/Source';
 import Paper from '@mui/material/Paper'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Button, CssBaseline, FormControl, Grid, Select, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material'
+import { Button, CssBaseline, FormControl, FormHelperText, Grid, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material'
 
 import { UserInterface } from "../models/IUser";
 import { PharmacyInterface } from "../models/IPharmacy";
 import { DispenseMedicineInterface } from "../models/IDispenseMedicine";
 import { LocalizationProvider } from "@mui/x-date-pickers";
+// import { BillInterface } from "../models/IBill";
 
 
 export default function DispenseMedicineCreate() {
@@ -22,6 +23,7 @@ export default function DispenseMedicineCreate() {
   const [error, setError] = React.useState(false);
   const [user, setUser] = React.useState<UserInterface>();
   const [pharmacy, setPharmacy] = React.useState<PharmacyInterface[]>([]);
+  // const [bill, setBill] = React.useState<BillInterface[]>([]);
   const [dispensemedicine, setDispensemedicine] = React.useState<Partial<DispenseMedicineInterface>>({
     DispenseTime: new Date(),
   });
@@ -36,6 +38,7 @@ export default function DispenseMedicineCreate() {
     setError(false);
     setLoading(false)
   };
+
 
   const handleInputChange = (
     event: React.ChangeEvent<{ id?: string; value: any }>
@@ -58,6 +61,29 @@ export default function DispenseMedicineCreate() {
     });
   };
 
+    //ดึงข้อมูลใบชะระเงิน
+    // function getฺBill() {
+    //   const apiUrl = "http://localhost:8080/bills";
+    //   const requestOptions = {
+    //     method: "GET",
+    //     headers: {
+    //       Authorization: `Bearer ${localStorage.getItem("token")}`,
+    //       "Content-Type": "application/json",
+    //     },
+    //   };
+    //   fetch(apiUrl, requestOptions)
+    //     .then((response) => response.json())
+    //     .then((res) => {
+    //       console.log("Combobox_billNO", res)
+    //       if (res.data) {
+    //         setBill(res.data);
+    //       } else {
+    //         console.log("else");
+    //       }
+    //     });
+    // }
+  
+
   //ดึงข้อมูลช่องจ่ายยา
   function getPharmacy() {
     const apiUrl = "http://localhost:8080/pharmacys";
@@ -71,7 +97,7 @@ export default function DispenseMedicineCreate() {
     fetch(apiUrl, requestOptions)
       .then((response) => response.json())
       .then((res) => {
-        console.log("Combobox_medicine", res)
+        console.log("Combobox_pharmacy", res)
         if (res.data) {
           setPharmacy(res.data);
         } else {
@@ -115,6 +141,7 @@ export default function DispenseMedicineCreate() {
       ReceiveName: dispensemedicine.ReceiveName ?? "",
       DispenseNo: typeof dispensemedicine.DispenseNo == "string" ? parseInt(dispensemedicine.DispenseNo) : 0,
       PharmacyID: convertType(dispensemedicine.PharmacyID),
+      // BillID:  convertType(dispensemedicine.BillID),
     };
     console.log("Data", data)
     const apiUrl = "http://localhost:8080/dispensemedicine";
@@ -143,7 +170,7 @@ export default function DispenseMedicineCreate() {
 
   //ดึงข้อมูล ใส่ combobox
   React.useEffect(() => {
-
+    // getฺBill();
     getPharmacy();
     getUser();
 
@@ -199,10 +226,34 @@ export default function DispenseMedicineCreate() {
                   variant="outlined"
                   type="number"
                   size="medium"
+                  InputProps={{
+                    inputProps: { min: 100000,
+                                  max: 999999 }
+                  }}
                   onChange={handleInputChange} />
               </FormControl>
             </FormControl>
           </Grid>
+          {/* <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
+              <p>เลขใบชำระเงิน | ผู้ชำระเงิน</p>
+              <Select 
+                variant="outlined"
+                defaultValue={0}
+                value={dispensemedicine.BillID}
+                onChange={handleChange}
+                inputProps={{ name: "BillID" }}
+                >
+                  <MenuItem value={0} key={0}>เลือกเลขใบชำระเงิน</MenuItem>
+              {bill.map((item: BillInterface) => 
+              (
+              <MenuItem value={item.ID} key={item.ID}>
+              {item.BillNo}  {"|"}   {item.Payer}
+              </MenuItem>
+              ))}
+              </Select>
+            </FormControl>
+          </Grid> */}
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>ช่องจ่ายยา</p>
@@ -245,7 +296,6 @@ export default function DispenseMedicineCreate() {
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   value={dispensemedicine.DispenseTime}
-                  inputFormat="dd-mm-yyyy"
                   onChange={(newValue) => {
                     setDispensemedicine({
                       ...dispensemedicine,
