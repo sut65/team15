@@ -27,6 +27,7 @@ type MedicineLabel struct {
 	Pharmacist 	  User
 
 	MedicineReceive		[]MedicineReceive`gorm:"foreignKey:MedicineLabelID"`
+	prescriptions		[]Prescription 	`gorm:"foreignKey:MedicineLabelID"`
 	
 
 }

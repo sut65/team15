@@ -14,7 +14,7 @@ function Prescription() {
     const [prescription, setPrescription] = React.useState<PrescriptionInterface[]>([]);
 
     const getPrescription = async () => {
-        const apiUrl = "http://localhost:8080/Prescription";
+        const apiUrl = "http://localhost:8080/Prescriptions";
         const requestOptions = {
             method: "GET",
             headers: { "Content-Type": "application/json" },
@@ -68,7 +68,7 @@ function Prescription() {
 
                             component={RouterLink}
 
-                            to="/ClassifyDrugs"
+                            to="/Prescription"
 
                             variant="contained"
 
@@ -94,13 +94,19 @@ function Prescription() {
                                     ID
                                 </TableCell>
                                 <TableCell align="center" width="10%">
-                                    แพทย์
+                                    เลขใบสั่งยา
                                 </TableCell>
+                                <TableCell align="center" width="10%">
+                                    ชื่อยา
+                                </TableCell>  
                                 <TableCell align="center" width="20%">
                                     ผู้ป่วย
                                 </TableCell>
                                 <TableCell align="center" width="15%">
                                     หมายเหตุ
+                                </TableCell>
+                                <TableCell align="center" width="10%">
+                                    แพทย์
                                 </TableCell>
                                 <TableCell align="center" width="15%">
                                     วันที่และเวลา
@@ -113,9 +119,11 @@ function Prescription() {
                             {prescription.map((prescription: PrescriptionInterface) => (
                             <TableRow key={prescription.ID}>
                                  <TableCell align="center" size="medium"> {prescription.ID}            </TableCell>
-                                 <TableCell align="center" size="medium"> {prescription.Doctor.Name}    </TableCell>
+                                 <TableCell align="center" size="medium"> {prescription.Number}    </TableCell>
+                                 <TableCell align="center" size="medium"> {prescription.MedicineLabel.Order.Medicine.Name}    </TableCell>
                                  <TableCell align="center" size="medium"> {prescription.Patient.Name}     </TableCell>
                                  <TableCell align="center" size="medium"> {prescription.Note}    </TableCell>
+                                 <TableCell align="center" size="medium"> {prescription.Doctor.Name}    </TableCell>
                                  <TableCell align="center" > {moment(prescription.Datetime).format('DD MMMM yyyy')} </TableCell>
                             </TableRow>
                         ))}
