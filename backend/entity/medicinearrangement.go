@@ -16,10 +16,10 @@ type MedicineArrangement struct {
 	Pharmacist						User  
 
 	ClassifyDrugsID					*uint
-	ClassifyDrugs					ClassifyDrugs
+	ClassifyDrugs					ClassifyDrugs		`gorm:"references:id" valid:"-"`
 
 	PrescriptionID					*uint
-	Prescription					Prescription
+	Prescription					Prescription 		`gorm:"references:id" valid:"-"`
 
 
 }
