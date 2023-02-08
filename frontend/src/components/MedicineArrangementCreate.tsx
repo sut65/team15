@@ -241,7 +241,7 @@ export default function MedicineArrangementCreate() {
                 {prescription.map((item: PrescriptionInterface) => 
                 (
                 <MenuItem value={item.ID} key={item.ID}>
-                {item.Number}  {"|"}
+                {item.Number}  {"|"} {item.MedicineLabel.Order.Medicine.Name}
                 </MenuItem>
                 ))}
               </Select>
