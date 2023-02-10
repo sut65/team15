@@ -264,7 +264,7 @@ export default function MedicineDisbursementCreate() {
                 <Grid item xs={4}>
 
                     <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
-                        <p>ยาสำหรับผู้ป่วยนอก/ผู้ป่วยใน</p>
+                        <p>ยาสำหรับผู้ป่วยนอก-ผู้ป่วยใน</p>
                         <Select
                             native
                             value={MedicineDisbursement.MedicineRoomID}
