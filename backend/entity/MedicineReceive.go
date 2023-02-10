@@ -16,7 +16,7 @@ type MedicineReceive struct {
 	Pharmacist   User
 
 	MedicineLabelID *uint
-	MedicineLabel   MedicineLabel
+	MedicineLabel   MedicineLabel		`gorm:"references:id" valid:"-"`
 
 	//MedicineDisbursement		[]MedicineDisbursement`gorm:"foreignKey:MedicineReceiveID"`
 	Discardmedicine []Discardmedicine	`gorm:"foreignkey:MedicineReceiveID"`
