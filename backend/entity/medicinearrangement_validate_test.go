@@ -84,3 +84,19 @@ func TestNoMedicineArrangement3(t *testing.T) {
 			g.Expect(err.Error()).To(Equal("MedicineArrangementNo: range 200000|999999"))
 	})
 }
+
+func TestMedicineArrangementNotBePast(t *testing.T) {
+	g := NewGomegaWithT(t)
+	t.Run("check MedicineArrangementTime not be past", func(t *testing.T) {
+			arrangement := MedicineArrangement{
+				MedicineArrangementNo: 		200000,		
+				Note:						"มีการเปลี่ยนยี่ห้อยา"	,	                  		
+				MedicineArrangementTime:	time.Now().Add(time.Minute * -10), // อดีตผิด วันที่เวลาต้องไม่เป็นอดีต
+			}
+
+			ok, err := govalidator.ValidateStruct(arrangement)
+			g.Expect(ok).NotTo(BeTrue())			
+			g.Expect(err).ToNot(BeNil())			
+			g.Expect(err.Error()).To(Equal("MedicineArrangementTime not be past"))
+	})
+}
