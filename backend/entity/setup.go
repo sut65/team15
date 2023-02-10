@@ -58,6 +58,9 @@ func SetupDatabase() {
 		&Staff{},
 		&Return{},
 		&Reason{},
+		&MedicineDisbursement{},
+		&MedicineRoom{},
+
 	)
 
 	db = database
@@ -247,7 +250,7 @@ func SetupDatabase() {
 		Pharmacist:        pharmacist2,
 		Zone:              Zone1,
 		RecievedDate:      time.Now(),
-		//MedicineLabel:     MedicineLabel,
+		MedicineLabel:     medicinelabel01,
 	}
 	db.Model(&MedicineReceive{}).Create(&medicineReceive)
 
@@ -276,6 +279,28 @@ func SetupDatabase() {
 
 
 	//------------------------------------------------------------ระบบบันทึกการเบิกยา-------------------------------------
+	//MedicineRoom
+	medicineRoom1 := MedicineRoom{
+		MRname: "ยาสำหรับผู้ป่วยนอก",
+	}
+	db.Model(&MedicineRoom{}).Create(&medicineRoom1)
+
+	medicineRoom2 := MedicineRoom{
+		MRname: "ยาสำหรับผู้ป่วยใน",
+	}
+	db.Model(&MedicineRoom{}).Create(&medicineRoom2)
+	//ระบบเบิกยา
+	medicineDisbursement01:= MedicineDisbursement{
+		MedicineDisNo: 2543,
+		Pharmacist:        pharmacist2,
+		MedicineRoom: medicineRoom1,
+		Dtime:      time.Now(),
+		MedicineReceive:     medicineReceive,
+	}
+	db.Model(&MedicineDisbursement{}).Create(&medicineDisbursement01)
+
+
+	
 
 
 
@@ -499,7 +524,6 @@ func SetupDatabase() {
 	// --- MedicineLabel Data
 	Return1 := Return{
 		DispenseMedicine:     dispensemedicine,
-		Order:                order1,
 		Staff:                stff1,
 		Reason:               Reason1,
 		Note:                  "ยามีความชื้น",
@@ -507,6 +531,5 @@ func SetupDatabase() {
 		ReturnDate:           time.Now(),
 	}
 	db.Model(&Return{}).Create(&Return1)
-
 	
 }
