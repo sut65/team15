@@ -23,6 +23,8 @@ import ClassifiesCreate from './components/ClassifiesCreate';
 import Classifies from './components/Classifies';
 import Prescription from './components/Prescription';
 import PrescriptionCreate from './components/PrescriptionCreate';
+import MedicineDisbursementCreate from './components/MedicineDisbursementCreate';
+import MedicineDisbursement from './components/MedicineDisbursement';
 
 
 function App() {
@@ -59,6 +61,8 @@ function App() {
       <Route path="/MedicineReturn" element={<MedicineReturnCreate />} />
       <Route path="/medicineReceives" element={<MedicineReceiveCreate />} />
       <Route path="/medicineReceive" element={<MedicineReceive />} />
+      <Route path="/medicineDisbursements" element={<MedicineDisbursementCreate />} />
+      <Route path="/medicineDisbursement" element={<MedicineDisbursement />} />
       <Route path="/MedicineReturn" element={<MedicineReturnCreate />} />
       <Route path="/MedicineReturnList" element={<MedicineReturnList />}/> 
       <Route path="/ClassifyDrugs" element={<ClassifiesCreate />} />

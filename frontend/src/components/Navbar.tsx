@@ -97,7 +97,7 @@ function Navbar() {
     {
       name: "รายการบันทึกการเบิกยา",
       icon: <ContentPasteSearchIcon/>,
-      path: "/MedicineDisbursement"
+      path: "/medicineDisbursements"
     },
 
     {
