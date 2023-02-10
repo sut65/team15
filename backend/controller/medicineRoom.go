@@ -26,7 +26,7 @@ func CreateMedicineRoom(c *gin.Context) {
 // List /MedicineRooms
 func ListMedicineRoom(c *gin.Context) {
 	var medicineRooms []entity.MedicineRoom
-	if err := entity.DB().Raw("SELECT * FROM medicineRooms").Find(&medicineRooms).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM medicine_rooms").Find(&medicineRooms).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -37,7 +37,7 @@ func ListMedicineRoom(c *gin.Context) {
 func GetMedicineRoom(c *gin.Context) {
 	var medicineRoom entity.MedicineRoom
 	id := c.Param("id")
-	if err := entity.DB().Raw("SELECT * FROM medicineRoom WHERE id = ?", id).Find(&medicineRoom).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM medicine_rooms WHERE id = ?", id).Find(&medicineRoom).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
