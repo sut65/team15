@@ -17,7 +17,7 @@ export interface MedicineReceiveInterface {
 	Zone: ZoneInterface,
 
     MedicineLabelID: number,
-    MedicineLable: MedicineLabelsInterface,
+    MedicineLabel: MedicineLabelsInterface,
 
 
 }
