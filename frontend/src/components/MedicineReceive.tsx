@@ -7,13 +7,14 @@ import { Link as RouterLink } from "react-router-dom";
 import TableContainer from '@mui/material/TableContainer';
 import moment from 'moment';
 
+import { OrderInterface } from "../models/IOrder";
 import { MedicineLabelsInterface} from "../models/IMedicineLabel";
 import { MedicineReceiveInterface } from "../models/IMedicineReceive";
 
 function MedicineReceive() {
 
     const [medicineReceive, setMedicineReceive] = React.useState<MedicineReceiveInterface[]>([]);
-
+    //const [Order, setOrder] = React.useState<OrderInterface[]>([]);
     const getMedicineReceive = async () => {
         const apiUrl = "http://localhost:8080/medicineReceive";
         const requestOptions = {
@@ -29,6 +30,8 @@ function MedicineReceive() {
                 }
             });
     };
+
+ 
 
     useEffect(() => {
         getMedicineReceive();
@@ -69,7 +72,7 @@ function MedicineReceive() {
 
                             component={RouterLink}
 
-                            to="/medicineReceive"
+                            to="/medicineReceives"
 
                             variant="contained"
 
@@ -97,13 +100,16 @@ function MedicineReceive() {
                                 <TableCell align="center" width="15%">
                                 เลขใบคลังยา
                                 </TableCell>
-                                {/* <TableCell align="left" width="5%">
+                                <TableCell align="left" width="5%">
                                     ชื่อยา
                                 </TableCell>
-                                <TableCell align="left" width="10%">
+                                {/* <TableCell align="left" width="5%">
+                                    วันหมดอายุ
+                                </TableCell> */}
+                                {/* <TableCell align="left" width="10%">
                                     จำนวนยา
                                 </TableCell> */}
-                                <TableCell align="center" width="10%">
+                                <TableCell align="center" width="5%">
                                     โซนยา
                                 </TableCell>
                                 <TableCell align="center" width="20%">
@@ -122,10 +128,11 @@ function MedicineReceive() {
                             <TableRow key={medicineReceive.ID}>
                                  <TableCell align="center" size="medium"> {medicineReceive.ID}            </TableCell>
                                  <TableCell align="center" size="medium"> {medicineReceive.MedicineReceiveNo}    </TableCell>
-                                 {/* <TableCell align="center" size="medium"> {.Zone.ZoneName}           </TableCell> */}
+                                 <TableCell align="center" size="medium"> {medicineReceive.MedicineLabel.Order.Medicine.Name}     </TableCell>
+                                 {/* <TableCell align="center" size="medium"> {medicineReceive.MedicineLable.Date}     </TableCell> */}
                                  <TableCell align="center" size="medium"> {medicineReceive.Zone.ZoneName}           </TableCell>
                                  <TableCell align="center" size="medium"> {medicineReceive.Pharmacist.Name}           </TableCell>
-                                 <TableCell align="center" > {moment(medicineReceive.RecievedDate).format('DD MMMM yyyy')} </TableCell>
+                                 <TableCell align="center" > {moment(medicineReceive.RecievedDate).format('DD MMMM yyyy')}     </TableCell>
                             </TableRow>
                         ))}
 
