@@ -10,6 +10,7 @@ import Home from './components/Hom';
 import Orders from './components/Order';
 import MedicineArrangementCreate from './components/MedicineArrangementCreate';
 import MedicineArrangement from './components/MedicineArrangement';
+import MedicineArrangementUpdate from './components/MedicineArrangementUpdate';
 import MedicineLabelCreate from './components/MedicineLabelCreate';
 import MedicineLabel from './components/MedicineLabel';
 import MedicineReturnCreate from './components/MedicineReturn';
@@ -53,6 +54,7 @@ function App() {
       <Route path="/dispensemedicines" element={<DispenseMedicines />} />
       <Route path="/medicinearrangement" element={<MedicineArrangementCreate />} />
       <Route path="/medicinearrangements" element={<MedicineArrangement />} />
+      <Route path="/MedicineArrangementUpdate/:id" element={<MedicineArrangementUpdate />}/> 
       <Route path="/Orderslist" element={<Orders />} />
       <Route path="/attendance" element={<AttendanceCreate />} />
       <Route path="/attendanceslist" element={<Attendances />} />

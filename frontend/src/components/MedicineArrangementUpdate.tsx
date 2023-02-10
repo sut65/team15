@@ -1,84 +1,90 @@
-import { Link as RouterLink } from "react-router-dom";
-import * as React from 'react';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
-import { Container } from '@mui/system'
-import Snackbar from '@mui/material/Snackbar'
-import Box from '@mui/material/Box';
-import SourceIcon from '@mui/icons-material/Source';
-import Paper from '@mui/material/Paper'
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from '@mui/x-date-pickers';
+import React, { useEffect, useState } from 'react'
 import { Button, CssBaseline, Divider, FormControl, Grid, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { UserInterface } from "../models/IUser";
-import { MedicineArrangementInterface } from "../models/IMedicineArrangement";
-import { ClassifydrugsInterface } from "../models/IClassifydrugs";
-import { PrescriptionInterface } from "../models/IPrescription";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { Container } from '@mui/system'
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import Paper from '@mui/material/Paper'
+import SourceIcon from '@mui/icons-material/Source';
+import Snackbar from '@mui/material/Snackbar'
+import Box from '@mui/material/Box';
 
+import { MedicineArrangementInterface } from '../models/IMedicineArrangement';
+import { ClassifydrugsInterface } from '../models/IClassifydrugs';
+import { PrescriptionInterface } from '../models/IPrescription';
+import { UserInterface } from '../models/IUser';
 
-export default function MedicineArrangementCreate() {
+export default function MedicineArrangementUpdate() {
 
-  const [success, setSuccess] = React.useState(false);
-  const [error, setError] = React.useState(false);
-  const [user, setUser] = React.useState<UserInterface>();
-  const [cupboard, setCupboard] = React.useState<ClassifydrugsInterface[]>([]);
-  const [prescription, setPrescription] = React.useState<PrescriptionInterface[]>([]);
-  const [medicinearrangement, setMedicineArrangement] = React.useState<Partial<MedicineArrangementInterface>>({
-    MedicineArrangementTime: new Date(),
-  });
-  const [loading, setLoading] = React.useState(false);
-  const [ErrorMessage, setErrorMessage] = React.useState<String>();
+    const [user, setUser] = React.useState<UserInterface>();
+    const [ErrorMessage, setErrorMessage] = React.useState<String>();
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
 
-  const handleClose = (res: any) => {
-    if (res === "clickaway") {
-      return;
-    }
-    setSuccess(false);
-    setError(false);
-    setLoading(false)
-  };
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setSuccess(false);
+      setError(false);
+    };
+    const [cupboard, setCupboard] = React.useState<ClassifydrugsInterface[]>([]);
+    const [prescription, setPrescription] = React.useState<PrescriptionInterface[]>([]);
+    const [medicinearrangement, setMedicineArrangement] = React.useState<Partial<MedicineArrangementInterface>>({
+        MedicineArrangementNo: 0,
+        Note: "",
+        MedicineArrangementTime: new Date(),
+    })
 
-  const handleInputChange = (
-    event: React.ChangeEvent<{ id?: string; value: any }>
-  ) => {
-    const id = event.target.id as keyof typeof MedicineArrangementCreate;
-    const { value } = event.target;
-    console.log("ID", id, "Value", value)
-    setMedicineArrangement({ ...medicinearrangement, [id]: value });
-  };
-
-  const handleChange: any = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>
-  ) => {
-    console.log(event.target.value)
-    const name = event.target.name as keyof typeof MedicineArrangementCreate
-    console.log(name)
-    setMedicineArrangement({
-      ...medicinearrangement,
-      [name]: event.target.value,
-    });
-  };
-  //ดึงข้อมูลตู้ยา
-  const getCupboard = async () => {
-    const apiUrl = "http://localhost:8080/ClassifyDrug";
-    const requestOptions = {
+    let {id} = useParams();
+    const getMedicineArrangementID = async (id: string | undefined | null) => {
+        const apiUrl = "http://localhost:8080";
+        const requestOptions = {
         method: "GET",
         headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-    };
-    fetch(apiUrl, requestOptions)
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+            },
+        };
+
+        fetch(`${apiUrl}/medicinearrangements/${id}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
-            console.log(res.data);
+            console.log("medicinearrangements", res)
             if (res.data) {
-              setCupboard(res.data);
+            setMedicineArrangement(res.data);
+            } else {
+            console.log("else");
             }
         });
-};
-
-  function getPrescription() {
+    };
+    
+    
+    //ดึงข้อมูลตู้ยา
+    function getCupboard() {
+        const apiUrl = "http://localhost:8080/ClassifyDrug";
+        const requestOptions = {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        };
+        fetch(apiUrl, requestOptions)
+          .then((response) => response.json())
+          .then((res) => {
+            console.log("Combobox_cupboard", res)
+            if (res.data) {
+              setCupboard(res.data);
+            } else {
+              console.log("else");
+            }
+          });
+      }
+    //ดึงข้อมูลใบสั่งยา
+    function getPrescription() {
     const apiUrl = "http://localhost:8080/Prescriptions";
     const requestOptions = {
       method: "GET",
@@ -98,8 +104,8 @@ export default function MedicineArrangementCreate() {
         }
       });
   }
-
-   function getUser() {
+  
+  function getUser() {
     const UserID = localStorage.getItem("uid")
     const apiUrl = `http://localhost:8080/users/${UserID}`;
     const requestOptions = {
@@ -120,26 +126,49 @@ export default function MedicineArrangementCreate() {
         }
       });
   }
-
-  const convertType = (data: string | number | undefined | null) => {
-    let val = typeof data === "string" ? parseInt(data) : data;
-    return val;
-};
-
-  function submit() {
-    setLoading(true)
-    let data = {
-      PharmacistID: Number(localStorage.getItem("uid")),
-      Note: medicinearrangement.Note ?? "" ,
-      MedicineArrangementTime: medicinearrangement.MedicineArrangementTime,
-      MedicineArrangementNo: convertType(medicinearrangement.MedicineArrangementNo ?? "" ),
-      ClassifyDrugsID: convertType(medicinearrangement.ClassifyDrugsID),
-      PrescriptionID: convertType(medicinearrangement.PrescriptionID),
+    
+   
+    const convertType = (data: string | number | undefined | null) => {
+      let val = typeof data === "string" ? parseInt(data) : data;
+      return val;
     };
-    console.log("Data", data)
+  
+    
+    const handleChange: any = (
+      event: React.ChangeEvent<{ name?: string; value: unknown }>
+    ) => {
+      console.log(event.target.value)
+      const name = event.target.name as keyof typeof medicinearrangement
+      console.log(name)
+        setMedicineArrangement({
+        ...medicinearrangement,
+        [name]: event.target.value,
+      });
+    };
+  
+    const handleInputChange = (
+      event: React.ChangeEvent<{ id?: string; value: any }>
+    ) => {
+      const id = event.target.id as keyof typeof medicinearrangement;
+      const { value } = event.target;
+      setMedicineArrangement({ ...medicinearrangement, [id]: value });
+    };
+  
+    async function submit() {
+  
+      let data = {
+        ID: convertType(medicinearrangement.ID),
+        Note: medicinearrangement.Note ?? "" ,
+        MedicineArrangementTime: medicinearrangement.MedicineArrangementTime,
+        MedicineArrangementNo: convertType(medicinearrangement.MedicineArrangementNo ?? "" ),
+        ClassifyDrugsID: convertType(medicinearrangement.ClassifyDrugsID),
+        PrescriptionID: convertType(medicinearrangement.PrescriptionID),
+        PharmacistID: Number(localStorage.getItem("uid")),
+      };
+      console.log("Data", data)
     const apiUrl = "http://localhost:8080/medicinearrangement";
     const requestOptions = {
-      method: "POST",
+      method: "PATCH",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": "application/json",
@@ -159,59 +188,60 @@ export default function MedicineArrangementCreate() {
         }
       });
   }
-
-  //ดึงข้อมูล ใส่ combobox
-  React.useEffect(() => {
-
-    getUser();
-    getPrescription();
-    getCupboard();
-
-  }, []);
-
-  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-    props,
-    ref,
-  ) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-  });
-
+  
+    useEffect(() => {
+      getCupboard();
+      getPrescription();
+      getUser();
+      getMedicineArrangementID(id);
+    }, []);
+  
+    const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+      props,
+      ref,
+    ) {
+      return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
+  
     
+    
+  
     return (
       <Container maxWidth="lg">
-      <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success">
-          บันทึกข้อมูลสำเร็จ
-        </Alert>
-      </Snackbar>
-      <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error">
-          บันทึกข้อมูลไม่สำเร็จ: {ErrorMessage}
-        </Alert>
-      </Snackbar>
-
-      <Paper sx={{ p: 4, pb: 10 }}  >
-      <Box display="flex" > <Box flexGrow={1}>
-          <Typography
-            component="h2"
-            variant="h5"
-            color="primary"
-            gutterBottom
-          >
-            บันทึกการจัดยา
-
-            <Button style={{ float: "right" }}
-              component={RouterLink}
-              to="/medicinearrangements"
-              variant="contained"
-              color="primary">
-              <SourceIcon />รายการบันทึกการจัดยา
-            </Button>
-          </Typography>
-        </Box>
-        </Box>
-        <Divider />
-      <Grid container spacing={4}>
+        <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="success">
+            แก้ไขข้อมูลสำเร็จ
+          </Alert>
+        </Snackbar>
+        <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error">
+            แก้ไขข้อมูลไม่สำเร็จ: {ErrorMessage}
+          </Alert>
+        </Snackbar>
+  
+        <Paper sx={{ p: 4, pb: 10 }}  >
+  
+          <Box display="flex" > <Box flexGrow={1}>
+            <Typography
+              component="h2"
+              variant="h5"
+              color="primary"
+              gutterBottom
+            >
+              แก้ไขใบจัดยา
+  
+              <Button style={{ float: "right" }}
+                component={RouterLink}
+                to="/medicinearrangements"
+                variant="contained"
+                color="primary">
+                <SourceIcon />รายการบันทึกการจัดยา 
+              </Button>
+            </Typography>
+          </Box>
+          </Box>
+          <Divider />
+          <Grid container spacing={4}>
         <Grid item xs={6}>
         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
            <p>เลขใบจัดยา</p>
@@ -221,6 +251,7 @@ export default function MedicineArrangementCreate() {
                       variant="outlined"
                       type="number"
                       size="medium"
+                      value={medicinearrangement.MedicineArrangementNo}
                       placeholder="เลขใบจัดยา"
                       InputProps={{
                         inputProps: { min: 200000,
@@ -250,7 +281,7 @@ export default function MedicineArrangementCreate() {
                         {item.Number} {"|"} {item.MedicineLabel.Order.Medicine.Name}
                       </option>
                     ))}
-                    </Select>
+              </Select>
             </FormControl>
           </Grid>
           <Grid item xs={6}>
@@ -269,7 +300,7 @@ export default function MedicineArrangementCreate() {
                 </option>
                 {cupboard.map((item: ClassifydrugsInterface) => (
                       <option value={item.ID} key={item.ID}>
-                        {item.Cupboard.Name} {"|"}  {/*item.MedicineDisburment.MedicineReceive.MedicineLabel.Order.Name*/}
+                        {item.Cupboard.Name} {"|"} {/*item.MedicineDisburment.MedicineReceive.MedicineLabel.Order.Name*/}
                       </option>
                     ))}
               </Select>
@@ -353,6 +384,6 @@ export default function MedicineArrangementCreate() {
               
               </Paper >
             </Container>
-          
-    );
-  }
+  
+    )
+}
