@@ -84,3 +84,19 @@ func TestNoDispenseMedicine3(t *testing.T) {
 			g.Expect(err.Error()).To(Equal("DispenseNo: range 100000|999999"))
 	})
 }
+
+func TestDispenseMedicineNotBePast(t *testing.T) {
+	g := NewGomegaWithT(t)
+	t.Run("check DispenseNo not be past", func(t *testing.T) {
+		dispense := DispenseMedicine{
+				DispenseNo: 		1000,		//ผิด
+				ReceiveName:		"แสนดี มากมาย"	,	                  		
+				DispenseTime:	time.Now(),
+			}
+
+			ok, err := govalidator.ValidateStruct(dispense)
+			g.Expect(ok).NotTo(BeTrue())			
+			g.Expect(err).ToNot(BeNil())			
+			g.Expect(err.Error()).To(Equal("DispenseNo not be past"))
+	})
+}
