@@ -63,7 +63,10 @@ export default function MedicineArrangementCreate() {
     const apiUrl = "http://localhost:8080/ClassifyDrug";
     const requestOptions = {
         method: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
     };
     fetch(apiUrl, requestOptions)
         .then((response) => response.json())
@@ -74,6 +77,7 @@ export default function MedicineArrangementCreate() {
             }
         });
 };
+
   function getPrescription() {
     const apiUrl = "http://localhost:8080/Prescriptions";
     const requestOptions = {
@@ -230,40 +234,44 @@ export default function MedicineArrangementCreate() {
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>ใบสั่งยา | ชื่อยา</p>
-              <Select 
-                variant="outlined"
-                defaultValue={0}
-                value={medicinearrangement.PrescriptionID}
-                onChange={handleChange}
-                inputProps={{ name: "PrescriptionID" }}
-                >
-                <MenuItem value={0} key={0}>เลือกใบสั่งยา | ชื่อยา</MenuItem>
-                {prescription.map((item: PrescriptionInterface) => 
-                (
-                <MenuItem value={item.ID} key={item.ID}>
-                {item.Number}  {"|"} {item.MedicineLabel.Order.Medicine.Name}
-                </MenuItem>
-                ))}
-              </Select>
+              <Select
+                    native
+                    value={medicinearrangement.PrescriptionID}
+                    onChange={handleChange}
+                    inputProps={{
+                      name: "PrescriptionID",
+                    }}
+                  >
+                    <option aria-label="None" value="">
+                      เลือกใบสั่งยา | ชื่อยา
+                    </option>
+                    {prescription.map((item: PrescriptionInterface) => (
+                      <option value={item.ID} key={item.ID}>
+                        {item.Number} {"|"} {item.MedicineLabel.Order.Medicine.Name}
+                      </option>
+                    ))}
+                    </Select>
             </FormControl>
           </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>ตู้ยา | ชื่อยา</p>
-              <Select 
-                variant="outlined"
-                defaultValue={0}
-                value={medicinearrangement.ClassifyDrugsID}
-                onChange={handleChange}
-                inputProps={{ name: "ClassifyDrugsID" }}
-                >
-                <MenuItem value={0} key={0}>เลือกตู้ยา | ชื่อยา</MenuItem>
-                {cupboard.map((item: ClassifydrugsInterface) => 
-                (
-                <MenuItem value={item.ID} key={item.ID}>
-                {item.Cupboard.Name}  {"|"}  {/*item.Cupboard.Name*/}
-                </MenuItem>
-                ))}
+              <Select
+                    native
+                    value={medicinearrangement.ClassifyDrugsID}
+                    onChange={handleChange}
+                    inputProps={{
+                      name: "ClassifyDrugsID",
+                    }}
+                  >
+                 <option aria-label="None" value="">
+                      เลือกตู้ยา | ชื่อยา
+                </option>
+                {cupboard.map((item: ClassifydrugsInterface) => (
+                      <option value={item.ID} key={item.ID}>
+                        {item.Cupboard.Name} {"|"}  {/*item.MedicineDisburment.MedicineReceive.MedicineLabel.Order.Name*/}
+                      </option>
+                    ))}
               </Select>
             </FormControl>
           </Grid>

@@ -85,7 +85,7 @@ function Navbar() {
     {
       name: "รายการบันทึกคลังยา",
       icon: <StoreIcon/>,
-      path: "/MedicineReceive",
+      path: "/medicineReceives",
     },
 
     {
@@ -97,13 +97,13 @@ function Navbar() {
     {
       name: "รายการบันทึกการเบิกยา",
       icon: <ContentPasteSearchIcon/>,
-      path: "/MedicineDisbursement"
+      path: "/medicineDisbursements"
     },
 
     {
-         name: "รายการบันทึกการจัดชั้นยา",
+        name: "รายการบันทึกการจัดชั้นวาง",
         icon: <DnsIcon/>,
-        path: "/ClassifyDrugs"
+        path: "/ClassifyMedicine"
     },
 
     {

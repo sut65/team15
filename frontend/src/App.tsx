@@ -10,6 +10,7 @@ import Home from './components/Hom';
 import Orders from './components/Order';
 import MedicineArrangementCreate from './components/MedicineArrangementCreate';
 import MedicineArrangement from './components/MedicineArrangement';
+import MedicineArrangementUpdate from './components/MedicineArrangementUpdate';
 import MedicineLabelCreate from './components/MedicineLabelCreate';
 import MedicineLabel from './components/MedicineLabel';
 import MedicineReturnCreate from './components/MedicineReturn';
@@ -18,12 +19,14 @@ import AttendanceCreate from './components/AttendanceCreate';
 import Attendances from './components/Attendance';
 import MedicineReceiveCreate from './components/MedicineReceiveCreate';
 import MedicineReceive from './components/MedicineReceive';
+import MedicineReturnList from './components/MedicineReturnList'; 
 import ClassifiesCreate from './components/ClassifiesCreate';
 import Classifies from './components/Classifies';
 import Prescription from './components/Prescription';
 import PrescriptionCreate from './components/PrescriptionCreate';
-import MedicineReturnList from './components/MedicineReturnList'; 
-import MedicineLabelUpdate from './components/medicineLabelUpdate';
+import MedicineDisbursementCreate from './components/MedicineDisbursementCreate';
+import MedicineDisbursement from './components/MedicineDisbursement';
+
 
 function App() {
   
@@ -51,22 +54,24 @@ function App() {
       <Route path="/dispensemedicines" element={<DispenseMedicines />} />
       <Route path="/medicinearrangement" element={<MedicineArrangementCreate />} />
       <Route path="/medicinearrangements" element={<MedicineArrangement />} />
+      <Route path="/MedicineArrangementUpdate/:id" element={<MedicineArrangementUpdate />}/> 
       <Route path="/Orderslist" element={<Orders />} />
       <Route path="/attendance" element={<AttendanceCreate />} />
       <Route path="/attendanceslist" element={<Attendances />} />
       <Route path="/MedicineLable" element={<MedicineLabelCreate />} />
       <Route path="/MedicineLabelscreate" element={<MedicineLabel />} />
       <Route path="/MedicineReturn" element={<MedicineReturnCreate />} />
-      <Route path="/MedicineReceive" element={<MedicineReceiveCreate />} />
-      <Route path="/MedicineReceives" element={<MedicineReceive />} />
+      <Route path="/medicineReceives" element={<MedicineReceiveCreate />} />
+      <Route path="/medicineReceive" element={<MedicineReceive />} />
+      <Route path="/medicineDisbursements" element={<MedicineDisbursementCreate />} />
+      <Route path="/medicineDisbursement" element={<MedicineDisbursement />} />
+      <Route path="/MedicineReturn" element={<MedicineReturnCreate />} />
+      <Route path="/MedicineReturnList" element={<MedicineReturnList />}/> 
       <Route path="/ClassifyDrugs" element={<ClassifiesCreate />} />
       <Route path="/ClassifyDrug" element={<Classifies />} />
       <Route path="/Prescription" element={<PrescriptionCreate />} />
       <Route path="/Prescriptions" element={<Prescription />} />
-      <Route path="/MedicineReturn" element={<MedicineReturnCreate />} />
-      <Route path="/MedicineReturnList" element={<MedicineReturnList />}/> 
-      <Route path="/MedicineLabelUpdate/:id" element={<MedicineLabelUpdate />}/> 
-
+      
 
       {/* /<Route path="/MedicineReturnList" element={<MedicineReturnList />} /> */}
 
