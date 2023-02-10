@@ -107,16 +107,19 @@ func UpdateMedicineArrangement(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	update := entity.MedicineArrangement{
+		MedicineArrangementNo: 		medicinearrangements.MedicineArrangementNo,
+		Prescription: 				medicinearrangements.Prescription,								
+		ClassifyDrugs: 				medicinearrangements.ClassifyDrugs,							  
+		Note:                    	medicinearrangements.Note,
+		Pharmacist:             	medicinearrangements.Pharmacist,                           
+		MedicineArrangementTime: 	medicinearrangements.MedicineArrangementTime,
+	}
 
-	if tx := entity.DB().Where("id = ?", medicinearrangements.ID).First(&medicinearrangements); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", medicinearrangements.ID).Updates(&medicinearrangements); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "medicinearranements not found"})
 		return
 	}
 
-	if err := entity.DB().Save(&medicinearrangements).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"data": medicinearrangements})
+	c.JSON(http.StatusOK, gin.H{"data": update})
 }
