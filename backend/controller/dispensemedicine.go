@@ -22,7 +22,7 @@ func CreateDispenseMedicine(c *gin.Context)  {
 		}
 	// 9: ค้นหา Bill ด้วย id
 	if tx := entity.DB().Where("id = ?", dispensemedicine.BillID).First(&bill); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacy not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "bill not found"})
 		return
 	}
 
