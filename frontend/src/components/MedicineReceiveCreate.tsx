@@ -136,7 +136,7 @@ export default function MedicineReceiveCreate() {
             PharmacistID: Number(localStorage.getItem("uid")),
             MedicineReceiveNo: typeof MedicineReceive.MedicineReceiveNo == "string" ? parseInt(MedicineReceive.MedicineReceiveNo) : 0,
             ZoneID: convertType(MedicineReceive.ZoneID),
-            RecievedDate: date,
+            RecievedDate: MedicineReceive.RecievedDate,
             MedicineLabelID: convertType(MedicineReceive.MedicineLabelID),
         };
         console.log("Data", data)

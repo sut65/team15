@@ -172,6 +172,9 @@ function MedicineArrangements() {
                                 <TableCell align="center" width="15%">
                                     ลบข้อมูล
                                 </TableCell>
+                                <TableCell align="center" width="15%">
+                                    แก้ไขข้อมูล
+                                </TableCell>
                             </TableRow>
 
                         </TableHead>
@@ -189,6 +192,16 @@ function MedicineArrangements() {
                                  <TableCell align="center"> 
                                 <IconButton aria-label="delete" onClick={() => DeleteMedicineArrangement(medicinearrangement.ID)}><DeleteIcon /></IconButton>
                                 </TableCell>
+                                <TableCell align="center"> 
+                  <Button
+                                                        variant='outlined'
+                                                        color="primary"
+                                                        component={RouterLink}
+                                                        to={"/MedicineArrangementUpdate/" + medicinearrangement.ID}
+                                                    >
+                                                        แก้ไขข้อมูล
+                                                    </Button>
+                  </TableCell>
                             </TableRow>
                         ))}
 

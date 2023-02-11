@@ -178,6 +178,9 @@ function Orders() {
                                 <TableCell align="center" width="6%">
                                     
                                 </TableCell>
+                                <TableCell align="center" width="6%">
+
+                                </TableCell>
                             </TableRow>
 
                         </TableHead>
@@ -195,6 +198,17 @@ function Orders() {
                                     <TableCell align="center" > {moment(order.Datetime).format('DD MMMM yyyy')}     </TableCell>
                                     <TableCell align="center">
                                         <IconButton aria-label="delete" vertical-align="middle" onClick={() => DeleteOrder(order.ID)}><DeleteIcon /></IconButton >
+                                    </TableCell>
+
+                                    <TableCell align="center">
+                                        <Button
+                                            variant='outlined'
+                                            color="primary"
+                                            component={RouterLink}
+                                            to={"/orderUpdate/" + order.ID}
+                                        >
+                                            แก้ไขข้อมูล
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             ))}

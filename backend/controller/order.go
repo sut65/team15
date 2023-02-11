@@ -74,7 +74,7 @@ func CreateOrder(c *gin.Context) {
 
 }
 
-// GET /payment/:id
+// GET /order/:id
 func GetOrder(c *gin.Context) {
 	var order entity.Order
 	id := c.Param("id")
@@ -101,23 +101,33 @@ func ListOrder(c *gin.Context) {
 
 // PATCH 
 func UpdateOrder(c *gin.Context) {
+
 	var order entity.Order
+	
+
 	if err := c.ShouldBindJSON(&order); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", order.ID).First(&order); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "user not found"})
-		return
+	update := entity.Order{
+		Quantity: order.Quantity,
+		Priceperunit:  order.Priceperunit,
+		Datetime:       order.Datetime,
+		
+		Medicine: order.Medicine, 
+		Company:       order.Company,   
+		Unit:       order.Unit,       
+		Pharmacist: order.Pharmacist,  
+
 	}
 
-	if err := entity.DB().Save(&order).Error; err != nil {
+	if err := entity.DB().Where("id = ?", order.ID).Updates(&order).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": order})
+	c.JSON(http.StatusOK, gin.H{"data": update})
 }
 
 // DELETE /orders/:id
