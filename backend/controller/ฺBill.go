@@ -31,7 +31,7 @@ func CreateBill(c *gin.Context) {
 
 	// 9: ค้นหา paymentmethod ด้วย id
 	if tx := entity.DB().Where("id = ?", bills.PaymentmethodID).First(&paymentmethods); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "paymentmethods not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "paymentmethods 1 not found"})
 		return
 	}
 
@@ -47,7 +47,6 @@ func CreateBill(c *gin.Context) {
 		Paymentmethod: paymentmethods, // โยงความสัมพันธ์กับ Entity Paymentmethod
 		Pharmacist:    pharmacist,     // โยงความสัมพันธ์กับ Entity Pharmacist
 		BillTime:      bills.BillTime, // ตั้งค่าฟิลด์ BillTime
-		BillNo:        bills.BillNo,   // ตั้งค่าฟิลด์ BillNo
 		Payer:         bills.Payer,    // ตั้งค่าฟิลด์ Payer
 		Total:         bills.Total,    // ตั้งค่าฟิลด์ Total
 	}
@@ -77,9 +76,9 @@ func CreateBill(c *gin.Context) {
 func GetBill(c *gin.Context) {
 	var bills entity.Bill
 	id := c.Param("id")
-	if err := entity.DB().Preload("Prescription").Preload("Prescription.MedicineDisbursement").
-		Preload("Prescription.MedicineDisbursement.MedicineStorage").Preload("Paymentmethod").
-		Preload("User").Raw("SELECT * FROM bills WHERE id = ?", id).Find(&bills).Error; err != nil {
+	if err := entity.DB().Preload("Prescription"). /*Preload("Prescription.MedicineDisbursement").
+		Preload("Prescription.MedicineDisbursement.MedicineStorage").*/Preload("Paymentmethod").
+		Preload("Pharmacist").Raw("SELECT * FROM bills WHERE id = ?", id).Find(&bills).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -89,9 +88,9 @@ func GetBill(c *gin.Context) {
 // GET /bills
 func ListBill(c *gin.Context) {
 	var bills []entity.Bill
-	if err := entity.DB().Preload("Prescription").Preload("Prescription.MedicineDisbursement").
-		Preload("Prescription.MedicineDisbursement.MedicineStorage").Preload("Paymentmethod").
-		Preload("User").Raw("SELECT * FROM bills ORDER BY bills.id DESC").Find(&bills).Error; err != nil {
+	if err := entity.DB().Preload("Prescription"). /*Preload("Prescription.MedicineDisbursement").
+		Preload("Prescription.MedicineDisbursement.MedicineStorage").*/Preload("Paymentmethod").
+		Preload("Pharmacist").Raw("SELECT * FROM bills ORDER BY bills.id DESC").Find(&bills).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -101,7 +100,7 @@ func ListBill(c *gin.Context) {
 // GET /PrescriptionPaymentStatusNotPaid
 func ListPrescriptionPaymentStatusNotPaid(c *gin.Context) {
 	var prescriptions []entity.Prescription
-	if err := entity.DB().Preload("User").Preload("MedicineDisbursement").
+	if err := entity.DB().Preload("Pharmacist").Preload("MedicineDisbursement").
 		Preload("MedicineDisbursement.MedicineStorage").Preload("MedicineDisbursement.MedicineRoom").
 		Preload("PaymentStatus").Raw("SELECT * FROM prescriptions WHERE payment_status_id = 1 ORDER BY prescription_no").Find(&prescriptions).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -114,7 +113,7 @@ func ListPrescriptionPaymentStatusNotPaid(c *gin.Context) {
 func GetPrescriptionNo(c *gin.Context) {
 	var prescription entity.Prescription
 	id := c.Param("id")
-	if err := entity.DB().Preload("User").Preload("MedicineDisbursement").Preload("MedicineDisbursement.MedicineStorage").Preload("PaymentStatus").Raw("SELECT * FROM prescriptions WHERE id = ?", id).Find(&prescription).Error; err != nil {
+	if err := entity.DB().Preload("Pharmacist").Preload("MedicineDisbursement").Preload("MedicineDisbursement.MedicineStorage").Preload("PaymentStatus").Raw("SELECT * FROM prescriptions WHERE id = ?", id).Find(&prescription).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

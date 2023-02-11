@@ -50,7 +50,7 @@ func ListPaymentmethod(c *gin.Context) {
 func DeletePaymentmethod(c *gin.Context) {
 	id := c.Param("id")
 	if tx := entity.DB().Exec("DELETE FROM paymentmethods WHERE id = ?", id); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "paymentmethods not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "paymentmethods 2 not found"})
 		return
 	}
 
@@ -66,7 +66,7 @@ func UpdatePaymentmethod(c *gin.Context) {
 	}
 
 	if tx := entity.DB().Where("id = ?", paymentmethods.ID).First(&paymentmethods); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "paymentmethods not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "paymentmethods 3 not found"})
 		return
 	}
 

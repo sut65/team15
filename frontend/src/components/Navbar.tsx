@@ -121,7 +121,7 @@ function Navbar() {
     {
         name: "รายการบันทึกการชำระเงิน",
         icon: <PaidIcon/>,
-        path: "/Payment"
+        path: "/Bill"
     },
 
     {

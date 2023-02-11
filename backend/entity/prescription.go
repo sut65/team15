@@ -9,7 +9,7 @@ import (
 type Patient struct {
 	gorm.Model
 
-	Name    	 string
+	Name         string
 	Sex          string
 	Age          int
 	Prescription []Prescription `gorm:"foreignKey: PatientID"`
@@ -29,7 +29,8 @@ type Prescription struct {
 	Patient   Patient
 
 	MedicineLabelID *uint
-	MedicineLabel	MedicineLabel
+	MedicineLabel   MedicineLabel
 
 	MedicineArrangements []MedicineArrangement `gorm:"foreignKey: PrescriptionID"`
+	Bills                []Bill                `gorm:"foreignKey: PrescriptionID"`
 }
