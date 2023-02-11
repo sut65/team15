@@ -141,7 +141,7 @@ export default function MedicineDisbursementCreate() {
             PharmacistID: Number(localStorage.getItem("uid")),
             MedicineDisNo: typeof MedicineDisbursement.MedicineDisNo == "string" ? parseInt(MedicineDisbursement.MedicineDisNo) : 0,
             MedicineRoomID: convertType(MedicineDisbursement.MedicineRoomID),
-            Dtime: date,
+            Dtime: MedicineDisbursement.Dtime,
             MedicineReceiveID: convertType(MedicineDisbursement.MedicineReceiveID),
         };
         console.log("Data", data)
