@@ -120,9 +120,9 @@ func UpdateDiscardmedicine(c *gin.Context) {
 		Note: discardmedicine.Note,
 		Datetime:       discardmedicine.Datetime,
 		Quantity: discardmedicine.Quantity,
-		Cause: cause,
-		MedicineReceive: medicineReceive,
-		Pharmacist: pharmacist,    
+		Cause: discardmedicine.Cause,
+		MedicineReceive: discardmedicine.MedicineReceive,
+		Pharmacist: discardmedicine.Pharmacist,    
 	}
 
 	// ขั้นตอนการ validate
