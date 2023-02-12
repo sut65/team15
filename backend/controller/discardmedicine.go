@@ -11,7 +11,7 @@ import (
 // POST 
 
 func  CreateDiscardmedicine(c *gin.Context) {
-
+	
 	var		cause entity.Cause
 	var 	medicineReceive entity.MedicineReceive
 	var 	pharmacist entity.User	
@@ -49,7 +49,7 @@ func  CreateDiscardmedicine(c *gin.Context) {
 	wp := entity.Discardmedicine{
 		Note: discardmedicine.Note,
 		Datetime:       discardmedicine.Datetime,
-		
+		Quantity: discardmedicine.Quantity,
 		Cause: cause,
 		MedicineReceive: medicineReceive,
 		Pharmacist: pharmacist,     // โยงความสัมพันธ์กับ Entity user
