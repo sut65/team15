@@ -172,6 +172,7 @@ const getdispensemedicine = async () => {
         PharmacistID: Number(localStorage.getItem("uid")),
         ReturnDate: Return.ReturnDate,
         Note: Return.Note ?? "", 
+        Unitt: Return.Unitt ?? "",
       };
       console.log("Data", data)
       const apiUrl = "http://localhost:8080/medicinereturns";
@@ -375,6 +376,22 @@ const getdispensemedicine = async () => {
           </FormControl>
         </FormControl>
       </Grid>
+      <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+              <p>จำนวนยาที่คืน</p>
+              <FormControl fullWidth variant="outlined">
+                <TextField
+                  id="Unitt"
+                  variant="outlined"
+                  type="number"
+                  size="medium"
+                  placeholder="กรุณากรอกข้อมูลการบริโภค"
+                  value={Return.Unitt}
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+            </FormControl>
+          </Grid>
        <Grid item xs={12}>
         <Button
           component={RouterLink}

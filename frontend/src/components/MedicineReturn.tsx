@@ -162,6 +162,7 @@ export default function MedicineReturnCreate(){
             PharmacistID: Number(localStorage.getItem("uid")),
             ReturnDate: Return.ReturnDate,
             Note: Return.Note ?? "", 
+            Unitt: Return.Unitt ?? "",
           };
 
           console.log("Data", data)
@@ -353,6 +354,22 @@ export default function MedicineReturnCreate(){
                   size="medium"
                   placeholder="กรุณากรอกข้อมูลสรรพคุณของยา"
                   value={Return.Note || ""}
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+              <p>จำนวนยาที่คืน</p>
+              <FormControl fullWidth variant="outlined">
+                <TextField
+                  id="Unitt"
+                  variant="outlined"
+                  type="number"
+                  size="medium"
+                  placeholder="กรุณากรอกข้อมูลการบริโภค"
+                  value={Return.Unitt || ""}
                   onChange={handleInputChange}
                 />
               </FormControl>
