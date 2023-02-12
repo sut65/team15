@@ -81,7 +81,7 @@ func Discardmedicine(c *gin.Context) {
 func ListDiscardmedicine(c *gin.Context) {
 
 	var discardmedicines []entity.Discardmedicine
-	if err := entity.DB().Preload("Cause").Preload("MedicineReceive").Preload("Pharmacist").Raw("SELECT * FROM discardmedicines").Find(&discardmedicines).Error; err != nil {
+	if err := entity.DB().Preload("Cause").Preload("MedicineReceive.MedicineLabel.Order").Preload("MedicineReceive.MedicineLabel.Order.Medicine").Preload("MedicineReceive.MedicineLabel.Order.Unit").Preload("Pharmacist").Raw("SELECT * FROM discardmedicines").Find(&discardmedicines).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
