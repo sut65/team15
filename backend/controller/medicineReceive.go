@@ -72,7 +72,7 @@ func GetMedicineReceive(c *gin.Context) {
 // GET /medicineReceive
 func ListMedicineReceive(c *gin.Context) {
 	var medicineReceive []entity.MedicineReceive
-	if err := entity.DB().Preload("Pharmacist").Preload("Zone").Preload("MedicineLabel").Preload("MedicineLabel.Order").Preload("MedicineLabel.Order.Medicine").Raw("SELECT * FROM medicine_receives").Find(&medicineReceive).Error; err != nil {
+	if err := entity.DB().Preload("Pharmacist").Preload("Zone").Preload("MedicineLabel").Preload("MedicineLabel.Order").Preload("MedicineLabel.Order.Medicine").Preload("MedicineLabel.Order.Unit").Raw("SELECT * FROM medicine_receives").Find(&medicineReceive).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
