@@ -102,16 +102,16 @@ func UpdateDiscardmedicine(c *gin.Context) {
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", discardmedicine.ID).First(&cause); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", discardmedicine.CauseID).First(&cause); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบสาเหตุ"})
 		return
 	}
-	if tx := entity.DB().Where("id = ?", discardmedicine.ID).First(&medicineReceive); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", discardmedicine.MedicineReceiveID).First(&medicineReceive); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบยาในคลัง"})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", discardmedicine.ID).First(&pharmacist); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", discardmedicine.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบผู้ใช้"})
 		return
 	}
