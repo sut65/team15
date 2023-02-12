@@ -2,7 +2,7 @@ package controller
 
 import (
 	"github.com/sut65/team15/entity"
-
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 
 	"net/http"
@@ -69,7 +69,7 @@ func  CreateDiscardmedicine(c *gin.Context) {
 func Discardmedicine(c *gin.Context) {
 	var discardmedicine entity.Discardmedicine
 	id := c.Param("id")
-	if err := entity.DB().Preload("Cause").Preload("MedicineReceive").Preload("Pharmacist").Raw("SELECT * FROM discardmedicines WHERE id = ?", id).Find(&discardmedicine).Error; err != nil {
+	if err := entity.DB().Preload("Cause").Preload("MedicineReceive.MedicineLabel.Order").Preload("MedicineReceive.MedicineLabel.Order.Medicine").Preload("MedicineReceive.MedicineLabel.Order.Unit").Preload("Pharmacist").Raw("SELECT * FROM discardmedicines WHERE id = ?", id).Find(&discardmedicine).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -92,18 +92,46 @@ func ListDiscardmedicine(c *gin.Context) {
 
 // PATCH 
 func UpdateDiscardmedicine(c *gin.Context) {
-	var discardmedicine entity.Discardmedicine
+	var		cause entity.Cause
+	var 	medicineReceive entity.MedicineReceive
+	var 	pharmacist entity.User	
+	var 	discardmedicine	entity.Discardmedicine
+	
 	if err := c.ShouldBindJSON(&discardmedicine); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", discardmedicine.ID).First(&discardmedicine); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "user not found"})
+	if tx := entity.DB().Where("id = ?", discardmedicine.ID).First(&cause); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบสาเหตุ"})
+		return
+	}
+	if tx := entity.DB().Where("id = ?", discardmedicine.ID).First(&medicineReceive); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบยาในคลัง"})
 		return
 	}
 
-	if err := entity.DB().Save(&discardmedicine).Error; err != nil {
+	if tx := entity.DB().Where("id = ?", discardmedicine.ID).First(&pharmacist); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบผู้ใช้"})
+		return
+	}
+
+	update := entity.Discardmedicine{
+		Note: discardmedicine.Note,
+		Datetime:       discardmedicine.Datetime,
+		Quantity: discardmedicine.Quantity,
+		Cause: cause,
+		MedicineReceive: medicineReceive,
+		Pharmacist: pharmacist,    
+	}
+
+	// ขั้นตอนการ validate
+	if _, err := govalidator.ValidateStruct(update); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := entity.DB().Where("id = ?", discardmedicine.ID).Updates(&discardmedicine).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
