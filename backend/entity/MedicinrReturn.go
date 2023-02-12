@@ -13,6 +13,9 @@ type Return struct{
 	
 
 	Note string `valid:"required~Note cannot be blank"`
+	Unitt string    `valid:"range(0|100)~Unitt must be Positive"`
+
+
 
 	PharmacistID *uint
 	Pharmacist   User
@@ -54,4 +57,6 @@ func init() {
 		return t.After(time.Now().Add(time.Minute * -1)) //เวลา > เวลาปัจจุบัน - 1 นาที
 	})
 }
+
+
 

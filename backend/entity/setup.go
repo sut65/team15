@@ -516,6 +516,7 @@ func SetupDatabase() {
 		Note:                  "ยามีความชื้น",
 		Pharmacist:           pharmacist1,	
 		ReturnDate:           time.Now(),
+		Unitt:                "2",
 	}
 	db.Model(&Return{}).Create(&Return1)
 
