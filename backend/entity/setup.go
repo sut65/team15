@@ -268,7 +268,7 @@ func SetupDatabase() {
 	db.Model(&Cause{}).Create(&Cause2)
 
 	discard1 := Discardmedicine{
-
+		Quantity:  10,
 		Cause:    Cause1,
 		Note:     "ยาหก",
 		Datetime: time.Now(),
@@ -421,28 +421,28 @@ func SetupDatabase() {
 	
 	//-----------------------------------------------------------ระบบบันทึกการชำระเงิน---------------------------------------
 	//Paymentmethod รูปแบบการชำระเงิน
-	cash := Paymentmethod{
-		ConditionsOfPayments: "ชำระด้วยเงินสด",
-	}
-	db.Model(&Paymentmethod{}).Create(&cash)
+	// cash := Paymentmethod{
+	// 	ConditionsOfPayments: "ชำระด้วยเงินสด",
+	// }
+	// db.Model(&Paymentmethod{}).Create(&cash)
 
-	payment := Paymentmethod{
-		ConditionsOfPayments: "โอนพร้อมเพย์",
-	}
-	db.Model(&Paymentmethod{}).Create(&payment)
+	// payment := Paymentmethod{
+	// 	ConditionsOfPayments: "โอนพร้อมเพย์",
+	// }
+	// db.Model(&Paymentmethod{}).Create(&payment)
 
-	// Bill
-	bill1 := Bill{
-		BillNo:   1000,
-		BillTime: time.Date(2022, 2, 15, 2, 0, 0, 0, time.UTC),
-		Payer:    "AWESOME08",
-		Total:    6 * 980,
+	// // Bill
+	// bill1 := Bill{
+	// 	BillNo:   1000,
+	// 	BillTime: time.Date(2022, 2, 15, 2, 0, 0, 0, time.UTC),
+	// 	Payer:    "AWESOME08",
+	// 	Total:    6 * 980,
 
-		Pharmacist:    pharmacist5,
-		Prescription:  prescription1,
-		Paymentmethod: cash,
-	}
-	db.Model(&Bill{}).Create(&bill1)
+	// 	Pharmacist:    pharmacist5,
+	// 	Prescription:  prescription1,
+	// 	Paymentmethod: cash,
+	// }
+	// db.Model(&Bill{}).Create(&bill1)
 
 	//-----------------------------------------------------ระบบบันทึกการจ่ายยา-------------------------------------
 	//ช่องจ่ายยา
@@ -462,7 +462,7 @@ func SetupDatabase() {
 	//ระบบจ่ายยา
 	dispensemedicine := DispenseMedicine{
 		DispenseNo:   100000,
-		Bill:		  bill1,
+		//Bill:		  bill1,
 		ReceiveName:  "แสนดี มากมาย",
 		Pharmacy:     pharmacy1,
 		Pharmacist:   pharmacist2,
