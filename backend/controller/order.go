@@ -2,7 +2,7 @@ package controller
 
 import (
 	"github.com/sut65/team15/entity"
-
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 
 	"net/http"
@@ -101,12 +101,37 @@ func ListOrder(c *gin.Context) {
 
 // PATCH 
 func UpdateOrder(c *gin.Context) {
-
+	
+	
+	var medicine entity.Medicine
+	var company entity.Company
+	var unit entity.Unit
+	var pharmacist entity.User
 	var order entity.Order
 	
 
 	if err := c.ShouldBindJSON(&order); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", order.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบสมาชิก"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", order.CompanyID).First(&company); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ บริษัท"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", order.MedicineID).First(&medicine); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบยา"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", order.UnitID).First(&unit); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบหน่วย"})
 		return
 	}
 
@@ -120,6 +145,12 @@ func UpdateOrder(c *gin.Context) {
 		Unit:       order.Unit,       
 		Pharmacist: order.Pharmacist,  
 
+	}
+
+	// ขั้นตอนการ validate
+	if _, err := govalidator.ValidateStruct(update); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	if err := entity.DB().Where("id = ?", order.ID).Updates(&order).Error; err != nil {
