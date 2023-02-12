@@ -37,6 +37,7 @@ func TestNotBlank(t *testing.T) {
 	Return := Return{
 
 		Note: "",
+		Unitt: "2",
 		ReturnDate:        time.Now(),
 	}
 
@@ -52,6 +53,28 @@ func TestNotBlank(t *testing.T) {
 	// err.Error ต้องมี error message แสดงออกมา
 	g.Expect(err.Error()).To(Equal("Instruction cannot be blank"))
 }
+func TestUnittpositive(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	Return := Return{
+		
+		Note: "",
+		Unitt: "-1",
+		ReturnDate:        time.Now(),
+	}
+	// ตรวจสอบด้วย govalidator
+	ok, err := govalidator.ValidateStruct(Return)
+
+	// ok ต้องไม่เป็นค่า true แปลว่าต้องจับ error ได้
+	g.Expect(ok).ToNot(BeTrue())
+
+	// err ต้องไม่เป็นค่า nil แปลว่าต้องจับ error ได้
+	g.Expect(err).ToNot(BeNil())
+
+	// err.Error ต้องมี error message แสดงออกมา
+	g.Expect(err.Error()).To(Equal("Unitt must be Positive"))
+
+}
 
 // ตรวจสอบค่าว่างของชื่อแล้วต้องเจอ Error ...
 
@@ -61,6 +84,7 @@ func TestDateBePast(t *testing.T) {
 	Return := Return{
 
 		Note: "ไม่มีซองยา",
+		Unitt: "2",
 		ReturnDate:  time.Now().Add(time.Minute * -10), // อดีตผิด วันที่เวลาต้องไม่เป็นอดีต
 
 	}
