@@ -63,7 +63,6 @@ func main() {
 	r.POST("/effects", controller.CreateEffect)
 	r.PATCH("/effects", controller.UpdateEffect)
 	r.DELETE("/effects/:id", controller.DeleteEffect)
-	
 	//-----------------------------------ระบบย่อย ระบบบันทึกคลังยา----------------------------------------
 	r.POST("/medicineReceives", controller.CreatemedicineReceive)
 	r.GET("/medicineReceive", controller.ListMedicineReceive)
@@ -83,6 +82,14 @@ func main() {
 	r.DELETE("/discardmedicine/:id", controller.DeleteDiscardmedicine)
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกการเบิกยา-------------------------------------
+
+	r.POST("/medicineDisbursements", controller.CreatemedicineDisbursement)
+	r.GET("/medicineDisbursement", controller.ListMedicineDisbursement)
+	r.GET("/medicineDisbursement/:id", controller.GetMedicineDisbursement)
+	r.PATCH("/medicineDisbursement", controller.UpdateMedicineDisbursement)
+
+	//MedicineRoom
+	r.GET("/MedicineRooms", controller.ListMedicineRoom)
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกการจัดชั้นยา------------------------------------
 	//Cupboard
@@ -147,13 +154,11 @@ func main() {
 
 	//----------------------------------ระบบย่อย ระบบบันทึกการคืนยา-----------------------------------
 
-	r.POST("/medicinereturns",controller.CreateMedicineReturn)
-	r.GET("/medicinereturns",controller.ListMedicineReturn)
-	r.GET("/medicinereturn/:id",controller.GetMedicineReturn)
-	r.PATCH("/medicinereturns",controller.UpdateMedicineReturn)
-	r.DELETE("/medicinereturns/:id",controller.DeleteMedicineReturn)
-
-
+	r.POST("/medicinereturns", controller.CreateMedicineReturn)
+	r.GET("/medicinereturns", controller.ListMedicineReturn)
+	r.GET("/medicinereturn/:id", controller.GetMedicineReturn)
+	r.PATCH("/medicinereturns", controller.UpdateMedicineReturn)
+	r.DELETE("/medicinereturns/:id", controller.DeleteMedicineReturn)
 
 	r.GET("/staffs", controller.ListStaffs)
 	r.GET("/staff/:id", controller.GetStaff)
@@ -161,11 +166,11 @@ func main() {
 	r.PATCH("/staffs", controller.UpdateStaff)
 	r.DELETE("/staffs/:id", controller.DeleteStaff)
 
-	r.POST("/reasons",controller.CreateReason)
-	r.GET("/reasons",controller.ListReason)
-	r.GET("/reason/:id",controller.GetReason)
-	r.PATCH("/reasons",controller.UpdateReason)
-	r.DELETE("/reasons/:id",controller.DeleteReason)
+	r.POST("/reasons", controller.CreateReason)
+	r.GET("/reasons", controller.ListReason)
+	r.GET("/reason/:id", controller.GetReason)
+	r.PATCH("/reasons", controller.UpdateReason)
+	r.DELETE("/reasons/:id", controller.DeleteReason)
 	//-----------------------------------ระบบย่อย ระบบบันทึกการเข้าเวร---------------------------------
 	//shift
 	r.GET("/shifts", controller.ListShift)
@@ -179,9 +184,6 @@ func main() {
 	r.GET("/attendance/:id", controller.GetAttendance)
 	r.PATCH("/attendance", controller.UpdateAttendance)
 
-	
-
-
 	// Run the server
 
 	r.Run()
@@ -194,7 +196,7 @@ func CORSMiddleware() gin.HandlerFunc {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, DELETE, PUT, PATCH")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, DELETE, PUT")
 
 		if c.Request.Method == "OPTIONS" {
 
