@@ -75,7 +75,7 @@ func main() {
 	//-----------------------------------ระบบย่อย ระบบบันทึกการทิ้งยา--------------------------------------
 
 	r.GET("/causes", controller.ListCause)
-
+	r.POST("/discardmedicine", controller.CreateDiscardmedicine)
 	r.GET("/discardmedicine/:id", controller.Discardmedicine)
 	r.GET("/discardmedicine", controller.ListDiscardmedicine)
 	r.PATCH("/discardmedicine", controller.UpdateDiscardmedicine)

@@ -69,7 +69,7 @@ func  CreateDiscardmedicine(c *gin.Context) {
 func Discardmedicine(c *gin.Context) {
 	var discardmedicine entity.Discardmedicine
 	id := c.Param("id")
-	if err := entity.DB().Preload("Causes").Preload("MedicineReceive").Preload("Pharmacist").Raw("SELECT * FROM discardmedicines WHERE id = ?", id).Find(&discardmedicine).Error; err != nil {
+	if err := entity.DB().Preload("Cause").Preload("MedicineReceive").Preload("Pharmacist").Raw("SELECT * FROM discardmedicines WHERE id = ?", id).Find(&discardmedicine).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -81,7 +81,7 @@ func Discardmedicine(c *gin.Context) {
 func ListDiscardmedicine(c *gin.Context) {
 
 	var discardmedicines []entity.Discardmedicine
-	if err := entity.DB().Preload("Causes").Preload("MedicineReceive").Preload("Pharmacist").Raw("SELECT * FROM discardmedicines").Find(&discardmedicines).Error; err != nil {
+	if err := entity.DB().Preload("Cause").Preload("MedicineReceive").Preload("Pharmacist").Raw("SELECT * FROM discardmedicines").Find(&discardmedicines).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
