@@ -4,11 +4,13 @@ import (
 	"time"
 
 	"gorm.io/gorm"
+
+	"github.com/asaskevich/govalidator"
 )
 
 type Return struct{
 	gorm.Model
-	ReturnDate time.Time
+	
 
 	Note string `valid:"required~Note cannot be blank"`
 
@@ -28,6 +30,8 @@ type Return struct{
 	OrderID *uint
 	Order  Order  `gorm:"references:id" valid:"-"`
 
+	ReturnDate        time.Time  `valid:"donotpast~Return not be past"`
+
 }
 
 type Staff struct{
@@ -43,3 +47,11 @@ type Reason struct{
 	ReasonName string  `gorm:"uniqueIndex"`
 	Return     []Return `gorm:"foreignKey:ReasonID"`
 }
+
+func init() {
+	govalidator.CustomTypeTagMap.Set("donotpast", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		return t.After(time.Now().Add(time.Minute * -1)) //เวลา > เวลาปัจจุบัน - 1 นาที
+	})
+}
+

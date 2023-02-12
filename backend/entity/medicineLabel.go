@@ -13,7 +13,7 @@ type MedicineLabel struct {
 	Property    string    `valid:"required~Property cannot be blank"`
 	Consumption string    `valid:"range(0|100)~Consumption must be Positive, required~Consumption cannot be blank"`
 	// Date        time.Time 
-	Date        time.Time  `valid:"notpast~Date not be past"`
+	Date        time.Time  `valid:"donotpast~MedicineLabel not be past"`
 
 	OrderID *uint
 	Order  Order `gorm:"references:id" valid:"-"`
@@ -42,15 +42,9 @@ type Effect struct {
 	MedicineLabels []MedicineLabel `gorm:"foreignKey:EffectID"`
 }
 
-func SetTimeValidation() {
-	//time not past
-	govalidator.CustomTypeTagMap.Set("notpast", func(i interface{}, context interface{}) bool {
-		t := i.(time.Time) 
-		now := time.Now().Add(time.Hour * 24)
-		return t.After(now)
-	})
-}
-
 func init() {
-	SetTimeValidation()
+	govalidator.CustomTypeTagMap.Set("donotpast", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		return t.After(time.Now().Add(time.Minute * -1)) //เวลา > เวลาปัจจุบัน - 1 นาที
+	})
 }
