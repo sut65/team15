@@ -27,7 +27,9 @@ import { OrderInterface } from "../models/IOrder";
 import { setDate } from "date-fns";
 
 export default function MedicineReturnCreate(){
-    const [Return, setReturn] = React.useState<Partial<ReturnInterface>>({});
+    const [Return, setReturn] = React.useState<Partial<ReturnInterface>>({
+      ReturnDate: new Date(),
+    })
     const [reason, setReason] = React.useState<ReasonInterface[]>([]);
     const [staff, setStaff] = React.useState<SatffInterface[]>([]);
     const [Order, setOrder] = React.useState<OrderInterface[]>([]);
@@ -158,7 +160,7 @@ export default function MedicineReturnCreate(){
             ReasonID: convertType(Return.ReasonID),
             StaffID: convertType(Return.StaffID),
             PharmacistID: Number(localStorage.getItem("uid")),
-            ReturnDate: new Date(),
+            ReturnDate: Return.ReturnDate,
             Note: Return.Note ?? "", 
           };
 

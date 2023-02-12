@@ -29,6 +29,8 @@ import MedicineDisbursement from './components/MedicineDisbursement';
 import OrderUpdate from './components/OrderUpdate';
 import BillCreate from './components/BillCreate';
 import Bill from './components/Bill';
+import MedicineLabelUpdate from './components/medicineLabelUpdate';
+import MedicineReturnUpdate from './components/MedicineReturnUpdate';
 
 function App() {
   
@@ -76,6 +78,10 @@ function App() {
       <Route path="/Prescriptions" element={<Prescription />} />
       <Route path="/Bill" element={<BillCreate />} />
       <Route path="/Billlist" element={<Bill />} />
+      <Route path="/MedicineLabelUpdate/:id" element={<MedicineLabelUpdate />}/> 
+      <Route path="/MedicineReturnUpdate/:id" element={<MedicineReturnUpdate />}/> 
+
+
 
       {/* /<Route path="/MedicineReturnList" element={<MedicineReturnList />} /> */}
 

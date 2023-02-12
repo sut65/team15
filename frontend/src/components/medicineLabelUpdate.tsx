@@ -1,47 +1,47 @@
-import React from "react";
-import { Box, FormControl, Grid, Select, TextField, Typography } from '@mui/material'
-import Alert from '@mui/material/Alert'
-import Button from '@mui/material/Button'
-import Container from '@mui/material/Container'
-import Paper from '@mui/material/Paper'
-import Snackbar from '@mui/material/Snackbar'
-import { Link as RouterLink } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
-// import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import SaveIcon from '@mui/icons-material/Save';
-import Divider from '@mui/material/Divider';
-import SourceIcon from '@mui/icons-material/Source';
+import React, { useEffect, useState } from 'react'
+import { Box, Button, CssBaseline, FormControl, Grid, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { Container } from '@mui/system'
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import Divider from '@mui/material/Divider';
+import Paper from '@mui/material/Paper'
+import SourceIcon from '@mui/icons-material/Source';
 
 import { MedicineLabelsInterface} from "../models/IMedicineLabel";
 import { SuggestionsInterface } from "../models/ISuggestion";
 import { EffectsInterface } from "../models/IEffect";
 import { UserInterface } from "../models/IUser";
 import { OrderInterface } from "../models/IOrder";
-import { setDate } from "date-fns";
-import { useParams } from "react-router-dom";
 
-export default function MedicineLabelUpdate() {
-    const { id } = useParams();
-    const [date, setDate] = React.useState<Date | null>(null);
-  const [medicineLabel, setMedicineLabel] = React.useState<Partial<MedicineLabelsInterface>>({
-    Date: new Date(),
-  });
+export default function MedicinelabelUpdate() {
+
+  const [user, setUser] = React.useState<UserInterface>();
+  const [ErrorMessage, setErrorMessage] = React.useState<String>();
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSuccess(false);
+    setError(false);
+  };
+
   const [effects, setEffects] = React.useState<EffectsInterface[]>([]);
   const [suggestions, setSuggestions] = React.useState<SuggestionsInterface[]>([]);
   const [Order, setOrder] = React.useState<OrderInterface[]>([]);
-  const [user, setUser] = React.useState<UserInterface>();
-  const [success, setSuccess] = React.useState(false);
-  const [error, setError] = React.useState(false);
-  const [ErrorMessage, setErrorMessage] = React.useState<String>();
-  const [loading, setLoading] = React.useState(false);
+  const [medicineLabel, setMedicineLabel] = React.useState<Partial<MedicineLabelsInterface>>({
+    Instruction: "",
+    Property: "",
+    Consumption: 0,
+    Date: new Date(),
+  })
+  let {id} = useParams();
   
-
-  const apiUrl = "http://localhost:8080/medicineLabels";
+  const apiUrl = "http://localhost:8080";
   const requestOptions = {
     method: "GET",
     headers: {
@@ -49,39 +49,21 @@ export default function MedicineLabelUpdate() {
       "Content-Type": "application/json",
     },
   };
-  const handleClose = (res: any) => {
-    if (res === "clickaway") {
-      return;
-    }
-    setSuccess(false);
-    setError(false);
-    setLoading(false)
-  };
-
-  
-  const handleInputChange = (
-    event: React.ChangeEvent<{ id?: string; value: any }>
-  ) => {
-    const name = event.target.id as keyof typeof medicineLabel;
-    setMedicineLabel({
-      ...medicineLabel,
-      [name]: event.target.value,
+  const getMedicineLabelID = async (id: string | undefined | null) => {
+    fetch(`${apiUrl}/medicineLabel/${id}`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      console.log("medicinelabel", res)
+      if (res.data) {
+        setMedicineLabel(res.data);
+      } else {
+        console.log("else");
+      }
     });
-  };
-
-
-  const handleChange: any = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>
-  ) => {
-    const name = event.target.name as keyof typeof medicineLabel;
-    setMedicineLabel({
-      ...medicineLabel,
-      [name]: event.target.value,
-    });
-  };
+};
 
   const getOrder = async () => {
-    fetch(`${apiUrl}/order`, requestOptions)
+    fetch(`${apiUrl}/orders`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
         if(res.data){
@@ -103,7 +85,7 @@ export default function MedicineLabelUpdate() {
       });
   };
   const getEffect = async () => {
-    fetch(`${apiUrl}/effects/:id`, requestOptions)
+    fetch(`${apiUrl}/effects`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
         if (res.data) {
@@ -113,19 +95,6 @@ export default function MedicineLabelUpdate() {
         }
       });
   };
-
-//   const getEffect = async () => {
-//     fetch(`${apiUrl}/medicineLabel/:id`, requestOptions)
-//       .then((response) => response.json())
-//       .then((res) => {
-//         if (res.data) {
-//           setEffects(res.data);
-//         } else {
-//           console.log("else");
-//         }
-//       });
-//   };
-
 
   function getUser() {
     const UserID = localStorage.getItem("uid")
@@ -148,38 +117,45 @@ export default function MedicineLabelUpdate() {
         }
       });
   }
-  useEffect(() => {
-
-    getUser();
-    getOrder();
-    
-    getSuggestion();
-    getEffect();
-
-  }, []);
-
-
 
   const convertType = (data: string | number | undefined | null) => {
     let val = typeof data === "string" ? parseInt(data) : data;
     return val;
   };
 
-  function update() {
-    setLoading(true)
-    let data = {
-        ID: convertType(medicineLabel.ID),     
-        OrderID: convertType(medicineLabel.OrderID),
-        Instruction: medicineLabel.Instruction ?? "",
-        Property: medicineLabel.Property ?? "",
-        Consumption: medicineLabel.Consumption ?? "",
-        SuggestionID: convertType(medicineLabel.SuggestionID),
-        EffectID: convertType(medicineLabel.EffectID),
-        PharmacistID: Number(localStorage.getItem("uid")),
-        Date: medicineLabel.Date,
-        //selectedDate: new Date(),
-      };
+  const handleChange: any = (
+    event: React.ChangeEvent<{ name?: string; value: unknown }>
+  ) => {
+    console.log(event.target.value)
+    const name = event.target.name as keyof typeof medicineLabel
+    console.log(name)
+    setMedicineLabel({
+      ...medicineLabel,
+      [name]: event.target.value,
+    });
+  };
 
+  const handleInputChange = (
+    event: React.ChangeEvent<{ id?: string; value: any }>
+  ) => {
+    const id = event.target.id as keyof typeof medicineLabel;
+    const { value } = event.target;
+    setMedicineLabel({ ...medicineLabel, [id]: value });
+  };
+
+  async function submit() {
+
+    let data = {
+      ID: convertType(medicineLabel.ID),
+      OrderID: convertType(medicineLabel.OrderID),
+      Instruction: medicineLabel.Instruction ?? "",
+      Property: medicineLabel.Property ?? "",
+      Consumption: medicineLabel.Consumption ?? "",
+      SuggestionID: convertType(medicineLabel.SuggestionID),
+      EffectID: convertType(medicineLabel.EffectID),
+      PharmacistID: Number(localStorage.getItem("uid")),
+      Date: medicineLabel.Date,  
+    };
     console.log("Data", data)
     const apiUrl = "http://localhost:8080/medicineLabels";
     const requestOptions = {
@@ -202,200 +178,219 @@ export default function MedicineLabelUpdate() {
           setError(true)
         }
       });
-  }
+    }
+      useEffect(() => {
 
-  return (
-    <Container maxWidth="lg">
-    <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
-      <Alert onClose={handleClose} severity="success">
-        บันทึกข้อมูลสำเร็จ
-      </Alert>
-    </Snackbar>
-    <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
-      <Alert onClose={handleClose} severity="error">
-        บันทึกข้อมูลไม่สำเร็จ: {ErrorMessage}
-      </Alert>
-    </Snackbar>
-
-    <Paper sx={{ p: 4, pb: 10 }}  >
-
-<Box display="flex" > <Box flexGrow={1}>
-  <Typography
-    component="h2"
-    variant="h5"
-    color="primary"
-    gutterBottom
-  >
-    แก้ไขฉลากยา
-
-    <Button style={{ float: "right" }}
-      component={RouterLink}
-      to="/MedicineLabelscreate"
-      variant="contained"
-      color="primary">
-      <SourceIcon />รายการยา
-    </Button>
-  </Typography>
-</Box>
-</Box>
-<Divider />
-<Grid container spacing={3} >
-          <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>ชื่อยา</p>
-              <Select
-                native
-                value={medicineLabel.OrderID}
-                onChange={handleChange}
-                inputProps={{
-                  name: "OrderID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือกชื่อยา
-                </option>
-                {Order.map((item: OrderInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.Medicine.Name}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>สรรพคุณยา</p>
-              <FormControl fullWidth variant="outlined">
-                <TextField
-                  id="Property"
-                  variant="outlined"
-                  type="string"
-                  size="medium"
-                  placeholder="กรุณากรอกข้อมูลสรรพคุณของยา"
-                  value={medicineLabel.Property || ""}
-                  onChange={handleInputChange}
-                />
-              </FormControl>
-            </FormControl>
-          </Grid>
-          <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>วิธีใช้</p>
-              <FormControl fullWidth variant="outlined">
-                <TextField
-                  id="Instruction"
-                  variant="outlined"
-                  type="string"
-                  size="medium"
-                  placeholder="กรุณากรอกข้อมูลวิธีการใช้ยา"
-                  value={medicineLabel.Instruction || ""}
-                  onChange={handleInputChange}
-                />
-              </FormControl>
-            </FormControl>
-          </Grid>
-          <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>ทานครั้งละ</p>
-              <FormControl fullWidth variant="outlined">
-                <TextField
-                  id="Consumption"
-                  variant="outlined"
-                  type="number"
-                  size="medium"
-                  placeholder="กรุณากรอกข้อมูลการบริโภค"
-                  value={medicineLabel.Consumption || ""}
-                  onChange={handleInputChange}
-                />
-              </FormControl>
-            </FormControl>
-          </Grid>
-          <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>คำแนะนำ</p>
-              <Select
-                native
-                value={medicineLabel.SuggestionID}
-                onChange={handleChange}
-                inputProps={{
-                  name: "SuggestionID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือกคำแนะนำ
-                </option>
-                {suggestions.map((item: SuggestionsInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.SuggestionName}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>ผลข้างเคียง</p>
-              <Select
-                native
-                value={medicineLabel.EffectID}
-                onChange={handleChange}
-                inputProps={{
-                  name: "EffectID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือกผลข้างเคียงยา
-                </option>
-                {effects.map((item: EffectsInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.EffectName}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          
-          <Grid item xs={6}>
-          <FormControl fullWidth variant="outlined">
-            <p>วันหมดอายุ</p>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                  value={medicineLabel.Date}
-                  onChange={(newValue) => {
-                    setMedicineLabel({
-                      ...medicineLabel,
-                      Date: newValue,
-                    });
-                    
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                  
-                />
-              
-            </LocalizationProvider>
-          </FormControl>
-        </Grid>
-           <Grid item xs={12}>
-            <Button
-              component={RouterLink}
-              to="/medicineLabel"
-              variant="contained"
-            >
-              กลับ
-            </Button>
-            <Button
-              style={{ float: "right" }}
-              variant="contained"
-              onClick={update}
-              color="primary"
-            >
-              บันทึก
-            </Button>
-          </Grid> 
-</Grid>
-</Paper >
-</Container>
+        getUser();
+        getOrder();
+        
+        getSuggestion();
+        getEffect();
+        getMedicineLabelID(id);
     
-  )
+      }, []);
+
+      const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+        props,
+        ref,
+      ) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+      });
+
+      return (
+        <Container maxWidth="lg">
+        <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="success">
+            บันทึกข้อมูลสำเร็จ
+          </Alert>
+        </Snackbar>
+        <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error">
+            บันทึกข้อมูลไม่สำเร็จ: {ErrorMessage}
+          </Alert>
+        </Snackbar>
+    
+        <Paper sx={{ p: 4, pb: 10 }}  >
+    
+    <Box display="flex" > <Box flexGrow={1}>
+      <Typography
+        component="h2"
+        variant="h5"
+        color="primary"
+        gutterBottom
+      >
+        บันทึกฉลากยา
+    
+        <Button style={{ float: "right" }}
+          component={RouterLink}
+          to="/MedicineLabelscreate"
+          variant="contained"
+          color="primary">
+          <SourceIcon />รายการยา
+        </Button>
+      </Typography>
+    </Box>
+    </Box>
+    <Divider />
+    <Grid container spacing={3} >
+              <Grid item xs={6}>
+                <FormControl fullWidth variant="outlined">
+                  <p>ชื่อยา</p>
+                  <Select
+                    native
+                    value={medicineLabel.OrderID}
+                    onChange={handleChange}
+                    inputProps={{
+                      name: "OrderID",
+                    }}
+                  >
+                    <option aria-label="None" value="">
+                      กรุณาเลือกชื่อยา
+                    </option>
+                    {Order.map((item: OrderInterface) => (
+                      <option value={item.ID} key={item.ID}>
+                        {item.Medicine.Name}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth variant="outlined">
+                  <p>สรรพคุณยา</p>
+                  <FormControl fullWidth variant="outlined">
+                    <TextField
+                      id="Property"
+                      variant="outlined"
+                      type="string"
+                      size="medium"
+                      placeholder="กรุณากรอกข้อมูลสรรพคุณของยา"
+                      value={medicineLabel.Property}
+                      onChange={handleInputChange}
+                    />
+                  </FormControl>
+                </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth variant="outlined">
+                  <p>วิธีใช้</p>
+                  <FormControl fullWidth variant="outlined">
+                    <TextField
+                      id="Instruction"
+                      variant="outlined"
+                      type="string"
+                      size="medium"
+                      placeholder="กรุณากรอกข้อมูลวิธีการใช้ยา"
+                      value={medicineLabel.Instruction}
+                      onChange={handleInputChange}
+                    />
+                  </FormControl>
+                </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth variant="outlined">
+                  <p>ทานครั้งละ</p>
+                  <FormControl fullWidth variant="outlined">
+                    <TextField
+                      id="Consumption"
+                      variant="outlined"
+                      type="number"
+                      size="medium"
+                      placeholder="กรุณากรอกข้อมูลการบริโภค"
+                      value={medicineLabel.Consumption }
+                      onChange={handleInputChange}
+                    />
+                  </FormControl>
+                </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth variant="outlined">
+                  <p>คำแนะนำ</p>
+                  <Select
+                    native
+                    value={medicineLabel.SuggestionID}
+                    onChange={handleChange}
+                    inputProps={{
+                      name: "SuggestionID",
+                    }}
+                  >
+                    <option aria-label="None" value="">
+                      กรุณาเลือกคำแนะนำ
+                    </option>
+                    {suggestions.map((item: SuggestionsInterface) => (
+                      <option value={item.ID} key={item.ID}>
+                        {item.SuggestionName}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+    
+              <Grid item xs={6}>
+                <FormControl fullWidth variant="outlined">
+                  <p>ผลข้างเคียง</p>
+                  <Select
+                    native
+                    value={medicineLabel.EffectID}
+                    onChange={handleChange}
+                    inputProps={{
+                      name: "EffectID",
+                    }}
+                  >
+                    <option aria-label="None" value="">
+                      กรุณาเลือกผลข้างเคียงยา
+                    </option>
+                    {effects.map((item: EffectsInterface) => (
+                      <option value={item.ID} key={item.ID}>
+                        {item.EffectName}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              
+              <Grid item xs={6}>
+              <FormControl fullWidth variant="outlined">
+                <p>วันหมดอายุ</p>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DatePicker
+                      value={medicineLabel.Date}
+                      onChange={(newValue) => {
+                        setMedicineLabel({
+                          ...medicineLabel,
+                          Date: newValue,
+                        });
+                        
+                      }}
+                      renderInput={(params) => <TextField {...params} />}
+                      
+                    />
+                  
+                </LocalizationProvider>
+              </FormControl>
+            </Grid>
+               <Grid item xs={12}>
+                <Button
+                  component={RouterLink}
+                  to="/medicineLabel"
+                  variant="contained"
+                >
+                  กลับ
+                </Button>
+                <Button
+                  style={{ float: "right" }}
+                  variant="contained"
+                  onClick={submit}
+                  color="primary"
+                >
+                  บันทึก
+                </Button>
+              </Grid> 
+    </Grid>
+    </Paper >
+    </Container>
+        
+      )
+    
+    
 }

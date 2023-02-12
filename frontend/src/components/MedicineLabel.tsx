@@ -238,7 +238,7 @@ function Orders() {
                                                         variant='outlined'
                                                         color="primary"
                                                         component={RouterLink}
-                                                        to={"/MedicineLabelUpdate/:id" + medicineLabel.ID}
+                                                        to={"/MedicineLabelUpdate/" + medicineLabel.ID}
                                                     >
                                                         แก้ไขข้อมูล
                                                     </Button>

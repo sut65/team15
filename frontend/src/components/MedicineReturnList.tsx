@@ -179,7 +179,10 @@ export default function MedicineReturnList() {
                 </TableCell>
                 <TableCell align="left" width="20%">
                   ลบข้อมูล
-                </TableCell>      
+                </TableCell>  
+                <TableCell align="left" width="20%">
+                  แก้ไขข้อมูล
+                </TableCell>    
               </TableRow>
             </TableHead>
              <TableBody>
@@ -194,6 +197,16 @@ export default function MedicineReturnList() {
                   <TableCell align="center" size="medium"> {Return.Pharmacist.Name}     </TableCell>
                   <TableCell align="center"> 
                   <IconButton  aria-label="delete" vertical-align= "middle" onClick={() => DeleteMedicineReturn(Return.ID)}><DeleteIcon /></IconButton >
+                  </TableCell>
+                  <TableCell align="center"> 
+                  <Button
+                                                        variant='outlined'
+                                                        color="primary"
+                                                        component={RouterLink}
+                                                        to={"/MedicineReturnUpdate/" + Return.ID}
+                                                    >
+                                                        แก้ไขข้อมูล
+                                                    </Button>
                   </TableCell>
                   
                 </TableRow>
