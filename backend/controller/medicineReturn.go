@@ -100,18 +100,63 @@ func DeleteMedicineReturn(c *gin.Context) {
 }
 func UpdateMedicineReturn(c *gin.Context) {
 	var Return entity.Return
+	var order entity.Order
+	var dispensemedicine entity.DispenseMedicine
+	var Staff entity.Staff
+	var pharmacist entity.User
+	var Reason entity.Reason
+
 	if err := c.ShouldBindJSON(&Return); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if tx := entity.DB().Where("id = ?", Return.ID).First(&Return); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ambulance not found"})
+	if tx := entity.DB().Where("id = ?", Return.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบสมาชิก"})
 		return
 	}
-	if err := entity.DB().Save(&Return).Error; err != nil {
+
+	if tx := entity.DB().Where("id = ?", Return.DispenseMedicineID).First(&dispensemedicine); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ บ"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", Return.StaffID).First(&Staff); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "a"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", Return.OrderID).First(&order); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "b"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", Return.ReasonID).First(&Reason); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "b"})
+		return
+	}
+
+	update := entity.Return{
+
+		ReturnDate:        Return.ReturnDate,
+		Pharmacist:        Return.Pharmacist,
+		Staff:             Return.Staff,
+		Order:             Return.Order,
+		Reason:            Return.Reason,
+		DispenseMedicine:  Return.DispenseMedicine,
+		Note:              Return.Note,
+
+	}
+		// ขั้นตอนการ validate
+		if _, err := govalidator.ValidateStruct(update); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}	
+
+	if err := entity.DB().Where("id = ?", Return.ID).Updates(&Return).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": Return})
+
+	c.JSON(http.StatusOK, gin.H{"data": update})
 }
 

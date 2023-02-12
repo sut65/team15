@@ -509,13 +509,15 @@ func SetupDatabase() {
 
 	// --- MedicineLabel Data
 	Return1 := Return{
-		DispenseMedicine: dispensemedicine,
-		Staff:            stff1,
-		Reason:           Reason1,
-		Note:             "ยามีความชื้น",
-		Pharmacist:       pharmacist1,
-		ReturnDate:       time.Now(),
+		DispenseMedicine:     dispensemedicine,
+		Order:                order1,
+		Staff:                stff1,
+		Reason:               Reason1,
+		Note:                  "ยามีความชื้น",
+		Pharmacist:           pharmacist1,	
+		ReturnDate:           time.Now(),
 	}
 	db.Model(&Return{}).Create(&Return1)
 
+	
 }

@@ -107,112 +107,60 @@ func DeleteMedicineLabel(c *gin.Context) {
 
 // PATCH /ambulances
 func UpdateMedicineLabel(c *gin.Context) {
-	var medicineLabelold entity.MedicineLabel 
 	var medicineLabel entity.MedicineLabel
-
 	var order entity.Order
 	var effect entity.Effect
 	var pharmacist entity.User
 	var suggestion entity.Suggestion
+	
 
 	if err := c.ShouldBindJSON(&medicineLabel); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
-		c.Abort()
-		return
-	}
-
-	if tx := entity.DB().Where("id = ?", medicineLabel.ID).First(&medicineLabelold); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("MedicineLabel id = %d not found", medicineLabel.ID)})
-		c.Abort()
-		return
-	}
-
-	if medicineLabel.Consumption == "" {
-		medicineLabel.Consumption = medicineLabelold.Consumption
-	}
-
-	if medicineLabel.Instruction == "" {
-		medicineLabel.Instruction = medicineLabelold.Instruction
-	}
-
-	if medicineLabel.Date.String() == "0001-01-01 00:00:00 +0000 UTC" {
-		medicineLabel.Date = medicineLabelold.Date
-	}
-
-	if medicineLabel.PharmacistID != nil {
-		if tx := entity.DB().Where("id = ?", medicineLabel.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found Order"})
-			return
-		}
-		fmt.Print("NOT NULL")
-		medicineLabel.Order = order
-	} else {
-		if tx := entity.DB().Where("id = ?", medicineLabel.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found Order"})
-			return
-		}
-		fmt.Print("NULL")
-		medicineLabel.Pharmacist = pharmacist
-	}
-
-	if medicineLabel.OrderID != nil {
-		if tx := entity.DB().Where("id = ?", medicineLabel.OrderID).First(&order); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found Order"})
-			return
-		}
-		fmt.Print("NOT NULL")
-		medicineLabel.Order = order
-	} else {
-		if tx := entity.DB().Where("id = ?", medicineLabel.OrderID).First(&order); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found Order"})
-			return
-		}
-		fmt.Print("NULL")
-		medicineLabel.Order = order
-	}
-	
-	if medicineLabel.SuggestionID != nil {
-		if tx := entity.DB().Where("id = ?", medicineLabel.SuggestionID).First(&suggestion); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found suggedtion"})
-			return
-		}
-		fmt.Print("NOT NULL")
-		medicineLabel.Suggestion = suggestion
-	} else {
-		if tx := entity.DB().Where("id = ?", medicineLabel.SuggestionID).First(&suggestion); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found suggestion"})
-			return
-		}
-		fmt.Print("NULL")
-		medicineLabel.Suggestion = suggestion
-	}
-
-	if medicineLabel.EffectID != nil {
-		if tx := entity.DB().Where("id = ?", medicineLabel.EffectID).First(&effect); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found suggedtion"})
-			return
-		}
-		fmt.Print("NOT NULL")
-		medicineLabel.Effect = effect
-	} else {
-		if tx := entity.DB().Where("id = ?", medicineLabel.EffectID).First(&effect); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found suggestion"})
-			return
-		}
-		fmt.Print("NULL")
-		medicineLabel.Effect = effect
-	}
-// Update abl in database
-	if err := entity.DB().Save(&medicineLabel).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		c.Abort()
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"status": "Update Success",
-		"data":   medicineLabel,
-	})
 
+	if tx := entity.DB().Where("id = ?", medicineLabel.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบสมาชิก"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", medicineLabel.EffectID).First(&effect); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบบ"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", medicineLabel.SuggestionID).First(&suggestion); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "a"})
+		return
+	}
+	if tx := entity.DB().Where("id = ?", medicineLabel.OrderID).First(&order); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "b"})
+		return
+	}
+
+	update := entity.MedicineLabel{
+		Instruction:          medicineLabel.Instruction,
+		Property:             medicineLabel.Property,
+		Consumption:          medicineLabel.Consumption,
+		Date:                 medicineLabel.Date,
+		Order:                medicineLabel.Order,
+		Suggestion:           medicineLabel.Suggestion,
+		Effect:               medicineLabel.Effect,
+		Pharmacist:           medicineLabel.Pharmacist,
+
+	}
+	// ขั้นตอนการ validate
+	if _, err := govalidator.ValidateStruct(update); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := entity.DB().Where("id = ?", medicineLabel.ID).Updates(&medicineLabel).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": update})
 }
+
+
