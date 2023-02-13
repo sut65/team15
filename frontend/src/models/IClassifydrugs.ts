@@ -6,6 +6,7 @@ import { UserInterface } from "./IUser";
 export interface ClassifydrugsInterface {
 
     ID: number,
+    Number: number,
     Note: string,
     Datetime: Date | null,
 
