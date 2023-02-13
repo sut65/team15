@@ -94,6 +94,9 @@ function Classifydrugs() {
                                     ID
                                 </TableCell>
                                 <TableCell align="center" width="10%">
+                                    เลขใบจัดชั้นยา
+                                </TableCell>
+                                <TableCell align="center" width="10%">
                                     เภสัชกร
                                 </TableCell>
                                 <TableCell align="center" width="20%">
@@ -119,6 +122,7 @@ function Classifydrugs() {
                             {classifydrugs.map((classifydrugs: ClassifydrugsInterface) => (
                             <TableRow key={classifydrugs.ID}>
                                  <TableCell align="center" size="medium"> {classifydrugs.ID}            </TableCell>
+                                 <TableCell align="center" size="medium"> {classifydrugs.Number}    </TableCell>
                                  <TableCell align="center" size="medium"> {classifydrugs.Pharmacist.Name}    </TableCell>
                                  <TableCell align="center" size="medium"> {classifydrugs.Cupboard.Name}     </TableCell>
                                  <TableCell align="center" size="medium"> {classifydrugs.Zonee.Name}           </TableCell>
