@@ -16,6 +16,7 @@ import { CupboardInterface } from "../models/ICupboard";
 import { ZoneeInterface } from "../models/IZonee";
 import { FloorInterface } from "../models/IFloor";
 import { ClassifydrugsInterface } from "../models/IClassifydrugs";
+import { MedicineDisbursementInterface } from "../models/IMedicineDisbursement";
 
 
 
@@ -27,6 +28,7 @@ export default function ClassifydrugsCreate() {
   const [cupboard, setCupboard] = React.useState<CupboardInterface[]>([]);
   const [zonee, setZonee] = React.useState<ZoneeInterface[]>([]);
   const [floor, setFloor] = React.useState<FloorInterface[]>([]);
+  const [medicine, setMedicine] = React.useState<MedicineDisbursementInterface[]>([]);
   const [classifydrugs, setClassifyDrugs] = React.useState<Partial<ClassifydrugsInterface>>({
     Datetime: new Date(),
   });
@@ -129,6 +131,27 @@ export default function ClassifydrugsCreate() {
       });
   }
 
+  //ดึงข้อมูล medicine
+  function getMedicine() {
+    const apiUrl = "http://localhost:8080/medicineDisbursement";
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+    };
+    fetch(apiUrl, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+        console.log("Combobox_bill", res)
+        if (res.data) {
+          setMedicine(res.data);
+        } else {
+          console.log("else");
+        }
+      });
+  }
 
   function getUser() {
     const UserID = localStorage.getItem("uid")
@@ -167,6 +190,7 @@ export default function ClassifydrugsCreate() {
       CupboardID: convertType(classifydrugs.CupboardID),
       ZoneeID: convertType(classifydrugs.ZoneeID),
       FloorID: convertType(classifydrugs.FloorID),
+      MedicineDisbursementID: convertType(classifydrugs.MedicineDisbursementID),
     };
     console.log("Data", data)
     const apiUrl = "http://localhost:8080/ClassifyDrugs";
@@ -199,6 +223,7 @@ export default function ClassifydrugsCreate() {
     getCupboard();
     getZonee();
     getFloor();
+    getMedicine();
     getUser();
 
   }, []);
@@ -276,8 +301,30 @@ export default function ClassifydrugsCreate() {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             <FormControl fullWidth variant="outlined" style={{ width: '40%', float: 'left' }}>
+              <p>ชื่อยา</p>
+              <Select
+                native
+                value={classifydrugs.MedicineDisbursementID}
+                onChange={handleChange}
+                inputProps={{
+                  name: "MedicineDisbursementID",
+                }}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือกชื่อยา
+                </option>
+                {medicine.map((item: MedicineDisbursementInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.MedicineReceive.MedicineLabel.Order.Medicine.Name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={4}>
+            <FormControl fullWidth variant="outlined" style={{ width: '40%' }}>
               <p>ตู้ยา</p>
               <Select
                 native
@@ -299,7 +346,7 @@ export default function ClassifydrugsCreate() {
             </FormControl>
           </Grid>
           <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%' }}>
+            <FormControl fullWidth variant="outlined" style={{ width: '40%', float: 'left' }}>
               <p>โซนยา</p>
               <Select
                 native
@@ -321,7 +368,7 @@ export default function ClassifydrugsCreate() {
             </FormControl>
           </Grid>
           <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%', float: 'left' }}>
+            <FormControl fullWidth variant="outlined" style={{ width: '40%' }}>
               <p>ชั้นยา</p>
               <Select
                 native

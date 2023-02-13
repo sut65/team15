@@ -99,6 +99,9 @@ function Classifydrugs() {
                                 <TableCell align="center" width="10%">
                                     เภสัชกร
                                 </TableCell>
+                                <TableCell align="center" width="10%">
+                                    ชื่อยา
+                                </TableCell> 
                                 <TableCell align="center" width="20%">
                                     ตู้ยา
                                 </TableCell>
@@ -124,6 +127,7 @@ function Classifydrugs() {
                                  <TableCell align="center" size="medium"> {classifydrugs.ID}            </TableCell>
                                  <TableCell align="center" size="medium"> {classifydrugs.Number}    </TableCell>
                                  <TableCell align="center" size="medium"> {classifydrugs.Pharmacist.Name}    </TableCell>
+                                 <TableCell align="center" size="medium"> {classifydrugs.MedicineDisbursement.MedicineReceive.MedicineLabel.Order.Medicine.Name}    </TableCell>
                                  <TableCell align="center" size="medium"> {classifydrugs.Cupboard.Name}     </TableCell>
                                  <TableCell align="center" size="medium"> {classifydrugs.Zonee.Name}           </TableCell>
                                  <TableCell align="center" size="medium"> {classifydrugs.Floor.Number}           </TableCell>
