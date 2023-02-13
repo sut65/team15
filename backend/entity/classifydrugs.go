@@ -47,6 +47,9 @@ type ClassifyDrugs struct{
 	FloorID		 *uint
 	Floor		 Floor
 
+	MedicineDisbursementID *uint
+	MedicineDisbursement	MedicineDisbursement
+
 	Medicinearrangements		[]MedicineArrangement `gorm:"foreignKey:ClassifyDrugsID"`
 
 }
