@@ -46,5 +46,5 @@ type Order struct{
 	Unit		 Unit
 
 	MedicineLabels []MedicineLabel `gorm:"foreignKey:OrderID"`
-
+    Return		   []Return `gorm:"foreignKey:OrderID"`
 }

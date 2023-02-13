@@ -58,6 +58,10 @@ func SetupDatabase() {
 		&Staff{},
 		&Return{},
 		&Reason{},
+		&MedicineDisbursement{},
+		&MedicineRoom{},
+		&DrugUnit{},
+
 	)
 
 	db = database
@@ -244,10 +248,10 @@ func SetupDatabase() {
 	//ระบบคลังยา
 	medicineReceive := MedicineReceive{
 		MedicineReceiveNo: 0111,
-		Pharmacist:        pharmacist2,
+		Pharmacist:        pharmacist3,
 		Zone:              Zone1,
 		RecievedDate:      time.Now(),
-		//MedicineLabel:     MedicineLabel,
+		MedicineLabel:     medicinelabel01,
 	}
 	db.Model(&MedicineReceive{}).Create(&medicineReceive)
 
@@ -264,7 +268,7 @@ func SetupDatabase() {
 	db.Model(&Cause{}).Create(&Cause2)
 
 	discard1 := Discardmedicine{
-
+		Quantity:  10,
 		Cause:    Cause1,
 		Note:     "ยาหก",
 		Datetime: time.Now(),
@@ -276,6 +280,44 @@ func SetupDatabase() {
 
 
 	//------------------------------------------------------------ระบบบันทึกการเบิกยา-------------------------------------
+	//MedicineRoom
+	medicineRoom1 := MedicineRoom{
+		MRname: "ยาสำหรับผู้ป่วยนอก",
+	}
+	db.Model(&MedicineRoom{}).Create(&medicineRoom1)
+
+	medicineRoom2 := MedicineRoom{
+		MRname: "ยาสำหรับผู้ป่วยใน",
+	}
+	db.Model(&MedicineRoom{}).Create(&medicineRoom2)
+	//DrugUnit
+	drugunit1 := DrugUnit{
+		DUname: "เม็ด",
+	}
+	db.Model(&DrugUnit{}).Create(&drugunit1)
+
+	drugunit2 := DrugUnit{
+		DUname: "ขวด",
+	}
+	db.Model(&DrugUnit{}).Create(&drugunit2)
+	
+	drugunit3:= DrugUnit{
+		DUname: "กล่อง",
+	}
+	db.Model(&DrugUnit{}).Create(&drugunit3)
+	//ระบบเบิกยา
+	medicineDisbursement01:= MedicineDisbursement{
+		MedicineDisNo: 2543,
+		Pharmacist:        pharmacist3,
+		MedicineRoom: medicineRoom1,
+		DrugUnit: drugunit1,
+		Dtime:      time.Now(),
+		MedicineReceive:     medicineReceive,
+	}
+	db.Model(&MedicineDisbursement{}).Create(&medicineDisbursement01)
+
+
+	
 
 
 
@@ -317,6 +359,7 @@ func SetupDatabase() {
 		Cupboard:   cupboard2,
 		Zonee:   	zonee2,
 		Floor:   	floor2,
+		Number:   	30001,
 		Note:       "-",
 		Datetime:   time.Now(),
 	}
@@ -327,6 +370,7 @@ func SetupDatabase() {
 		Cupboard:   cupboard1,
 		Zonee:   	zonee1,
 		Floor:   	floor1,
+		Number:   	30002,
 		Note:       "-",
 		Datetime:   time.Now(),
 	}
@@ -372,35 +416,35 @@ func SetupDatabase() {
 		Prescription:            prescription1,
 		ClassifyDrugs:           class1,
 		Pharmacist:              pharmacist2,
-		Note:                    "*มีการเปลี่ยนแปลงยี้ห้อยา",
+		Note:                    "*มีการเปลี่ยนแปลงยี่ห้อยา",
 		MedicineArrangementTime: time.Now(),
 	}
 	db.Model(&MedicineArrangement{}).Create(&medicinearrangement1)
 	
 	//-----------------------------------------------------------ระบบบันทึกการชำระเงิน---------------------------------------
 	//Paymentmethod รูปแบบการชำระเงิน
-	cash := Paymentmethod{
-		ConditionsOfPayments: "ชำระด้วยเงินสด",
-	}
-	db.Model(&Paymentmethod{}).Create(&cash)
+	// cash := Paymentmethod{
+	// 	ConditionsOfPayments: "ชำระด้วยเงินสด",
+	// }
+	// db.Model(&Paymentmethod{}).Create(&cash)
 
-	payment := Paymentmethod{
-		ConditionsOfPayments: "โอนพร้อมเพย์",
-	}
-	db.Model(&Paymentmethod{}).Create(&payment)
+	// payment := Paymentmethod{
+	// 	ConditionsOfPayments: "โอนพร้อมเพย์",
+	// }
+	// db.Model(&Paymentmethod{}).Create(&payment)
 
-	// Bill
-	bill1 := Bill{
-		BillNo:   1000,
-		BillTime: time.Date(2022, 2, 15, 2, 0, 0, 0, time.UTC),
-		Payer:    "AWESOME08",
-		Total:    6 * 980,
+	// // Bill
+	// bill1 := Bill{
+	// 	BillNo:   1000,
+	// 	BillTime: time.Date(2022, 2, 15, 2, 0, 0, 0, time.UTC),
+	// 	Payer:    "AWESOME08",
+	// 	Total:    6 * 980,
 
-		Pharmacist:    pharmacist5,
-		Prescription:  prescription1,
-		Paymentmethod: cash,
-	}
-	db.Model(&Bill{}).Create(&bill1)
+	// 	Pharmacist:    pharmacist5,
+	// 	Prescription:  prescription1,
+	// 	Paymentmethod: cash,
+	// }
+	// db.Model(&Bill{}).Create(&bill1)
 
 	//-----------------------------------------------------ระบบบันทึกการจ่ายยา-------------------------------------
 	//ช่องจ่ายยา
@@ -420,7 +464,7 @@ func SetupDatabase() {
 	//ระบบจ่ายยา
 	dispensemedicine := DispenseMedicine{
 		DispenseNo:   100000,
-		Bill:		  bill1,
+		//Bill:		  bill1,
 		ReceiveName:  "แสนดี มากมาย",
 		Pharmacy:     pharmacy1,
 		Pharmacist:   pharmacist2,

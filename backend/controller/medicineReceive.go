@@ -12,7 +12,7 @@ import (
 
 // POST /medicineReceives
 func CreatemedicineReceive(c *gin.Context) {
-	// var medicineLabel entity.MedicineLabel
+	var medicineLabel entity.MedicineLabel
 	var medicineReceive entity.MedicineReceive
 	var pharmacist entity.User
 	var zone entity.Zone
@@ -28,10 +28,10 @@ func CreatemedicineReceive(c *gin.Context) {
 		return
 	}
 	// 12: ค้นหา medicineLabel ด้วย id
-	// if tx := entity.DB().Where("id = ?", medicineReceive.MedicineLabelID).First(&medicineLabel); tx.RowsAffected == 0 {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "medicine not found"})
-	// 	return
-	// }
+	if tx := entity.DB().Where("id = ?", medicineReceive.MedicineLabelID).First(&medicineLabel); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "medicine not found"})
+		return
+	}
 	// 11: ค้นหา zone ด้วย id
 	if tx := entity.DB().Where("id = ?", medicineReceive.ZoneID).First(&zone); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "side effect not found"})
@@ -40,9 +40,9 @@ func CreatemedicineReceive(c *gin.Context) {
 	// 14: สร้าง MedicineReceive
 	wv := entity.MedicineReceive{
 
-		RecievedDate: medicineReceive.RecievedDate,
-		Pharmacist:   pharmacist,
-		// MedicineLabel:     medicineLabel,
+		RecievedDate:      medicineReceive.RecievedDate,
+		Pharmacist:        pharmacist,
+		MedicineLabel:     medicineLabel,
 		Zone:              zone,
 		MedicineReceiveNo: medicineReceive.MedicineReceiveNo,
 	}
@@ -62,7 +62,7 @@ func CreatemedicineReceive(c *gin.Context) {
 func GetMedicineReceive(c *gin.Context) {
 	var medicineReceive entity.MedicineReceive
 	id := c.Param("id")
-	if err := entity.DB().Preload("Pharmacist").Preload("Zone").Raw("SELECT * FROM medicine_receives WHERE id = ?", id).Find(&medicineReceive).Error; err != nil {
+	if err := entity.DB().Preload("Pharmacist").Preload("Zone").Preload("MedicineLabel").Preload("MedicineLabel.Order").Preload("MedicineLabel.Order.Medicine").Raw("SELECT * FROM medicine_receives WHERE id = ?", id).Find(&medicineReceive).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -72,7 +72,7 @@ func GetMedicineReceive(c *gin.Context) {
 // GET /medicineReceive
 func ListMedicineReceive(c *gin.Context) {
 	var medicineReceive []entity.MedicineReceive
-	if err := entity.DB().Preload("Pharmacist").Preload("Zone").Raw("SELECT * FROM medicine_receives").Find(&medicineReceive).Error; err != nil {
+	if err := entity.DB().Preload("Pharmacist").Preload("Zone").Preload("MedicineLabel").Preload("MedicineLabel.Order").Preload("MedicineLabel.Order.Medicine").Preload("MedicineLabel.Order.Unit").Raw("SELECT * FROM medicine_receives").Find(&medicineReceive).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

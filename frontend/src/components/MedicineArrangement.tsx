@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Container from '@mui/material/Container'
 import TableCell from '@mui/material/TableCell';
-import { Box, Grid, Select, TextField, Typography, Table, TableHead, TableRow, TableBody } from '@mui/material'
+import { Box, Grid, Select, TextField, Typography, Table, TableHead, TableRow, TableBody, Snackbar } from '@mui/material'
 import Button from '@mui/material/Button'
 import { Link as RouterLink } from "react-router-dom";
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 import TableContainer from '@mui/material/TableContainer';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import moment from 'moment';
 
 import { MedicineArrangementInterface } from "../models/IMedicineArrangement";
@@ -12,6 +15,9 @@ import { MedicineArrangementInterface } from "../models/IMedicineArrangement";
 function MedicineArrangements() {
 
     const [medicinearrangement, setMedicineArrangement] = React.useState<MedicineArrangementInterface[]>([]);
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
+    const [ErrorMessage, setErrorMessage] = React.useState("");
 
     const getMedicineArrangement = async () => {
         const apiUrl = "http://localhost:8080/medicinearrangements";
@@ -28,17 +34,69 @@ function MedicineArrangements() {
                 }
             });
     };
+    const DeleteMedicineArrangement = async (id: string | number | undefined) => {
+        const apiUrl = "http://localhost:8080";
+        const requestOptions = {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        };
+      
+        fetch(`${apiUrl}/medicinearrangements/${id}`, requestOptions)
+        .then((response) => response.json())
+        .then(
+          (res) => {
+            if (res.data) {
+              setSuccess(true)
+              console.log("ยกเลิกสำเร็จ")
+              setErrorMessage("")
+            } 
+            else { 
+              setErrorMessage(res.error)
+              setError(true)
+              console.log("ยกเลิกไม่สำเร็จ")
+            }  
+            getMedicineArrangement(); 
+          }
+        )
+      }
 
     useEffect(() => {
         getMedicineArrangement();
     }, []);
+
+    const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+        props,
+        ref,
+      ) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+      });
+
+      const handleClose = (res: any) => {
+        if (res === "clickaway") {
+          return;
+        }
+        setSuccess(false);
+        setError(false);
+      };
 
     return (
 
         <div>
 
             <Container maxWidth="md">
-
+                <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success">
+                ลบข้อมูลสำเร็จ
+                </Alert>
+            </Snackbar>
+            <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="error">
+                ลบข้อมูลไม่สำเร็จ : {ErrorMessage}
+                </Alert>
+            </Snackbar>
                 <Box
 
                     display="flex"
@@ -96,29 +154,26 @@ function MedicineArrangements() {
                                 <TableCell align="center" width="15%">
                                     เลขใบจัดยา
                                 </TableCell>
-                                {/* <TableCell align="left" width="5%">
-                                    ใบชำระเงิน
-                                </TableCell>
-                                <TableCell align="left" width="10%">
-                                    ผู้ชำระเงิน
-                                </TableCell> */}
-                                {/* <TableCell align="center" width="10%">
-                                    เลขใบสั้งยา
-                                </TableCell>
-                                <TableCell align="center" width="20%">
-                                    ขื่อยา
+                                <TableCell align="center" width="10%">
+                                    เลขใบสั้งยา/ชื่อยา
                                 </TableCell>
                                 <TableCell align="center" width="10%">
                                     ชั้นยา
                                 </TableCell>
                                 <TableCell align="center" width="20%">
-                                    ขื่อยา
-                                </TableCell> */}
+                                    หมายเหตุ
+                                </TableCell>
                                 <TableCell align="center" width="15%">
                                     วันที่และเวลา
                                 </TableCell>
                                 <TableCell align="center" width="15%">
                                     ผู้จัดยา
+                                </TableCell>
+                                <TableCell align="center" width="15%">
+                                    ลบข้อมูล
+                                </TableCell>
+                                <TableCell align="center" width="15%">
+                                    แก้ไขข้อมูล
                                 </TableCell>
                             </TableRow>
 
@@ -129,12 +184,24 @@ function MedicineArrangements() {
                             <TableRow key={medicinearrangement.ID}>
                                  <TableCell align="center" size="medium"> {medicinearrangement.ID}            </TableCell>
                                  <TableCell align="center" size="medium"> {medicinearrangement.MedicineArrangementNo}    </TableCell>
-                                 {/* <TableCell align="center" size="medium"> {medicinearrangement}    </TableCell>
-                                 <TableCell align="center" size="medium"> {medicinearrangement}     </TableCell>
-                                 <TableCell align="center" size="medium"> {medicinearrangement}    </TableCell>
-                                 <TableCell align="center" size="medium"> {medicinearrangement}     </TableCell> */}
+                                 <TableCell align="center" size="medium"> {medicinearrangement.Prescription.Number} {medicinearrangement.Prescription.MedicineLabel.Order.Medicine.Name}    </TableCell>
+                                 <TableCell align="center" size="medium"> {medicinearrangement.ClassifyDrugs.Cupboard.Name}     </TableCell>
                                  <TableCell align="center" > {moment(medicinearrangement.MedicineArrangementTime).format('DD MMMM yyyy')} </TableCell>
+                                 <TableCell align="center" size="medium"> {medicinearrangement.Note}     </TableCell>
                                  <TableCell align="center" size="medium"> {medicinearrangement.Pharmacist.Name}     </TableCell>
+                                 <TableCell align="center"> 
+                                <IconButton aria-label="delete" onClick={() => DeleteMedicineArrangement(medicinearrangement.ID)}><DeleteIcon /></IconButton>
+                                </TableCell>
+                                <TableCell align="center"> 
+                  <Button
+                                                        variant='outlined'
+                                                        color="primary"
+                                                        component={RouterLink}
+                                                        to={"/MedicineArrangementUpdate/" + medicinearrangement.ID}
+                                                    >
+                                                        แก้ไขข้อมูล
+                                                    </Button>
+                  </TableCell>
                             </TableRow>
                         ))}
 

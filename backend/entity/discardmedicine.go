@@ -16,6 +16,7 @@ type Cause struct {
 type Discardmedicine struct {
 	gorm.Model
 
+	Quantity int
 	Note	string
 	Datetime time.Time
 

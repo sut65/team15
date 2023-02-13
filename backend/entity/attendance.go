@@ -9,15 +9,15 @@ import (
 type Shift struct {
 	gorm.Model
 
-	Name   string
-	Orders []Order `gorm:"foreignKey:MedicineID"`
+	Name        string
+	Attendances []Attendance `gorm:"foreignKey:ShiftID"`
 }
 
 type Stat struct {
 	gorm.Model
 
-	Name   string
-	Orders []Order `gorm:"foreignKey:UnitID"`
+	Name        string
+	Attendances []Attendance `gorm:"foreignKey:StatID"`
 }
 
 type Attendance struct {

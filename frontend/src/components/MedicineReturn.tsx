@@ -23,12 +23,16 @@ import { EffectsInterface } from "../models/IEffect";
 import { UserInterface } from "../models/IUser";
 import { ReturnInterface } from "../models/IReturn";
 import { ReasonInterface } from "../models/IReason";
+import { OrderInterface } from "../models/IOrder";
 import { setDate } from "date-fns";
 
 export default function MedicineReturnCreate(){
-    const [Return, setReturn] = React.useState<Partial<ReturnInterface>>({});
+    const [Return, setReturn] = React.useState<Partial<ReturnInterface>>({
+      ReturnDate: new Date(),
+    })
     const [reason, setReason] = React.useState<ReasonInterface[]>([]);
     const [staff, setStaff] = React.useState<SatffInterface[]>([]);
+    const [Order, setOrder] = React.useState<OrderInterface[]>([]);
     const [user, setUser] = React.useState<UserInterface>();
     const [dispensemedicine, setDispensemedicine] = React.useState<DispenseMedicineInterface[]>([]);
     const [success, setSuccess] = React.useState(false);
@@ -97,6 +101,18 @@ export default function MedicineReturnCreate(){
           });
       };
 
+      const getOrder = async () => {
+        fetch(`${apiUrl}/orders`, requestOptions)
+          .then((response) => response.json())
+          .then((res) => {
+            if(res.data){
+              setOrder(res.data);
+            } else {
+              console.log("else");
+            }
+          });
+      };
+
       const getReason = async () => {
         fetch(`${apiUrl}/reasons`, requestOptions)
           .then((response) => response.json())
@@ -139,16 +155,18 @@ export default function MedicineReturnCreate(){
       function submit() {
         setLoading(true)
         let data = {
+            OrderID: convertType(Return.OrderID),
             DispensemedicineID: convertType(Return.DispenseMedicineID),
-            Reason: convertType(Return.ReasonID),
+            ReasonID: convertType(Return.ReasonID),
             StaffID: convertType(Return.StaffID),
             PharmacistID: Number(localStorage.getItem("uid")),
-            ReturnDate: new Date(),
-          
+            ReturnDate: Return.ReturnDate,
+            Note: Return.Note ?? "", 
+            Unitt: Return.Unitt ?? "",
           };
 
           console.log("Data", data)
-          const apiUrl = "http://localhost:8080/medicinereturn";
+          const apiUrl = "http://localhost:8080/medicinereturns";
           const requestOptions = {
             method: "POST",
             headers: {
@@ -174,6 +192,7 @@ export default function MedicineReturnCreate(){
 
             getUser();
             getdispensemedicine();
+            getOrder();
             getReason();
             getStaff();
         
@@ -216,7 +235,7 @@ export default function MedicineReturnCreate(){
         <Grid container spacing={3} >
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
-              <p>หมายเลขสั่งซื้อยา</p>
+              <p>หมายเลขจ่ายยา</p>
               <Select
                 native
                 value={Return.DispenseMedicineID}
@@ -230,7 +249,7 @@ export default function MedicineReturnCreate(){
                 </option>
                 {dispensemedicine.map((item: DispenseMedicineInterface) => (
                   <option value={item.ID} key={item.ID}>
-                    {item.DispenseNo.valueOf()}
+                    {item.DispenseNo}
                   </option>
                 ))}
               </Select>
@@ -241,23 +260,23 @@ export default function MedicineReturnCreate(){
               <p>ชื่อยา</p>
               <Select
                 native
-                // value={Return.DispenseMedicineID}
+                value={Return.OrderID}
                 onChange={handleChange}
                 inputProps={{
-                  name: "DispenseMedicineID",
+                  name: "OrderID",
                 }}
               >
                 <option aria-label="None" value="">
                   กรุณาเลือกชื่อยา
                 </option>
-                {dispensemedicine.map((item: DispenseMedicineInterface) => (
+                {Order.map((item: OrderInterface) => (
                   <option value={item.ID} key={item.ID}>
-                    {item.DispenseNo.valueOf()}
-                  </option> 
-                 ))}
+                    {item.Medicine.Name}
+                  </option>
+                ))}
               </Select>
             </FormControl>
-          </Grid> 
+          </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
               <p>เจ้าหน้าที่รับคืนยา</p>
@@ -323,10 +342,43 @@ export default function MedicineReturnCreate(){
             </LocalizationProvider>
           </FormControl>
         </Grid>
+
+        <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+              <p>หมายเหตุ</p>
+              <FormControl fullWidth variant="outlined">
+                <TextField
+                  id="Note"
+                  variant="outlined"
+                  type="string"
+                  size="medium"
+                  placeholder="กรุณากรอกข้อมูลสรรพคุณของยา"
+                  value={Return.Note || ""}
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+              <p>จำนวนยาที่คืน</p>
+              <FormControl fullWidth variant="outlined">
+                <TextField
+                  id="Unitt"
+                  variant="outlined"
+                  type="number"
+                  size="medium"
+                  placeholder="กรุณากรอกข้อมูลการบริโภค"
+                  value={Return.Unitt || ""}
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+            </FormControl>
+          </Grid>
            <Grid item xs={12}>
             <Button
               component={RouterLink}
-              to="/medicineLabel"
+              to="/MedicineReturnList"
               variant="contained"
             >
               กลับ

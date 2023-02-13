@@ -1,6 +1,8 @@
 package controller
 
 import (
+
+	"fmt"
 	"net/http"
 	
 	"github.com/asaskevich/govalidator"
@@ -56,6 +58,9 @@ func CreateMedicineLabel(c *gin.Context) {
 		Effect:               effect,
 		Pharmacist:           pharmacist,     // โยงความสัมพันธ์กับ Entity user
 	}
+
+	fmt.Println(wv.Date)
+
 	if _, err := govalidator.ValidateStruct(wv); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -103,17 +108,59 @@ func DeleteMedicineLabel(c *gin.Context) {
 // PATCH /ambulances
 func UpdateMedicineLabel(c *gin.Context) {
 	var medicineLabel entity.MedicineLabel
+	var order entity.Order
+	var effect entity.Effect
+	var pharmacist entity.User
+	var suggestion entity.Suggestion
+	
+
 	if err := c.ShouldBindJSON(&medicineLabel); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if tx := entity.DB().Where("id = ?", medicineLabel.ID).First(&medicineLabel); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ambulance not found"})
+
+	if tx := entity.DB().Where("id = ?", medicineLabel.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบสมาชิก"})
 		return
 	}
-	if err := entity.DB().Save(&medicineLabel).Error; err != nil {
+
+	if tx := entity.DB().Where("id = ?", medicineLabel.EffectID).First(&effect); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบบ"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", medicineLabel.SuggestionID).First(&suggestion); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "a"})
+		return
+	}
+	if tx := entity.DB().Where("id = ?", medicineLabel.OrderID).First(&order); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "b"})
+		return
+	}
+
+	update := entity.MedicineLabel{
+		Instruction:          medicineLabel.Instruction,
+		Property:             medicineLabel.Property,
+		Consumption:          medicineLabel.Consumption,
+		Date:                 medicineLabel.Date,
+		Order:                medicineLabel.Order,
+		Suggestion:           medicineLabel.Suggestion,
+		Effect:               medicineLabel.Effect,
+		Pharmacist:           medicineLabel.Pharmacist,
+
+	}
+	// ขั้นตอนการ validate
+	if _, err := govalidator.ValidateStruct(update); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": medicineLabel})
+
+	if err := entity.DB().Where("id = ?", medicineLabel.ID).Updates(&medicineLabel).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": update})
 }
+
+

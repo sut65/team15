@@ -9,7 +9,7 @@ import (
 type Bill struct {
 	gorm.Model
 
-	BillNo   uint
+	// BillNo   uint
 	BillTime time.Time
 	Payer    string
 	Total    uint
@@ -23,12 +23,12 @@ type Bill struct {
 	PrescriptionID *uint
 	Prescription   Prescription
 
-	DispenseMedicines	[]DispenseMedicine `gorm:"foreignKey:BillID"`
+	DispenseMedicines []DispenseMedicine `gorm:"foreignKey:BillID"`
 }
 
 type Paymentmethod struct {
 	gorm.Model
-	ConditionsOfPayments string
+	Name string
 
 	Bills []Bill `gorm:"foreignKey:PaymentmethodID"`
 }

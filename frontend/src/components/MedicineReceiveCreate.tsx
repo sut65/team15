@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { Button, CssBaseline, FormControl, Grid, Select, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material'
+import { Button, CssBaseline, FormControl, Grid, Select, MenuItem, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material'
 
 import { UserInterface } from "../models/IUser";
 import { ZoneInterface } from "../models/IZone";
@@ -23,7 +23,7 @@ export default function MedicineReceiveCreate() {
     const [date, setDate] = React.useState<Date | null>(null);
     const [user, setUser] = React.useState<UserInterface>();
     const [zone, setzone] = React.useState<ZoneInterface[]>([]);
-    const [medicineLabel, setMedicineLable] = React.useState<MedicineLabelsInterface[]>([]); 
+    const [medicineLabel, setMedicineLable] = React.useState<MedicineLabelsInterface[]>([]);
     const [MedicineReceive, setMedicineReceive] = React.useState<Partial<MedicineReceiveInterface>>({});
     const [loading, setLoading] = React.useState(false);
     const [ErrorMessage, setErrorMessage] = React.useState<String>();
@@ -58,26 +58,26 @@ export default function MedicineReceiveCreate() {
         });
     };
 
-    // function getMedicineLable() {
-    //     const apiUrl = "http://localhost:8080/medicineLabels";
-    //     const requestOptions = {
-    //         method: "GET",
-    //         headers: {
-    //             Authorization: `Bearer ${localStorage.getItem("token")}`,
-    //             "Content-Type": "application/json",
-    //         },
-    //     };
-    //     fetch(apiUrl, requestOptions)
-    //         .then((response) => response.json())
-    //         .then((res) => {
-    //             console.log("Combobox_medicine", res)
-    //             if (res.data) {
-    //                 setzone(res.data);
-    //             } else {
-    //                 console.log("else");
-    //             }
-    //         });
-    // }
+    function getMedicineLable() {
+        const apiUrl = "http://localhost:8080/medicineLabels";
+        const requestOptions = {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "application/json",
+            },
+        };
+        fetch(apiUrl, requestOptions)
+            .then((response) => response.json())
+            .then((res) => {
+                console.log("Combobox_MedicineLable", res)
+                if (res.data) {
+                    setMedicineLable(res.data);
+                } else {
+                    console.log("else");
+                }
+            });
+    }
 
     //ดึงข้อมูลโซนยา
     function getzone() {
@@ -92,7 +92,7 @@ export default function MedicineReceiveCreate() {
         fetch(apiUrl, requestOptions)
             .then((response) => response.json())
             .then((res) => {
-                
+
                 console.log("Combobox_zone", res)
                 if (res.data) {
                     console.log(res.data)
@@ -136,7 +136,8 @@ export default function MedicineReceiveCreate() {
             PharmacistID: Number(localStorage.getItem("uid")),
             MedicineReceiveNo: typeof MedicineReceive.MedicineReceiveNo == "string" ? parseInt(MedicineReceive.MedicineReceiveNo) : 0,
             ZoneID: convertType(MedicineReceive.ZoneID),
-            RecievedDate: date,
+            RecievedDate: MedicineReceive.RecievedDate,
+            MedicineLabelID: convertType(MedicineReceive.MedicineLabelID),
         };
         console.log("Data", data)
         const apiUrl = "http://localhost:8080/medicineReceives";
@@ -167,7 +168,7 @@ export default function MedicineReceiveCreate() {
     React.useEffect(() => {
 
         getzone();
-        // getMedicineLable();
+        getMedicineLable();
         getUser();
 
     }, []);
@@ -175,10 +176,10 @@ export default function MedicineReceiveCreate() {
     const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
         props,
         ref,
-      ) {
+    ) {
         return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-      });
-  
+    });
+
 
     return (
         <Container maxWidth="lg">
@@ -204,7 +205,7 @@ export default function MedicineReceiveCreate() {
 
                         <Button style={{ float: "right" }}
                             component={RouterLink}
-                            to="/medicineReceives"
+                            to="/medicineReceive"
                             variant="contained"
                             color="primary">
                             <SourceIcon />รายการบันทึกคลังยา
@@ -227,117 +228,119 @@ export default function MedicineReceiveCreate() {
                                 />
                             </FormControl>
                         </FormControl>
-                        </Grid>
-                    <Grid item xs={4}>
+                    </Grid>
+
+
+                    <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
-                            <p>ชื่อยา</p>
+                            <p>ชื่อยา | วันหมดอายุ</p>
                             <Select
-                                native
+                                variant="outlined"
+                                defaultValue={0}
                                 value={MedicineReceive.MedicineLabelID}
                                 onChange={handleChange}
-                                inputProps={{
-                                    name: "PharmacyID",
-                                }}
+                                inputProps={{ name: "MedicineLabelID" }}
                             >
-                                <option aria-label="None" value="">
-                                    ชื่อยา
-                                </option>
-                                {medicineLabel.map((item: MedicineLabelsInterface) => (
-                                    <option value={item.ID} key={item.ID}>
-                                        {item.Order.Medicine.Name}
-                                    </option>
+                                <MenuItem value={0} key={0}>เลือกชื่อยา | วันหมดอายุ</MenuItem>
+                                {medicineLabel.map((item: MedicineLabelsInterface) =>
+                                (
+                                    <MenuItem value={item.ID} key={item.ID}>
+                                        {item.Order.Medicine.Name} {"|"} 
+                                    </MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
-                    </Grid>
-                    <Grid item xs={4}>
-
-                        <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
-                            <p>โซนยา</p>
-                            <Select
-                                native
-                                value={MedicineReceive.ZoneID}
-                                onChange={handleChange}
-                                inputProps={{
-                                    name: "ZoneID",
-                                }}
-                            >
-                                <option aria-label="None" value="">
-                                    เลือกโซนยา
-                                </option>
-                                {zone.map((item: ZoneInterface) => (
-                                    <option value={item.ID} key={item.ID}>
-                                        {item.ZoneName}
-                                    </option>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <FormControl fullWidth variant="outlined" style={{ width: '100%' }}>
-                            <p>ผู้บันทึกคลังยา</p>
-                            <Select
-                                disabled
-                                native
-                            >
-                                <option>
-                                    {user?.Name}
-                                </option>
-
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <FormControl fullWidth variant="outlined">
-                            <p>วันที่สั่งซื้อ</p>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-                                    value={MedicineReceive.RecievedDate}
-                                    inputFormat="dd-mm-yyyy"
-                                    onChange={(newValue) => {
-                                        setMedicineReceive({
-                                            ...MedicineReceive,
-                                            RecievedDate: newValue,
-                                        });
-
-                                    }}
-                                    renderInput={(params) => <TextField {...params} />}
-
-                                />
-
-                            </LocalizationProvider>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Stack
-                            spacing={2}
-                            direction="row"
-                            justifyContent="space-between"
-                            alignItems="flex-start"
-                            sx={{ mt: 3 }}
-                        >
-                            <Button
-                                variant="contained"
-                                color="error"
-                                component={RouterLink}
-                                to="/dispensemedicines"
-                            >
-                                ถอยกลับ
-                            </Button>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={submit}
-                            >
-                                บันทึกข้อมูล
-                            </Button>
-
-                        </Stack>
                     </Grid>
                 </Grid>
 
-            </Paper >
+                <Grid item xs={4}>
+
+                    <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
+                        <p>โซนยา</p>
+                        <Select
+                            native
+                            value={MedicineReceive.ZoneID}
+                            onChange={handleChange}
+                            inputProps={{
+                                name: "ZoneID",
+                            }}
+                        >
+                            <option aria-label="None" value="">
+                                เลือกโซนยา
+                            </option>
+                            {zone.map((item: ZoneInterface) => (
+                                <option value={item.ID} key={item.ID}>
+                                    {item.ZoneName}
+                                </option>
+                            ))}
+                        </Select>
+                    </FormControl> 
+                </Grid>
+                <Grid item xs={4}>
+                    <FormControl fullWidth variant="outlined" style={{ width: '100%' }}>
+                        <p>ผู้บันทึกคลังยา</p>
+                        <Select
+                            disabled
+                            native
+                        >
+                            <option>
+                                {user?.Name}
+                            </option>
+
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={2}>
+                    <FormControl fullWidth variant="outlined">
+                        <p>วันที่สั่งซื้อ</p>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <DatePicker
+                                value={MedicineReceive.RecievedDate}
+                                onChange={(newValue) => {
+                                    setMedicineReceive({
+                                        ...MedicineReceive,
+                                        RecievedDate: newValue,
+                                    });
+
+                                }}
+                                renderInput={(params) => <TextField {...params} />}
+
+                            />
+
+                        </LocalizationProvider>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                    <Stack
+                        spacing={2}
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="flex-start"
+                        sx={{ mt: 3 }}
+                    >
+                        <Button
+                            variant="contained"
+                            color="error"
+                            component={RouterLink}
+                            to="/medicineReceive"
+                        >
+                            ถอยกลับ
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={submit}
+                        >
+                            บันทึกข้อมูล
+                        </Button>
+
+                    </Stack>
+                </Grid>
+
+            </Paper>
         </Container>
+
+
 
     );
 }
