@@ -2,6 +2,7 @@ import { CupboardInterface } from "./ICupboard";
 import { ZoneeInterface } from "./IZonee";
 import { FloorInterface } from "./IFloor";
 import { UserInterface } from "./IUser";
+import { MedicineDisbursementInterface } from "./IMedicineDisbursement";
 
 export interface ClassifydrugsInterface {
 
@@ -21,4 +22,7 @@ export interface ClassifydrugsInterface {
 
     FloorID: number,
     Floor:  FloorInterface,
+
+    MedicineDisbursementID: number,
+    MedicineDisbursement: MedicineDisbursementInterface,
 }

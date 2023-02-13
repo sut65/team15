@@ -257,7 +257,6 @@ export default function PrescriptionCreate() {
               </Select>
             </FormControl>
           </Grid>
-      
         <Grid item xs={6}>
             <FormControl fullWidth variant="outlined" style={{ width: '40%', float: 'left' }}>
               <p>แพทย์</p>
