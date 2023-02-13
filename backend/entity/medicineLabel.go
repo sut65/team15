@@ -28,8 +28,6 @@ type MedicineLabel struct {
 	Pharmacist 	  User
 
 	MedicineReceive		[]MedicineReceive`gorm:"foreignKey:MedicineLabelID"`
-	Prescription		[]Prescription`gorm:"foreignKey:MedicineLabelID"`
-	ClassifyDrugs		[]ClassifyDrugs`gorm:"foreignKey:MedicineLabelID"`
 	
 }
 

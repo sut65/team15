@@ -26,10 +26,6 @@ type MedicineDisbursement struct {
 
 	DrugUnitID          *uint
 	DrugUnit            DrugUnit
-
-
-	ClassifyDrugs		[]ClassifyDrugs`gorm:"foreignKey:MedicineDisbursementID"`
-	
 }
 type MedicineRoom struct {
 	gorm.Model

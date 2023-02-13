@@ -22,8 +22,6 @@ type MedicineReceive struct {
 	Discardmedicine []Discardmedicine	`gorm:"foreignkey:MedicineReceiveID"`
 	ZoneID *uint
 	Zone   Zone
-
-	ClassifyDrugs		[]ClassifyDrugs`gorm:"foreignKey:MedicineReceiveID"`
 }
 type Zone struct {
 	gorm.Model

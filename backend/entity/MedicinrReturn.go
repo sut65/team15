@@ -14,7 +14,7 @@ type Return struct{
 
 	Note string `valid:"required~Note cannot be blank"`
 	Unitt string    `valid:"range(0|100)~Unitt must be Positive"`
-
+    
 
 
 	PharmacistID *uint
