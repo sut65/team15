@@ -61,6 +61,7 @@ func CreateClassifyDrugs(c *gin.Context)  {
 		// MedicineDisbursement: medicinedisbursement,
 		Note:			classifydrugs.Note,
 		Datetime:		classifydrugs.Datetime, 		// ตั้งค่าฟิลด์ watchedTime
+		Number:			classifydrugs.Number,
 	}
 
 	// 14: บันทึก

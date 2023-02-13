@@ -359,6 +359,7 @@ func SetupDatabase() {
 		Cupboard:   cupboard2,
 		Zonee:   	zonee2,
 		Floor:   	floor2,
+		Number:   	30001,
 		Note:       "-",
 		Datetime:   time.Now(),
 	}
@@ -369,6 +370,7 @@ func SetupDatabase() {
 		Cupboard:   cupboard1,
 		Zonee:   	zonee1,
 		Floor:   	floor1,
+		Number:   	30002,
 		Note:       "-",
 		Datetime:   time.Now(),
 	}
