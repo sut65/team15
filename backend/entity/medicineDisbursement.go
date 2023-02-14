@@ -22,9 +22,6 @@ type MedicineDisbursement struct {
 	
 	MedicineRoomID          *uint
 	MedicineRoom            MedicineRoom
-
-	DrugUnitID          *uint
-	DrugUnit            DrugUnit
 }
 type MedicineRoom struct {
 	gorm.Model
@@ -33,11 +30,5 @@ type MedicineRoom struct {
 
 	MedicineDisbursements []MedicineDisbursement `gorm:"foreignKey:MedicineRoomID"`
 }
-type DrugUnit struct {
-	gorm.Model
 
-	DUname string
-
-	MedicineDisbursements []MedicineDisbursement `gorm:"foreignKey:DrugUnitID"`
-}
 

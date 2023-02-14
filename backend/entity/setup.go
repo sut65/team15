@@ -60,7 +60,7 @@ func SetupDatabase() {
 		&Reason{},
 		&MedicineDisbursement{},
 		&MedicineRoom{},
-		&DrugUnit{},
+		
 
 	)
 
@@ -290,27 +290,12 @@ func SetupDatabase() {
 		MRname: "ยาสำหรับผู้ป่วยใน",
 	}
 	db.Model(&MedicineRoom{}).Create(&medicineRoom2)
-	//DrugUnit
-	drugunit1 := DrugUnit{
-		DUname: "เม็ด",
-	}
-	db.Model(&DrugUnit{}).Create(&drugunit1)
-
-	drugunit2 := DrugUnit{
-		DUname: "ขวด",
-	}
-	db.Model(&DrugUnit{}).Create(&drugunit2)
 	
-	drugunit3:= DrugUnit{
-		DUname: "กล่อง",
-	}
-	db.Model(&DrugUnit{}).Create(&drugunit3)
 	//ระบบเบิกยา
 	medicineDisbursement01:= MedicineDisbursement{
 		MedicineDisNo: 2543,
 		Pharmacist:        pharmacist3,
 		MedicineRoom: medicineRoom1,
-		DrugUnit: drugunit1,
 		Dtime:      time.Now(),
 		MedicineReceive:     medicineReceive,
 	}
