@@ -31,7 +31,7 @@ type Order struct{
 	gorm.Model
 
 	Quantity		int				`valid:"range(1|10000)~Consumption must be Positive, required~Consumption cannot be blank"`
-	Priceperunit	int				
+	Priceperunit	int				`valid:"range(1|10000)~Consumption must be Positive, required~Consumption cannot be blank"`
 	Datetime		time.Time		
 
 	PharmacistID *uint
