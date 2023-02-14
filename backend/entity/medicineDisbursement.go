@@ -19,7 +19,6 @@ type MedicineDisbursement struct {
 	MedicineReceiveID *uint
 	MedicineReceive   MedicineReceive `gorm:"references:id" valid:"-"`
 
-	Discardmedicine []Discardmedicine `gorm:"foreignkey:MedicineReceiveID"`
 	
 	MedicineRoomID          *uint
 	MedicineRoom            MedicineRoom
