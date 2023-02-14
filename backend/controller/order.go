@@ -65,6 +65,11 @@ func CreateOrder(c *gin.Context) {
 		
 	}
 
+	if _, err := govalidator.ValidateStruct(wp); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	// 15: บันทึก
 	if err := entity.DB().Create(&wp).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
