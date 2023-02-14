@@ -32,7 +32,7 @@ type Order struct{
 
 	Quantity		int				`valid:"range(1|10000)~Consumption must be Positive, required~Consumption cannot be blank"`
 	Priceperunit	int				`valid:"range(1|10000)~Consumption must be Positive, required~Consumption cannot be blank"`
-	Datetime		time.Time		
+	Datetime		time.Time		`valid:"DateNotpast~Date must not be in the past, DateNotFuture~Date must not be in the future"`
 
 	PharmacistID *uint
 	Pharmacist 	  User				
@@ -51,8 +51,18 @@ type Order struct{
 }
 
 func init() {
-	govalidator.CustomTypeTagMap.Set("donotpast", func(i interface{}, context interface{}) bool {
+
+	
+
+	govalidator.CustomTypeTagMap.Set("DateNotpast", func(i interface{}, context interface{}) bool {
 		t := i.(time.Time)
-		return t.After(time.Now().Add(time.Minute * -1)) //เวลา > เวลาปัจจุบัน - 1 นาที
+		now := time.Now().Add(time.Minute * -10)
+		return t.After(now) || t.Equal(now)
+	})
+
+	govalidator.CustomTypeTagMap.Set("DateNotFuture", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		now := time.Now().Add(time.Minute * 10)
+		return t.Before(now) || t.Equal(now)
 	})
 }
