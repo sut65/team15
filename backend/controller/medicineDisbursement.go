@@ -16,7 +16,6 @@ func CreatemedicineDisbursement(c *gin.Context) {
 	var medicineDisbursement entity.MedicineDisbursement
 	var pharmacist entity.User
 	var medicineRoom entity.MedicineRoom
-	var drugunit entity.DrugUnit
 
 	//เช็คว่าตรงกันมั้ย
 	if err := c.ShouldBindJSON(&medicineDisbursement); err != nil {
@@ -38,11 +37,6 @@ func CreatemedicineDisbursement(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "side effect not found"})
 		return
 	}
-	// 11: ค้นหา drugunit ด้วย id
-	if tx := entity.DB().Where("id = ?", medicineDisbursement.DrugUnitID).First(&drugunit); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "side effect not found"})
-		return
-	}
 	// 14: สร้าง MedicineDisbursement
 	wv := entity.MedicineDisbursement{
 
@@ -50,7 +44,6 @@ func CreatemedicineDisbursement(c *gin.Context) {
 		Pharmacist:        pharmacist,
 		MedicineReceive:     medicineReceive,
 		MedicineRoom:              medicineRoom,
-		DrugUnit:	drugunit,
 		MedicineDisNo: medicineDisbursement.MedicineDisNo,
 		MedicineDisAmount: medicineDisbursement.MedicineDisAmount,
 	}

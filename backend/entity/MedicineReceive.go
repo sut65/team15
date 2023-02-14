@@ -16,12 +16,13 @@ type MedicineReceive struct {
 	Pharmacist   User
 
 	MedicineLabelID *uint
-	MedicineLabel   MedicineLabel		`gorm:"references:id" valid:"-"`
+	MedicineLabel   MedicineLabel `gorm:"references:id" valid:"-"`
 
-	//MedicineDisbursement		[]MedicineDisbursement`gorm:"foreignKey:MedicineReceiveID"`
-	Discardmedicine []Discardmedicine	`gorm:"foreignkey:MedicineReceiveID"`
 	ZoneID *uint
 	Zone   Zone
+
+	Discardmedicine       []Discardmedicine      `gorm:"foreignkey:MedicineReceiveID"`
+	MedicineDisbursements []MedicineDisbursement `gorm:"foreignKey:MedicineReceiveID"`
 }
 type Zone struct {
 	gorm.Model
