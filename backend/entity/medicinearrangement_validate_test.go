@@ -37,51 +37,38 @@ func TestNoteMedicineArrangementNotBlank(t *testing.T) {
 	})
 }
 
-func TestNoMedicineArrangement1(t *testing.T) {
+func TestNoMedicineArrangement(t *testing.T) {
 	g := NewGomegaWithT(t)
-	t.Run("check pattern medicinearrangno number 6 digit", func(t *testing.T) {
+	t.Run("check pattern MedicineArrangementNo range 200000|999999", func(t *testing.T) {
+		a := []uint{
+			2,         // ผิด 1 หลัก ต้องเป็นเลข 6 ตัว
+			22,        // ผิด 2 หลัก ต้องเป็นเลข 6 ตัว
+			203,       // ผิด 3 หลัก ต้องเป็นเลข 6 ตัว
+			2004,      // ผิด 4 หลัก ต้องเป็นเลข 6 ตัว
+			20005,     // ผิด 5 หลัก ต้องเป็นเลข 6 ตัว
+			2000007,   // ผิด 7 หลัก ต้องเป็นเลข 6 ตัว
+			20000008,  // ผิด 8 หลัก ต้องเป็นเลข 6 ตัว
+			200000009, // ผิด 9 หลัก ต้องเป็นเลข 6 ตัว
+		}
+		for _, a := range a {
 			arrangement := MedicineArrangement{
-				MedicineArrangementNo: 		2000,	//ผิด	
-				Note:						"มีการเปลี่ยนยี่ห้อยา"	,	                  		
+				MedicineArrangementNo: 		a,		//ผิด
+				Note:						"มีการเปลี่ยนยี่ห้อยา",	                  		
 				MedicineArrangementTime:	time.Now(),
 			}
-
+	
+			// ตรวจสอบด้วย govalidator
 			ok, err := govalidator.ValidateStruct(arrangement)
-			g.Expect(ok).NotTo(BeTrue())			
-			g.Expect(err).ToNot(BeNil())			
-			g.Expect(err.Error()).To(Equal("MedicineArrangement dose not validate as matches(^\\d{6}$)"))
-	})
-}
-
-func TestNoMedicineArrangement2(t *testing.T) {
-	g := NewGomegaWithT(t)
-	t.Run("check pattern medicinearrangno non zero", func(t *testing.T) {
-			arrangement := MedicineArrangement{
-				MedicineArrangementNo: 		0,		//ผิด
-				Note:						"มีการเปลี่ยนยี่ห้อยา"	,	                  		
-				MedicineArrangementTime:	time.Now(),
-			}
-
-			ok, err := govalidator.ValidateStruct(arrangement)
-			g.Expect(ok).NotTo(BeTrue())			
-			g.Expect(err).ToNot(BeNil())			
-			g.Expect(err.Error()).To(Equal("MedicineArrangementNo: non zero value required"))
-	})
-}
-
-func TestNoMedicineArrangement3(t *testing.T) {
-	g := NewGomegaWithT(t)
-	t.Run("check pattern medicinearrangno range 200000|999999", func(t *testing.T) {
-			arrangement := MedicineArrangement{
-				MedicineArrangementNo: 		100000,		//ผิด
-				Note:						"มีการเปลี่ยนยี่ห้อยา"	,	                  		
-				MedicineArrangementTime:	time.Now(),
-			}
-
-			ok, err := govalidator.ValidateStruct(arrangement)
-			g.Expect(ok).NotTo(BeTrue())			
-			g.Expect(err).ToNot(BeNil())			
-			g.Expect(err.Error()).To(Equal("MedicineArrangementNo: range 200000|999999"))
+	
+			// ok ต้องไม่เป็นค่า true แปลว่าต้องจับ error ได้
+			g.Expect(ok).ToNot(BeTrue())
+	
+			// err ต้องไม่เป็นค่า nil แปลว่าต้องจับ error ได้
+			g.Expect(err).ToNot(BeNil())
+	
+			// err.Error ต้องมี error message แสดงออกมา
+			g.Expect(err.Error()).To(Equal("MedicineArrangementNo must be 6 digits"))
+		}
 	})
 }
 
