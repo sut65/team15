@@ -13,6 +13,7 @@ type Bill struct {
 	BillTime time.Time
 	Payer    string
 	Total    uint
+	BillNo   uint
 
 	PaymentmethodID *uint
 	Paymentmethod   Paymentmethod

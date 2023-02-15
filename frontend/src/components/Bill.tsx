@@ -152,6 +152,9 @@ function Bills() {
                                     ID
                                 </TableCell>
                                 <TableCell align="center" width="15%">
+                                    หมายเลขใบเสร็จ
+                                </TableCell>
+                                <TableCell align="center" width="15%">
                                     ราคายา
                                 </TableCell>
                                 <TableCell align="center" width="10%">
@@ -183,6 +186,7 @@ function Bills() {
                             {bill.map((bill: BillsInterface) => (
                             <TableRow key={bill.ID}>
                                  <TableCell align="center" size="medium"> {bill.ID}            </TableCell>
+                                 <TableCell align="center" size="medium"> {bill.BillNo}    </TableCell>
                                  <TableCell align="center" size="medium"> {bill.Total}    </TableCell>
                                  <TableCell align="center" size="medium"> {bill.Prescription.Number} {bill.Prescription.MedicineLabel.Order.Medicine.Name}    </TableCell>
                                  <TableCell align="center" size="medium"> {bill.Paymentmethod.Name}     </TableCell>

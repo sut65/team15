@@ -60,8 +60,6 @@ func SetupDatabase() {
 		&Reason{},
 		&MedicineDisbursement{},
 		&MedicineRoom{},
-		
-
 	)
 
 	db = database
@@ -228,7 +226,7 @@ func SetupDatabase() {
 	}
 	db.Model(&MedicineLabel{}).Create(&medicinelabel01)
 
-		//-----------------------------------------------------------ระบบบันทึกคลังยา------------------------------------------
+	//-----------------------------------------------------------ระบบบันทึกคลังยา------------------------------------------
 	//Zone
 	Zone1 := Zone{
 		ZoneName: "A",
@@ -268,7 +266,7 @@ func SetupDatabase() {
 	db.Model(&Cause{}).Create(&Cause2)
 
 	discard1 := Discardmedicine{
-		Quantity:  10,
+		Quantity: 10,
 		Cause:    Cause1,
 		Note:     "ยาหก",
 		Datetime: time.Now(),
@@ -277,7 +275,6 @@ func SetupDatabase() {
 		Pharmacist:      pharmacist4,
 	}
 	db.Model(&Discardmedicine{}).Create(&discard1)
-
 
 	//------------------------------------------------------------ระบบบันทึกการเบิกยา-------------------------------------
 	//MedicineRoom
@@ -290,42 +287,35 @@ func SetupDatabase() {
 		MRname: "ยาสำหรับผู้ป่วยใน",
 	}
 	db.Model(&MedicineRoom{}).Create(&medicineRoom2)
-	
+
 	//ระบบเบิกยา
-	medicineDisbursement01:= MedicineDisbursement{
-		MedicineDisNo: 2543,
-		Pharmacist:        pharmacist3,
-		MedicineRoom: medicineRoom1,
-		Dtime:      time.Now(),
-		MedicineReceive:     medicineReceive,
+	medicineDisbursement01 := MedicineDisbursement{
+		MedicineDisNo:   2543,
+		Pharmacist:      pharmacist3,
+		MedicineRoom:    medicineRoom1,
+		Dtime:           time.Now(),
+		MedicineReceive: medicineReceive,
 	}
 	db.Model(&MedicineDisbursement{}).Create(&medicineDisbursement01)
-
-
-	
-
-
-
-
 
 	//------------------------------------------------------------ระบบบันทึกการจัดชั้นยา-------------------------------------
 	//ตู้ยา
 	cupboard1 := Cupboard{
-		Name:  "A",
+		Name: "A",
 	}
 	db.Model(&Cupboard{}).Create(&cupboard1)
 	cupboard2 := Cupboard{
-		Name:  "B",
+		Name: "B",
 	}
 	db.Model(&Cupboard{}).Create(&cupboard2)
 
 	//โซนยา
 	zonee1 := Zonee{
-		Name:  "AA",
+		Name: "AA",
 	}
 	db.Model(&Zonee{}).Create(&zonee1)
 	zonee2 := Zonee{
-		Name:  "BB",
+		Name: "BB",
 	}
 	db.Model(&Zonee{}).Create(&zonee2)
 
@@ -340,61 +330,61 @@ func SetupDatabase() {
 	db.Model(&Floor{}).Create(&floor2)
 
 	class1 := ClassifyDrugs{
-		Pharmacist: pharmacist6,
-		Cupboard:   cupboard2,
-		Zonee:   	zonee2,
-		Floor:   	floor2,
-		Number:   	30001,
-		Note:       "-",
+		Pharmacist:           pharmacist6,
+		Cupboard:             cupboard2,
+		Zonee:                zonee2,
+		Floor:                floor2,
+		Number:               30001,
+		Note:                 "-",
 		MedicineDisbursement: medicineDisbursement01,
-		Datetime:   time.Now(),
+		Datetime:             time.Now(),
 	}
 	db.Model(&ClassifyDrugs{}).Create(&class1)
 
 	class2 := ClassifyDrugs{
-		Pharmacist: pharmacist6,
-		Cupboard:   cupboard1,
-		Zonee:   	zonee1,
-		Floor:   	floor1,
-		Number:   	30002,
-		Note:       "-",
+		Pharmacist:           pharmacist6,
+		Cupboard:             cupboard1,
+		Zonee:                zonee1,
+		Floor:                floor1,
+		Number:               30002,
+		Note:                 "-",
 		MedicineDisbursement: medicineDisbursement01,
-		Datetime:   time.Now(),
+		Datetime:             time.Now(),
 	}
 	db.Model(&ClassifyDrugs{}).Create(&class2)
 
 	//-----------------------------------------------------------ระบบบันทึกการสั่งยา-----------------------------------
 	//ผู้ป่วย
 	patient1 := Patient{
-		Name: 	   "กอไก่ ว่องไว",
-		Sex:       "men",
-		Age:       21,
+		Name: "กอไก่ ว่องไว",
+		Sex:  "men",
+		Age:  21,
 	}
 	db.Model(&Patient{}).Create(&patient1)
 	patient2 := Patient{
-		Name: 	   "ขอใข่ ช้าจัง",
-		Sex:       "men",
-		Age:       22,
+		Name: "ขอใข่ ช้าจัง",
+		Sex:  "men",
+		Age:  22,
 	}
 	db.Model(&Patient{}).Create(&patient2)
 
 	prescription1 := Prescription{
-		Doctor:   doctor,
-		Patient:  patient2,
-		Number:   10001,
-		Note:     "-",
+		Doctor:        doctor,
+		Patient:       patient2,
+		Number:        10001,
+		Note:          "-",
 		MedicineLabel: medicinelabel01,
-		Datetime: time.Now(),
+		Datetime:      time.Now(),
 	}
 	db.Model(&Prescription{}).Create(&prescription1)
 
 	prescription2 := Prescription{
-		Doctor:   doctor,
-		Patient:  patient1,
-		Number:   10002,
-		Note:     "-",
+		Doctor:        doctor,
+		Patient:       patient1,
+		Number:        10002,
+		Note:          "-",
 		MedicineLabel: medicinelabel01,
-		Datetime: time.Now(),
+		Datetime:      time.Now(),
 	}
 	db.Model(&Prescription{}).Create(&prescription2)
 	//-----------------------------------------------------------ระบบบันทึกการจัดยา------------------------------------------
@@ -407,31 +397,32 @@ func SetupDatabase() {
 		MedicineArrangementTime: time.Now(),
 	}
 	db.Model(&MedicineArrangement{}).Create(&medicinearrangement1)
-	
+
 	//-----------------------------------------------------------ระบบบันทึกการชำระเงิน---------------------------------------
 	//Paymentmethod รูปแบบการชำระเงิน
-	// cash := Paymentmethod{
-	// 	ConditionsOfPayments: "ชำระด้วยเงินสด",
-	// }
-	// db.Model(&Paymentmethod{}).Create(&cash)
+	cash := Paymentmethod{
+		Name: "ชำระด้วยเงินสด",
+	}
+	db.Model(&Paymentmethod{}).Create(&cash)
 
-	// payment := Paymentmethod{
-	// 	ConditionsOfPayments: "โอนพร้อมเพย์",
-	// }
-	// db.Model(&Paymentmethod{}).Create(&payment)
+	payment := Paymentmethod{
+		Name: "โอนพร้อมเพย์",
+	}
+	db.Model(&Paymentmethod{}).Create(&payment)
 
-	// // Bill
-	// bill1 := Bill{
-	// 	BillNo:   1000,
-	// 	BillTime: time.Date(2022, 2, 15, 2, 0, 0, 0, time.UTC),
-	// 	Payer:    "AWESOME08",
-	// 	Total:    6 * 980,
+	// Bill
+	bill1 := Bill{
+		// BillNo:   1000,
+		BillTime: time.Date(2022, 2, 15, 2, 0, 0, 0, time.UTC),
+		Payer:    "AWESOME08",
+		Total:    6 * 980,
+		BillNo:   10000,
 
-	// 	Pharmacist:    pharmacist5,
-	// 	Prescription:  prescription1,
-	// 	Paymentmethod: cash,
-	// }
-	// db.Model(&Bill{}).Create(&bill1)
+		Pharmacist:    pharmacist5,
+		Prescription:  prescription1,
+		Paymentmethod: cash,
+	}
+	db.Model(&Bill{}).Create(&bill1)
 
 	//-----------------------------------------------------ระบบบันทึกการจ่ายยา-------------------------------------
 	//ช่องจ่ายยา
@@ -447,10 +438,10 @@ func SetupDatabase() {
 		PharmacyBox: 3,
 	}
 	db.Model(&Pharmacy{}).Create(&pharmacy3)
-	
+
 	//ระบบจ่ายยา
 	dispensemedicine := DispenseMedicine{
-		DispenseNo:   100000,
+		DispenseNo: 100000,
 		//Bill:		  bill1,
 		ReceiveName:  "แสนดี มากมาย",
 		Pharmacy:     pharmacy1,
@@ -459,13 +450,8 @@ func SetupDatabase() {
 	}
 	db.Model(&DispenseMedicine{}).Create(&dispensemedicine)
 
-
 	//------------------------------------------------------------ระบบบันทึกการคืนยา-------------------------------------
 
-
-	
-
-	
 	//------------------------------------------------------------ระบบบันทึกการเข้าเวร-------------------------------------
 	//ช่วงเข้าเวร
 	morning := Shift{
@@ -529,14 +515,14 @@ func SetupDatabase() {
 
 	// --- MedicineLabel Data
 	Return1 := Return{
-		DispenseMedicine:     dispensemedicine,
-		Staff:                stff1,
-		Reason:               Reason1,
-		Note:                  "ยามีความชื้น",
-		Pharmacist:           pharmacist1,	
-		ReturnDate:           time.Now(),
-		Unitt:                "2",
+		DispenseMedicine: dispensemedicine,
+		Staff:            stff1,
+		Reason:           Reason1,
+		Note:             "ยามีความชื้น",
+		Pharmacist:       pharmacist1,
+		ReturnDate:       time.Now(),
+		Unitt:            "2",
 	}
 	db.Model(&Return{}).Create(&Return1)
-	
+
 }

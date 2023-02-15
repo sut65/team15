@@ -136,6 +136,7 @@ export default function BillCreate() {
       Payer: bill.Payer ?? "" ,
       BillTime: bill.BillTime,
       Total: convertType(bill.Total ?? "" ),
+      BillNo: convertType(bill.BillNo ?? "" ),
       PaymentmethodsID: convertType(bill.PaymentmethodID),
       PrescriptionID: convertType(bill.PrescriptionID),
     };
@@ -215,6 +216,25 @@ export default function BillCreate() {
         </Box>
         <Divider />
       <Grid container spacing={4}>
+      <Grid item xs={6}>
+        <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
+           <p>หมายเลขใบเสร็จ</p>
+          <FormControl fullWidth variant="outlined">
+            <TextField
+                      id="BillNo"
+                      variant="outlined"
+                      type="number"
+                      size="medium"
+                      placeholder="หมายเลขใบเสร็จ"
+                      InputProps={{
+                        inputProps: { min: 10000,
+                                      max: 99999 }
+                      }}
+                      onChange={handleInputChange}
+                    />
+                  </FormControl>
+                  </FormControl>
+                </Grid>
         <Grid item xs={6}>
         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
            <p>ราคายา</p>
@@ -272,7 +292,7 @@ export default function BillCreate() {
                 </option>
                 {paymentmethod.map((item: PaymentmethodsInterface) => (
                       <option value={item.ID} key={item.ID}>
-                        {item.Name}   {/*item.MedicineDisburment.MedicineReceive.MedicineLabel.Order.Name*/}
+                        {item.Name}  
                       </option>
                     ))}
               </Select>

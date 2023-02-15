@@ -3,11 +3,12 @@ import { PaymentmethodsInterface } from "./IPaymentmethod";
 import { UserInterface } from "./IUser";
 
 export interface BillsInterface {
-  ID: string,
-  BillNo:number,
+  ID: number,
+  // BillNo:number,
   BillTime: Date  | null ,
   Payer:string,
   Total:number,
+  BillNo:number,
   
   PrescriptionID: number,
   Prescription: PrescriptionInterface,
