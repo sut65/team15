@@ -23,7 +23,7 @@ type MedicineReceive struct {
 
 	Discardmedicine       []Discardmedicine      `gorm:"foreignkey:MedicineReceiveID"`
 	MedicineDisbursements []MedicineDisbursement `gorm:"foreignKey:MedicineReceiveID"`
-	ClassifyDrugs []ClassifyDrugs `gorm:"foreignKey:MedicineReceiveID"`
+	
 }
 type Zone struct {
 	gorm.Model

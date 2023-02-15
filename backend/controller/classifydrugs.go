@@ -79,7 +79,7 @@ func GetClassifyDrug(c *gin.Context) {
 	id := c.Param("id")
 	if err := entity.DB().Preload("Pharmacist").Preload("Cupboard").Preload("Zonee").Preload("Floor").Preload("MedicineDisbursement").
 	Preload("MedicineDisbursement.MedicineReceive").Preload("MedicineDisbursement.MedicineReceive.MedicineLabel").Preload("MedicineDisbursement.MedicineReceive.MedicineLabel.Oreder").
-	Preload("MedicineDisbursement.MedicineReceive.MedicineLabel.Oreder.Medicine").Raw("SELECT * FROM classify_drugs WHERE id = ?", id).Find(&classifydrug).Error; err != nil {
+	Preload("MedicineDisbursement.MedicineReceive.MedicineLabel.Order.Medicine").Raw("SELECT * FROM classify_drugs WHERE id = ?", id).Find(&classifydrug).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -91,7 +91,7 @@ func ListClassifyDrug(c *gin.Context) {
 	var classifydrug []entity.ClassifyDrugs
 	if err := entity.DB().Preload("Pharmacist").Preload("Cupboard").Preload("Zonee").Preload("Floor").Preload("MedicineDisbursement").
 	Preload("MedicineDisbursement.MedicineReceive").Preload("MedicineDisbursement.MedicineReceive.MedicineLabel").Preload("MedicineDisbursement.MedicineReceive.MedicineLabel.Oreder").
-	Preload("MedicineDisbursement.MedicineReceive.MedicineLabel.Oreder.Medicine").Raw("SELECT * FROM classify_drugs").Find(&classifydrug).Error; err != nil {
+	Preload("MedicineDisbursement.MedicineReceive.MedicineLabel.Order.Medicine").Raw("SELECT * FROM classify_drugs").Find(&classifydrug).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
