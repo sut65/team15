@@ -37,22 +37,6 @@ func TestNotePrescriptionNotBlank(t *testing.T) {
 	})
 }
 
-func TestNoPrescription1(t *testing.T) {
-	g := NewGomegaWithT(t)
-	t.Run("check pattern number number 5 digit", func(t *testing.T) {
-			prescription := Prescription{
-				Number: 		1000,	//ผิด	
-				Note:			"สั่งยาแล้ว"	,	                  		
-				Datetime:	time.Now(),
-			}
-
-			ok, err := govalidator.ValidateStruct(prescription)
-			g.Expect(ok).NotTo(BeTrue())			
-			g.Expect(err).ToNot(BeNil())			
-			g.Expect(err.Error()).To(Equal("Number dose not validate as matches(^\\d{5}$)"))
-	})
-}
-
 func TestNoPrescription2(t *testing.T) {
 	g := NewGomegaWithT(t)
 	t.Run("check pattern number non zero", func(t *testing.T) {

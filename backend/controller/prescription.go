@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/asaskevich/govalidator"
 	"github.com/sut65/team15/entity"
 
 	"github.com/gin-gonic/gin"
@@ -26,13 +27,13 @@ func CreatePrescription(c *gin.Context)  {
 		return
 	}
 
-	// 10: ค้นหา patient ด้วย id
+	// 11: ค้นหา patient ด้วย id
 	if tx := entity.DB().Where("id = ?", prescription.PatientID).First(&patient); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "patient not found"})
 		return
 	}
 
-	// 11:ค้นหา User ด้วย id
+	// 12:ค้นหา User ด้วย id
 	if tx := entity.DB().Where("id = ?", prescription.DoctorID).First(&doctor); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "doctor not found"})
 		return
@@ -47,6 +48,10 @@ func CreatePrescription(c *gin.Context)  {
 		Number: 		prescription.Number,       					
 		Note:			prescription.Note,
 		Datetime:		prescription.Datetime, 		// ตั้งค่าฟิลด์ watchedTime
+	}
+	if _, err := govalidator.ValidateStruct(prescriptionmedicine); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	// 14: บันทึก
