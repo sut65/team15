@@ -267,8 +267,9 @@ export default function ClassifydrugsCreate() {
           </Typography>
         </Box>
         </Box>
+        <Grid container spacing={4}>
         <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%', float: 'left' }}>
+        <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>เลขใบจัดชั้นยา</p>
               <FormControl fullWidth variant="outlined">
                 <TextField
@@ -288,7 +289,7 @@ export default function ClassifydrugsCreate() {
             </FormControl>
           </Grid>
         <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%' }}>
+        <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>เภสัชกร</p>
               <Select
                 disabled
@@ -302,7 +303,7 @@ export default function ClassifydrugsCreate() {
             </FormControl>
           </Grid>
           <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%', float: 'left' }}>
+          <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>ชื่อยา</p>
               <Select
                 native
@@ -323,8 +324,8 @@ export default function ClassifydrugsCreate() {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%' }}>
+          <Grid item xs={6}>
+          <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>ตู้ยา</p>
               <Select
                 native
@@ -345,8 +346,8 @@ export default function ClassifydrugsCreate() {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%', float: 'left' }}>
+          <Grid item xs={6}>
+          <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>โซนยา</p>
               <Select
                 native
@@ -367,8 +368,8 @@ export default function ClassifydrugsCreate() {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%' }}>
+          <Grid item xs={6}>
+          <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>ชั้นยา</p>
               <Select
                 native
@@ -391,7 +392,7 @@ export default function ClassifydrugsCreate() {
           </Grid>
           <Grid item xs={6}>
             <p>หมายเหตุ</p>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%' }}>
+            <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <TextField
                 id="Note"
                 variant="outlined"
@@ -404,7 +405,7 @@ export default function ClassifydrugsCreate() {
             </FormControl>
           </Grid>
           <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%'}}>
+          <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>วันที่และเวลา</p>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
@@ -448,6 +449,7 @@ export default function ClassifydrugsCreate() {
               </Button>
 
             </Stack>
+          </Grid>
           </Grid>
       </Paper >
     </Container>

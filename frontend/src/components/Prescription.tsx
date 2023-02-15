@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Container from '@mui/material/Container'
 import TableCell from '@mui/material/TableCell';
-import { Box, Grid, Select, TextField, Typography, Table, TableHead, TableRow, TableBody } from '@mui/material'
+import { Box, Grid, Select, TextField, Typography, Table, TableHead, TableRow, TableBody, Snackbar } from '@mui/material'
 import Button from '@mui/material/Button'
 import { Link as RouterLink } from "react-router-dom";
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 import TableContainer from '@mui/material/TableContainer';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import moment from 'moment';
 
 import { PrescriptionInterface } from "../models/IPrescription";
@@ -12,6 +15,9 @@ import { PrescriptionInterface } from "../models/IPrescription";
 function Prescription() {
 
     const [prescription, setPrescription] = React.useState<PrescriptionInterface[]>([]);
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
+    const [ErrorMessage, setErrorMessage] = React.useState("");
 
     const getPrescription = async () => {
         const apiUrl = "http://localhost:8080/Prescriptions";
@@ -29,16 +35,70 @@ function Prescription() {
             });
     };
 
-    useEffect(() => {
+    const DeletePrescription = async (id: string | number | undefined) => {
+        const apiUrl = "http://localhost:8080";
+        const requestOptions = {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        };
+      
+        fetch(`${apiUrl}/prescription/${id}`, requestOptions)
+        .then((response) => response.json())
+        .then(
+          (res) => {
+            if (res.data) {
+              setSuccess(true)
+              console.log("ยกเลิกสำเร็จ")
+              setErrorMessage("")
+            } 
+            else { 
+              setErrorMessage(res.error)
+              setError(true)
+              console.log("ยกเลิกไม่สำเร็จ")
+            }  
+            getPrescription(); 
+          }
+        )
+      }
+
+
+      useEffect(() => {
         getPrescription();
     }, []);
+
+    const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+        props,
+        ref,
+      ) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+      });
+
+      const handleClose = (res: any) => {
+        if (res === "clickaway") {
+          return;
+        }
+        setSuccess(false);
+        setError(false);
+      };
 
     return (
 
         <div>
 
             <Container maxWidth="md">
-
+                <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success">
+                ลบข้อมูลสำเร็จ
+                </Alert>
+            </Snackbar>
+            <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="error">
+                ลบข้อมูลไม่สำเร็จ : {ErrorMessage}
+                </Alert>
+            </Snackbar>
                 <Box
 
                     display="flex"
@@ -125,6 +185,19 @@ function Prescription() {
                                  <TableCell align="center" size="medium"> {prescription.Note}    </TableCell>
                                  <TableCell align="center" size="medium"> {prescription.Doctor.Name}    </TableCell>
                                  <TableCell align="center" > {moment(prescription.Datetime).format('DD MMMM yyyy')} </TableCell>
+                                 <TableCell align="center"> 
+                                <IconButton aria-label="delete" onClick={() => DeletePrescription(prescription.ID)}><DeleteIcon /></IconButton>
+                                </TableCell>
+                                <TableCell align="center"> 
+                  <Button
+                                                        variant='outlined'
+                                                        color="primary"
+                                                        component={RouterLink}
+                                                        to={"/PrescriptionUpdate/" + prescription.ID}
+                                                    >
+                                                        แก้ไขข้อมูล
+                                                    </Button>
+                  </TableCell>
                             </TableRow>
                         ))}
 

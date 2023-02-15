@@ -215,8 +215,9 @@ export default function PrescriptionCreate() {
           </Typography>
         </Box>
         </Box>
+        <Grid container spacing={4}>
         <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%', float: 'left' }}>
+        <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>เลขใบสั่งยา</p>
               <FormControl fullWidth variant="outlined">
                 <TextField
@@ -235,8 +236,8 @@ export default function PrescriptionCreate() {
               </FormControl>
             </FormControl>
           </Grid>
-          <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%' }}>
+        <Grid item xs={6}>
+        <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>ชื่อยา</p>
               <Select
                 native
@@ -258,7 +259,7 @@ export default function PrescriptionCreate() {
             </FormControl>
           </Grid>
         <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%', float: 'left' }}>
+        <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>แพทย์</p>
               <Select
                 disabled
@@ -271,8 +272,8 @@ export default function PrescriptionCreate() {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%' }}>
+          <Grid item xs={6}>
+          <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>ผู้ป่วย</p>
               <Select
                 native
@@ -295,7 +296,7 @@ export default function PrescriptionCreate() {
           </Grid>
           <Grid item xs={6}>
             <p>หมายเหตุ</p>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%' }}>
+            <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <TextField
                 id="Note"
                 variant="outlined"
@@ -308,7 +309,7 @@ export default function PrescriptionCreate() {
             </FormControl>
           </Grid>
           <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined" style={{ width: '40%' }}>
+          <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>วันที่และเวลา</p>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
@@ -352,6 +353,7 @@ export default function PrescriptionCreate() {
               </Button>
 
             </Stack>
+          </Grid>
           </Grid>
       </Paper >
     </Container>
