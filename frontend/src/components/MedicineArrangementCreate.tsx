@@ -269,7 +269,7 @@ export default function MedicineArrangementCreate() {
                 </option>
                 {cupboard.map((item: ClassifydrugsInterface) => (
                       <option value={item.ID} key={item.ID}>
-                        {item.Cupboard.Name} {"|"}  {/*item.MedicineDisburment.MedicineReceive.MedicineLabel.Order.Name*/}
+                        {item.Cupboard.Name} {"|"}  {item.MedicineDisbursement.MedicineReceive.MedicineLabel.Order.Medicine.Name}
                       </option>
                     ))}
               </Select>

@@ -166,7 +166,7 @@ export default function MedicineArrangementUpdate() {
         PharmacistID: Number(localStorage.getItem("uid")),
       };
       console.log("Data", data)
-    const apiUrl = "http://localhost:8080/medicinearrangement";
+    const apiUrl = "http://localhost:8080/medicinearrangements";
     const requestOptions = {
       method: "PATCH",
       headers: {
@@ -300,7 +300,7 @@ export default function MedicineArrangementUpdate() {
                 </option>
                 {cupboard.map((item: ClassifydrugsInterface) => (
                       <option value={item.ID} key={item.ID}>
-                        {item.Cupboard.Name} {"|"} {/*item.MedicineDisburment.MedicineReceive.MedicineLabel.Order.Name*/}
+                        {item.Cupboard.Name} {"|"} {item.MedicineDisbursement.MedicineReceive.MedicineLabel.Order.Medicine.Name}
                       </option>
                     ))}
               </Select>
@@ -375,7 +375,7 @@ export default function MedicineArrangementUpdate() {
                         color="primary"
                         onClick={submit}
                     >
-                        บันทึกข้อมูล
+                        บันทึกการแก้ไขข้อมูล
                     </Button>
 
                 </Stack>
