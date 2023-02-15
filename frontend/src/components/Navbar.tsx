@@ -101,9 +101,9 @@ function Navbar() {
     },
 
     {
-        name: "รายการบันทึกการจัดชั้นวาง",
+        name: "รายการบันทึกการจัดชั้นยา",
         icon: <DnsIcon/>,
-        path: "/ClassifyMedicine"
+        path: "/ClassifyDrugs"
     },
 
     {
