@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import DispenseMedicineCreate from './components/DispenseMedicineCreate';
 import DispenseMedicines from './components/DispenseMedicine';
+import DispenseMedicineUpdate from './components/DispenseMedicineUpdate';
 import Home from './components/Hom';
 import Orders from './components/Order';
 import MedicineArrangementCreate from './components/MedicineArrangementCreate';
@@ -60,6 +61,7 @@ function App() {
           <Route path="/orderUpdate/:id" element={<OrderUpdate />} />
           <Route path="/dispensemedicine" element={<DispenseMedicineCreate />} />
           <Route path="/dispensemedicines" element={<DispenseMedicines />} />
+          <Route path="/DispenseMedicineUpdate/:id" element={<DispenseMedicineUpdate />} />
           <Route path="/medicinearrangement" element={<MedicineArrangementCreate />} />
           <Route path="/medicinearrangements" element={<MedicineArrangement />} />
           <Route path="/MedicineArrangementUpdate/:id" element={<MedicineArrangementUpdate />} />

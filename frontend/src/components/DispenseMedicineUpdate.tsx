@@ -1,91 +1,90 @@
-import { Link as RouterLink } from "react-router-dom";
-import * as React from 'react';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import React, { useEffect, useState } from 'react'
+import { Button, CssBaseline, Divider, FormControl, Grid, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material'
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from '@mui/x-date-pickers';
 import { Container } from '@mui/system'
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import Paper from '@mui/material/Paper'
+import SourceIcon from '@mui/icons-material/Source';
 import Snackbar from '@mui/material/Snackbar'
 import Box from '@mui/material/Box';
-import SourceIcon from '@mui/icons-material/Source';
-import Paper from '@mui/material/Paper'
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Button, CssBaseline, FormControl, FormHelperText, Grid, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material'
-
-import { UserInterface } from "../models/IUser";
-import { PharmacyInterface } from "../models/IPharmacy";
-import { DispenseMedicineInterface } from "../models/IDispenseMedicine";
-import { LocalizationProvider } from "@mui/x-date-pickers";
+import { DispenseMedicineInterface } from '../models/IDispenseMedicine';
+import { PharmacyInterface } from '../models/IPharmacy';
 import { BillsInterface } from "../models/IBill";
+import { UserInterface } from '../models/IUser';
 
+export default function DispenseMedicineUpdate() {
 
-export default function DispenseMedicineCreate() {
+    const [user, setUser] = React.useState<UserInterface>();
+    const [ErrorMessage, setErrorMessage] = React.useState<String>();
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
 
-  const [success, setSuccess] = React.useState(false);
-  const [error, setError] = React.useState(false);
-  const [user, setUser] = React.useState<UserInterface>();
-  const [pharmacy, setPharmacy] = React.useState<PharmacyInterface[]>([]);
-  const [bill, setBill] = React.useState<BillsInterface[]>([]);
-  const [dispensemedicine, setDispensemedicine] = React.useState<Partial<DispenseMedicineInterface>>({
-    DispenseTime: new Date(),
-  });
-  const [loading, setLoading] = React.useState(false);
-  const [ErrorMessage, setErrorMessage] = React.useState<String>();
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setSuccess(false);
+      setError(false);
+    };
+    const [bill, setBill] = React.useState<BillsInterface[]>([]);
+    const [pharmacy, setPharmacy] = React.useState<PharmacyInterface[]>([]);
+    const [dispensemedicine, setDispenseMedicine] = React.useState<Partial<DispenseMedicineInterface>>({
+        DispenseNo: 0,
+        ReceiveName: "",
+        DispenseTime: new Date(),
+    })
 
-  const handleClose = (res: any) => {
-    if (res === "clickaway") {
-      return;
-    }
-    setSuccess(false);
-    setError(false);
-    setLoading(false)
-  };
-
-
-  const handleInputChange = (
-    event: React.ChangeEvent<{ id?: string; value: any }>
-  ) => {
-    const id = event.target.id as keyof typeof DispenseMedicineCreate;
-    const { value } = event.target;
-    console.log("ID", id, "Value", value)
-    setDispensemedicine({ ...dispensemedicine, [id]: value });
-  };
-
-  const handleChange: any = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>
-  ) => {
-    console.log(event.target.value)
-    const name = event.target.name as keyof typeof DispenseMedicineCreate
-    console.log(name)
-    setDispensemedicine({
-      ...dispensemedicine,
-      [name]: event.target.value,
-    });
-  };
-
-    //ดึงข้อมูลใบชำระเงิน
-    function getฺBill() {
-      const apiUrl = "http://localhost:8080/bills";
-      const requestOptions = {
+    let {id} = useParams();
+    const getDispenseMedicineID = async (id: string | undefined | null) => {
+        const apiUrl = "http://localhost:8080";
+        const requestOptions = {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-        },
-      };
-      fetch(apiUrl, requestOptions)
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+            },
+        };
+
+        fetch(`${apiUrl}/dispensemedicines/${id}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
-          console.log("Combobox_billNO", res)
-          if (res.data) {
-            setBill(res.data);
-          } else {
+            console.log("dispensemedicines", res)
+            if (res.data) {
+            setDispenseMedicine(res.data);
+            } else {
             console.log("else");
-          }
+            }
         });
-    }
-  
+    };
+    
+    
+    //ดึงข้อมูลใบชำระเงิน
+    function getBill() {
+        const apiUrl = "http://localhost:8080/bills";
+        const requestOptions = {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        };
+        fetch(apiUrl, requestOptions)
+          .then((response) => response.json())
+          .then((res) => {
+            console.log("Combobox_bill", res)
+            if (res.data) {
+              setBill(res.data);
+            } else {
+              console.log("else");
+            }
+          });
+      }
 
-  //ดึงข้อมูลช่องจ่ายยา
-  function getPharmacy() {
+    //ดึงข้อมูลช่องจ่ายยา
+    function getPharmacy() {
     const apiUrl = "http://localhost:8080/pharmacys";
     const requestOptions = {
       method: "GET",
@@ -97,7 +96,7 @@ export default function DispenseMedicineCreate() {
     fetch(apiUrl, requestOptions)
       .then((response) => response.json())
       .then((res) => {
-        console.log("Combobox_pharmacy", res)
+        console.log("Combobox_pharmacybox", res)
         if (res.data) {
           setPharmacy(res.data);
         } else {
@@ -105,7 +104,7 @@ export default function DispenseMedicineCreate() {
         }
       });
   }
-
+  
   function getUser() {
     const UserID = localStorage.getItem("uid")
     const apiUrl = `http://localhost:8080/users/${UserID}`;
@@ -127,26 +126,48 @@ export default function DispenseMedicineCreate() {
         }
       });
   }
-
-  const convertType = (data: string | number | undefined | null) => {
-    let val = typeof data === "string" ? parseInt(data) : data;
-    return val;
-  };
-
-  function submit() {
-    setLoading(true)
-    let data = {
-      PharmacistID: Number(localStorage.getItem("uid")),
-      DispenseTime: dispensemedicine.DispenseTime,
-      ReceiveName: dispensemedicine.ReceiveName ?? "",
-      DispenseNo: typeof dispensemedicine.DispenseNo == "string" ? parseInt(dispensemedicine.DispenseNo) : 0,
-      PharmacyID: convertType(dispensemedicine.PharmacyID),
-      BillID:  convertType(dispensemedicine.BillID),
+    
+   
+    const convertType = (data: string | number | undefined | null) => {
+      let val = typeof data === "string" ? parseInt(data) : data;
+      return val;
     };
-    console.log("Data", data)
-    const apiUrl = "http://localhost:8080/dispensemedicine";
+  
+    
+    const handleChange: any = (
+      event: React.ChangeEvent<{ name?: string; value: unknown }>
+    ) => {
+      console.log(event.target.value)
+      const name = event.target.name as keyof typeof dispensemedicine
+      console.log(name)
+        setDispenseMedicine({
+        ...dispensemedicine,
+        [name]: event.target.value,
+      });
+    };
+  
+    const handleInputChange = (
+      event: React.ChangeEvent<{ id?: string; value: any }>
+    ) => {
+      const id = event.target.id as keyof typeof dispensemedicine;
+      const { value } = event.target;
+      setDispenseMedicine({ ...dispensemedicine, [id]: value });
+    };
+  
+    async function submit() {
+  
+      let data = {
+        PharmacistID: Number(localStorage.getItem("uid")),
+        DispenseTime: dispensemedicine.DispenseTime,
+        ReceiveName: dispensemedicine.ReceiveName ?? "",
+        DispenseNo: convertType(dispensemedicine.DispenseNo ?? ""),
+        PharmacyID: convertType(dispensemedicine.PharmacyID),
+        BillID:  convertType(dispensemedicine.BillID),
+      };
+      console.log("Data", data)
+    const apiUrl = "http://localhost:8080/dispensemedicines";
     const requestOptions = {
-      method: "POST",
+      method: "PATCH",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": "application/json",
@@ -166,66 +187,71 @@ export default function DispenseMedicineCreate() {
         }
       });
   }
-
-
-  //ดึงข้อมูล ใส่ combobox
-  React.useEffect(() => {
-    getฺBill();
-    getPharmacy();
-    getUser();
-
-  }, []);
-
-  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-    props,
-    ref,
-  ) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-  });
-
-  return (
-    <Container maxWidth="lg">
-      <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success">
-          บันทึกข้อมูลสำเร็จ
-        </Alert>
-      </Snackbar>
-      <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error">
-          บันทึกข้อมูลไม่สำเร็จ: {ErrorMessage}
-        </Alert>
-      </Snackbar>
-      <Paper sx={{ p: 4, pb: 10 }}  >
-        <Box display="flex" > <Box flexGrow={1}>
-          <Typography
-            component="h2"
-            variant="h5"
-            color="primary"
-            gutterBottom
-          >
-            บันทึกการจ่ายยา
-
-            <Button style={{ float: "right" }}
-              component={RouterLink}
-              to="/dispensemedicines"
-              variant="contained"
-              color="primary">
-              <SourceIcon />รายการบันทึกการจ่ายยา
-            </Button>
-          </Typography>
-        </Box>
-        </Box>
-        <Grid container spacing={4}>
+  
+    useEffect(() => {
+      getBill();
+      getPharmacy();
+      getUser();
+      getDispenseMedicineID(id);
+    }, []);
+  
+    const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+      props,
+      ref,
+    ) {
+      return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
+  
+    
+    
+  
+    return (
+      <Container maxWidth="lg">
+        <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="success">
+            แก้ไขข้อมูลสำเร็จ
+          </Alert>
+        </Snackbar>
+        <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error">
+            แก้ไขข้อมูลไม่สำเร็จ: {ErrorMessage}
+          </Alert>
+        </Snackbar>
+  
+        <Paper sx={{ p: 4, pb: 10 }}  >
+  
+          <Box display="flex" > <Box flexGrow={1}>
+            <Typography
+              component="h2"
+              variant="h5"
+              color="primary"
+              gutterBottom
+            >
+              แก้ไขใบจ่ายยา
+  
+              <Button style={{ float: "right" }}
+                component={RouterLink}
+                to="/dispensemedicines"
+                variant="contained"
+                color="primary">
+                <SourceIcon />รายการบันทึกการจ่ายยา 
+              </Button>
+            </Typography>
+          </Box>
+          </Box>
+          <Divider />
+          <Grid container spacing={4}>
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>เลขใบจ่ายยา</p>
               <FormControl fullWidth variant="outlined">
                 <TextField
                   id="DispenseNo"
-                  label="เลขใบจ่ายยา"
                   variant="outlined"
                   type="number"
                   size="medium"
+                  value={dispensemedicine.DispenseNo}
+                  placeholder="เลขใบจ่ายยา"
                   InputProps={{
                     inputProps: { min: 100000,
                                   max: 999999 }
@@ -236,7 +262,7 @@ export default function DispenseMedicineCreate() {
           </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
-            <p>เลขใบชำระเงิน | ชื่อยา</p>
+              <p>เลขใบชำระเงิน | ชื่อยา</p>
               <Select 
                 native
                 value={dispensemedicine.BillID}
@@ -247,13 +273,13 @@ export default function DispenseMedicineCreate() {
                     เลขใบชำระเงิน | ชื่อยา
                 </option>
                 {bill.map((item: BillsInterface) => (
-                      <option value={item.ID} key={item.ID}>
+                <option value={item.ID} key={item.ID}>
                         {item.BillNo} {"|"} {item.Payer}
                       </option>
                     ))}
               </Select>
             </FormControl>
-          </Grid>
+                </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>ช่องจ่ายยา</p>
@@ -297,7 +323,7 @@ export default function DispenseMedicineCreate() {
                 <DatePicker
                   value={dispensemedicine.DispenseTime}
                   onChange={(newValue) => {
-                    setDispensemedicine({
+                    setDispenseMedicine({
                       ...dispensemedicine,
                       DispenseTime: newValue,
                     });

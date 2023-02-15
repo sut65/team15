@@ -1,6 +1,6 @@
 import { PharmacyInterface } from "./IPharmacy";
 import { UserInterface } from "./IUser";
-// import { BillInterface } from "./IBill";
+import { BillsInterface } from "./IBill";
 
 export interface DispenseMedicineInterface {
 
@@ -16,7 +16,7 @@ export interface DispenseMedicineInterface {
     PharmacyID: number,
     Pharmacy:   PharmacyInterface,
 
-    // BillID:     number,
-    // Bill:       BillInterface,
+    BillID:     number,
+    Bill:       BillsInterface,
 
 }
