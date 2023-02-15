@@ -102,24 +102,48 @@ func DeleteMedicineArrangement(c *gin.Context) {
 
 // PATCH /medicinearrangements
 func UpdateMedicineArrangement(c *gin.Context) {
-	var medicinearrangements entity.MedicineArrangement
-	if err := c.ShouldBindJSON(&medicinearrangements); err != nil {
+	var pharmacist entity.User
+	var medicinearrangement entity.MedicineArrangement
+	var prescription	entity.Prescription
+	var classifydrug entity.ClassifyDrugs
+
+	if err := c.ShouldBindJSON(&medicinearrangement); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	update := entity.MedicineArrangement{
-		MedicineArrangementNo: 		medicinearrangements.MedicineArrangementNo,
-		Prescription: 				medicinearrangements.Prescription,								
-		ClassifyDrugs: 				medicinearrangements.ClassifyDrugs,							  
-		Note:                    	medicinearrangements.Note,
-		Pharmacist:             	medicinearrangements.Pharmacist,                           
-		MedicineArrangementTime: 	medicinearrangements.MedicineArrangementTime,
+
+	if tx := entity.DB().Where("id = ?", medicinearrangement.PrescriptionID).First(&prescription); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "prescription_id not found"})
+		return
 	}
 
-	if tx := entity.DB().Where("id = ?", medicinearrangements.ID).Updates(&medicinearrangements); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", medicinearrangement.ClassifyDrugsID).First(&classifydrug); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "classifydrug_id not found"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", medicinearrangement.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacist_id not found"})
+		return
+	}
+
+	updatearrangement := entity.MedicineArrangement{
+		MedicineArrangementNo: 		medicinearrangement.MedicineArrangementNo,
+		Prescription: 				medicinearrangement.Prescription,								
+		ClassifyDrugs: 				medicinearrangement.ClassifyDrugs,							  
+		Note:                    	medicinearrangement.Note,
+		Pharmacist:              	medicinearrangement.Pharmacist,                                 
+		MedicineArrangementTime: 	medicinearrangement.MedicineArrangementTime,
+	}
+	if _, err := govalidator.ValidateStruct(updatearrangement); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", medicinearrangement.ID).Updates(&medicinearrangement); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "medicinearranements not found"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": update})
+	c.JSON(http.StatusOK, gin.H{"data": updatearrangement})
 }
