@@ -16,18 +16,18 @@ type Pharmacy struct {
 type DispenseMedicine struct {
 	gorm.Model
 
-	DispenseNo			uint					`valid:"matches(^\\d{6}$)~DispenseNo dose not validate as matches(^\\d{6}$), required~DispenseNo: non zero value required, range(100000|999999)~DispenseNo: range 100000|999999"`
+	DispenseNo			uint					`valid:"range(100000|999999)~DispensemedicineNo must be 6 digits, required~DispensemedicineNo must be 6 digits"`
 	ReceiveName			string					`valid:"required~ReceiveName cannot be blank"`
 	DispenseTime		time.Time				`valid:"donotpast~DispenseTime not be past"`
 
 	PharmacyID 			*uint
-	Pharmacy			Pharmacy
+	Pharmacy			Pharmacy				`gorm:"references:id" valid:"-"`
 
 	PharmacistID		*uint
 	Pharmacist			User
 
 	BillID				*uint
-	Bill				Bill
+	Bill				Bill					`gorm:"references:id" valid:"-"`
 
 	Return		[]Return `gorm:"foreignKey:DispenseMedicineID"`
 
@@ -37,5 +37,10 @@ func init() {
 	govalidator.CustomTypeTagMap.Set("donotpast", func(i interface{}, context interface{}) bool {
 		t := i.(time.Time)
 		return t.After(time.Now().Add(time.Minute * -1)) //เวลา > เวลาปัจจุบัน - 1 นาที
+	})
+	govalidator.CustomTypeTagMap.Set("donotfuture", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		now := time.Now().Add(time.Minute * 10)
+		return t.Before(now) || t.Equal(now)
 	})
 }
