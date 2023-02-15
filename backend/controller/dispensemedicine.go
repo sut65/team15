@@ -97,21 +97,48 @@ func DeleteDispenseMedicine(c *gin.Context) {
 
 // PATCH /dispensemedicines
 func UpdateDispenseMedicine(c *gin.Context) {
-	var dispensemedicines entity.DispenseMedicine
-	if err := c.ShouldBindJSON(&dispensemedicines); err != nil {
+	var pharmacist entity.User
+	var pharmacy entity.Pharmacy
+	var dispensemedicine entity.DispenseMedicine
+	var bill entity.Bill
+
+	if err := c.ShouldBindJSON(&dispensemedicine); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", dispensemedicines.ID).First(&dispensemedicines); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "dispensemedicines not found"})
+	if tx := entity.DB().Where("id = ?", dispensemedicine.BillID).First(&bill); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "bill_id not found"})
 		return
 	}
 
-	if err := entity.DB().Save(&dispensemedicines).Error; err != nil {
+	if tx := entity.DB().Where("id = ?", dispensemedicine.PharmacyID).First(&pharmacy); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacy_id not found"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", dispensemedicine.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacist_id not found"})
+		return
+	}
+
+	updatedispense := entity.DispenseMedicine{
+		DispenseNo: 	dispensemedicine.DispenseNo,		
+		Bill:			dispensemedicine.Bill,								
+		Pharmacy:   	dispensemedicine.Pharmacy, 							
+		Pharmacist: 	dispensemedicine.Pharmacist,       					
+		ReceiveName:	dispensemedicine.ReceiveName,
+		DispenseTime:	dispensemedicine.DispenseTime, 		
+	}
+
+	if _, err := govalidator.ValidateStruct(updatedispense); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": dispensemedicines})
+	if err := entity.DB().Where("id = ?", dispensemedicine.ID).Updates(&dispensemedicine).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": updatedispense})
 }

@@ -148,7 +148,7 @@ func main() {
 	//DispenseMedicine
 	r.POST("/dispensemedicine", controller.CreateDispenseMedicine)
 	r.GET("/dispensemedicines", controller.ListDispenseMedicine)
-	r.GET("/dispensemedicines/:id", controller.GetMedicineArrangement)
+	r.GET("/dispensemedicines/:id", controller.GetDispenseMedicine)
 	r.PATCH("/dispensemedicines", controller.UpdateDispenseMedicine)
 	r.DELETE("/dispensemedicines/:id", controller.DeleteDispenseMedicine)
 
