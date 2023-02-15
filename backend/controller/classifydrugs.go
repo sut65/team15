@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/asaskevich/govalidator"
 	"github.com/sut65/team15/entity"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +22,7 @@ func CreateClassifyDrugs(c *gin.Context)  {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 		}
-	// 9: ค้นหา Bill ด้วย id
+	// 9: ค้นหา medicinedisbursement ด้วย id
 	if tx := entity.DB().Where("id = ?", classifydrugs.MedicineDisbursementID).First(&medicinedisbursement); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "medicinedisbursement not found"})
 		return
@@ -33,25 +34,25 @@ func CreateClassifyDrugs(c *gin.Context)  {
 		return
 	}
 
-	// 10: ค้นหา zonee ด้วย id
+	// 11: ค้นหา zonee ด้วย id
 	if tx := entity.DB().Where("id = ?", classifydrugs.ZoneeID).First(&zonee); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "zonee not found"})
 		return
 	}
 
-	// 10: ค้นหา floor ด้วย id
+	// 12: ค้นหา floor ด้วย id
 	if tx := entity.DB().Where("id = ?", classifydrugs.FloorID).First(&floor); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "floor not found"})
 		return
 	}
 
-	// 11:ค้นหา User ด้วย id
+	// 13:ค้นหา User ด้วย id
 	if tx := entity.DB().Where("id = ?", classifydrugs.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacist not found"})
 		return
 	}
 
-	// 13: สร้าง DispenseMedicine 
+	// 14: สร้าง DispenseMedicine 
 	classifydrug := entity.ClassifyDrugs{
 		
 		Cupboard:   	cupboard, 							// โยงความสัมพันธ์กับ Entity cupboard
@@ -63,8 +64,12 @@ func CreateClassifyDrugs(c *gin.Context)  {
 		Datetime:		classifydrugs.Datetime, 		// ตั้งค่าฟิลด์ watchedTime
 		Number:			classifydrugs.Number,
 	}
+	if _, err := govalidator.ValidateStruct(classifydrug); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
-	// 14: บันทึก
+	// 15: บันทึก
 	if err := entity.DB().Create(&classifydrug).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -78,7 +83,7 @@ func GetClassifyDrug(c *gin.Context) {
 	var classifydrug entity.ClassifyDrugs
 	id := c.Param("id")
 	if err := entity.DB().Preload("Pharmacist").Preload("Cupboard").Preload("Zonee").Preload("Floor").Preload("MedicineDisbursement").
-	Preload("MedicineDisbursement.MedicineReceive").Preload("MedicineDisbursement.MedicineReceive.MedicineLabel").Preload("MedicineDisbursement.MedicineReceive.MedicineLabel.Oreder").
+	Preload("MedicineDisbursement.MedicineReceive").Preload("MedicineDisbursement.MedicineReceive.MedicineLabel").Preload("MedicineDisbursement.MedicineReceive.MedicineLabel.Order").
 	Preload("MedicineDisbursement.MedicineReceive.MedicineLabel.Order.Medicine").Raw("SELECT * FROM classify_drugs WHERE id = ?", id).Find(&classifydrug).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -90,7 +95,7 @@ func GetClassifyDrug(c *gin.Context) {
 func ListClassifyDrug(c *gin.Context) {
 	var classifydrug []entity.ClassifyDrugs
 	if err := entity.DB().Preload("Pharmacist").Preload("Cupboard").Preload("Zonee").Preload("Floor").Preload("MedicineDisbursement").
-	Preload("MedicineDisbursement.MedicineReceive").Preload("MedicineDisbursement.MedicineReceive.MedicineLabel").Preload("MedicineDisbursement.MedicineReceive.MedicineLabel.Oreder").
+	Preload("MedicineDisbursement.MedicineReceive").Preload("MedicineDisbursement.MedicineReceive.MedicineLabel").Preload("MedicineDisbursement.MedicineReceive.MedicineLabel.Order").
 	Preload("MedicineDisbursement.MedicineReceive.MedicineLabel.Order.Medicine").Raw("SELECT * FROM classify_drugs").Find(&classifydrug).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
