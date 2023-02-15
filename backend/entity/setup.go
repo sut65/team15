@@ -346,6 +346,7 @@ func SetupDatabase() {
 		Floor:   	floor2,
 		Number:   	30001,
 		Note:       "-",
+		MedicineDisbursement: MedicineDisbursement01,
 		Datetime:   time.Now(),
 	}
 	db.Model(&ClassifyDrugs{}).Create(&class1)
@@ -357,6 +358,7 @@ func SetupDatabase() {
 		Floor:   	floor1,
 		Number:   	30002,
 		Note:       "-",
+		MedicineDisbursement: MedicineDisbursement01,
 		Datetime:   time.Now(),
 	}
 	db.Model(&ClassifyDrugs{}).Create(&class2)

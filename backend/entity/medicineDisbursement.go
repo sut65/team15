@@ -22,6 +22,8 @@ type MedicineDisbursement struct {
 	
 	MedicineRoomID          *uint
 	MedicineRoom            MedicineRoom
+
+	ClassifyDrugs []ClassifyDrugs `gorm:"foreignKey:MedicineDisbursementID"`
 }
 type MedicineRoom struct {
 	gorm.Model
