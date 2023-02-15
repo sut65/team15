@@ -14,7 +14,7 @@ func TestDataClassifyDrugsCorrect(t *testing.T) {
 		classifydrugs := ClassifyDrugs{
 			Number: 		30000,
 			Note:			"จัดชั้นยาแล้ว"	,	                 		
-			// Datetime:		time.Now(),
+			Datetime:		time.Now(),
 		}
 		ok, err := govalidator.ValidateStruct(classifydrugs)
 		g.Expect(ok).To(BeTrue())
@@ -28,7 +28,7 @@ func TestNoteClassifyDrugsNotBlank(t *testing.T) {
 		classifydrugs := ClassifyDrugs{
 			Number: 		30000,
 			Note:			""	,	//ผิด                		
-			// Datetime:	time.Now(),
+			Datetime:	time.Now(),
 		}
 		ok, err := govalidator.ValidateStruct(classifydrugs)
 		g.Expect(ok).NotTo(BeTrue())			
@@ -43,7 +43,7 @@ func TestNoClassifyDrugs1(t *testing.T) {
 			classifydrugs := ClassifyDrugs{
 				Number: 		0,		//ผิด
 				Note:			"จัดชั้นยาแล้ว"	,	                  		
-				// Datetime:	time.Now(),
+				Datetime:	time.Now(),
 			}
 
 			ok, err := govalidator.ValidateStruct(classifydrugs)
@@ -59,7 +59,7 @@ func TestNoClassifyDrugs2(t *testing.T) {
 			classifydrugs := ClassifyDrugs{
 				Number: 	10000,		//ผิด
 				Note:		"จัดชั้นยาแล้ว"	,	                  		
-				// Datetime:	time.Now(),
+				Datetime:	time.Now(),
 			}
 
 			ok, err := govalidator.ValidateStruct(classifydrugs)

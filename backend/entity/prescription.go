@@ -22,7 +22,7 @@ type Prescription struct {
 
 	Datetime time.Time	`valid:"donotpast~DateTime not be past"`
 	Note     string	`valid:"required~Note cannot be blank"`
-	Number   int	`valid:"matches(^\\d{5}$)~Number dose not validate as matches(^\\d{5}$), required~Number: non zero value required, range(10000|99999)~Number: range 10000|99999"`
+	Number   int	`valid:"required~Number: non zero value required, range(10000|99999)~Number: range 10000|99999"`
 
 	DoctorID *uint
 	Doctor   User
