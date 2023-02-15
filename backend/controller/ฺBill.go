@@ -49,6 +49,7 @@ func CreateBill(c *gin.Context) {
 		BillTime:      bills.BillTime, // ตั้งค่าฟิลด์ BillTime
 		Payer:         bills.Payer,    // ตั้งค่าฟิลด์ Payer
 		Total:         bills.Total,    // ตั้งค่าฟิลด์ Total
+		BillNo:        bills.BillNo,   // ตั้งค่าฟิลด์ Total
 	}
 
 	// validate Bill controller
