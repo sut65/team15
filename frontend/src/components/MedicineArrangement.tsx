@@ -164,7 +164,7 @@ function MedicineArrangements() {
                                     หมายเหตุ
                                 </TableCell>
                                 <TableCell align="center" width="15%">
-                                    วันที่และเวลา
+                                    วันที่
                                 </TableCell>
                                 <TableCell align="center" width="15%">
                                     ผู้จัดยา
@@ -186,8 +186,8 @@ function MedicineArrangements() {
                                  <TableCell align="center" size="medium"> {medicinearrangement.MedicineArrangementNo}    </TableCell>
                                  <TableCell align="center" size="medium"> {medicinearrangement.Prescription.Number} {medicinearrangement.Prescription.MedicineLabel.Order.Medicine.Name}    </TableCell>
                                  <TableCell align="center" size="medium"> {medicinearrangement.ClassifyDrugs.Cupboard.Name}     </TableCell>
-                                 <TableCell align="center" > {moment(medicinearrangement.MedicineArrangementTime).format('DD MMMM yyyy')} </TableCell>
                                  <TableCell align="center" size="medium"> {medicinearrangement.Note}     </TableCell>
+                                 <TableCell align="center" > {moment(medicinearrangement.MedicineArrangementTime).format('DD MMMM yyyy')} </TableCell>
                                  <TableCell align="center" size="medium"> {medicinearrangement.Pharmacist.Name}     </TableCell>
                                  <TableCell align="center"> 
                                 <IconButton aria-label="delete" onClick={() => DeleteMedicineArrangement(medicinearrangement.ID)}><DeleteIcon /></IconButton>
