@@ -319,7 +319,7 @@ export default function DispenseMedicineUpdate() {
           </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
-              <p>วันที่</p>
+              <p>วันที่ทำการบันทึก</p>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   value={dispensemedicine.DispenseTime}
@@ -371,7 +371,7 @@ export default function DispenseMedicineUpdate() {
                 color="primary"
                 onClick={submit}
               >
-                บันทึกข้อมูล
+                บันทึกการแก้ไขข้อมูล
               </Button>
 
             </Stack>
