@@ -8,7 +8,7 @@ import SourceIcon from '@mui/icons-material/Source';
 import Paper from '@mui/material/Paper'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Button, CssBaseline, FormControl, FormHelperText, Grid, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material'
+import { Button, CssBaseline, FormControl, Divider, FormHelperText, Grid, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material'
 
 import { UserInterface } from "../models/IUser";
 import { PharmacyInterface } from "../models/IPharmacy";
@@ -215,6 +215,7 @@ export default function DispenseMedicineCreate() {
           </Typography>
         </Box>
         </Box>
+        <Divider />
         <Grid container spacing={4}>
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
