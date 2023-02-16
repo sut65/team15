@@ -157,6 +157,7 @@ export default function DispenseMedicineUpdate() {
     async function submit() {
   
       let data = {
+        ID: convertType(dispensemedicine.ID),
         PharmacistID: Number(localStorage.getItem("uid")),
         DispenseTime: dispensemedicine.DispenseTime,
         ReceiveName: dispensemedicine.ReceiveName ?? "",
@@ -318,7 +319,7 @@ export default function DispenseMedicineUpdate() {
           </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
-              <p>วันที่และเวลา</p>
+              <p>วันที่</p>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   value={dispensemedicine.DispenseTime}
