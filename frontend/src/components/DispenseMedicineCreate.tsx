@@ -236,7 +236,7 @@ export default function DispenseMedicineCreate() {
           </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
-            <p>เลขใบชำระเงิน | ชื่อยา</p>
+            <p>เลขใบชำระเงิน | ผู้ชำระเงิน</p>
               <Select 
                 native
                 value={dispensemedicine.BillID}
@@ -244,7 +244,7 @@ export default function DispenseMedicineCreate() {
                 inputProps={{ name: "BillID" }}
                 >
                  <option aria-label="None" value="">
-                    เลขใบชำระเงิน | ชื่อยา
+                    เลขใบชำระเงิน | ผู้ชำระเงิน
                 </option>
                 {bill.map((item: BillsInterface) => (
                       <option value={item.ID} key={item.ID}>
