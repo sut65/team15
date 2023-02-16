@@ -292,7 +292,7 @@ export default function DispenseMedicineCreate() {
           </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
-              <p>วันที่และเวลา</p>
+              <p>วันที่ทำการบันทึก</p>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   value={dispensemedicine.DispenseTime}
