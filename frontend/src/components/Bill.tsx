@@ -20,7 +20,7 @@ function Bills() {
     const [ErrorMessage, setErrorMessage] = React.useState("");
 
     const getBill = async () => {
-        const apiUrl = "http://localhost:8080/bill";
+        const apiUrl = "http://localhost:8080/bills";
         const requestOptions = {
             method: "GET",
             headers: { "Content-Type": "application/json" },

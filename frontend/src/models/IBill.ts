@@ -4,7 +4,6 @@ import { UserInterface } from "./IUser";
 
 export interface BillsInterface {
   ID: number,
-  // BillNo:number,
   BillTime: Date  | null ,
   Payer:string,
   Total:number,

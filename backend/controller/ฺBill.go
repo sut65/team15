@@ -77,8 +77,7 @@ func CreateBill(c *gin.Context) {
 func GetBill(c *gin.Context) {
 	var bills entity.Bill
 	id := c.Param("id")
-	if err := entity.DB().Preload("Prescription"). /*Preload("Prescription.MedicineDisbursement").
-		Preload("Prescription.MedicineDisbursement.MedicineStorage").*/Preload("Paymentmethod").
+	if err := entity.DB().Preload("Prescription").Preload("Paymentmethod").
 		Preload("Pharmacist").Raw("SELECT * FROM bills WHERE id = ?", id).Find(&bills).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -89,9 +88,8 @@ func GetBill(c *gin.Context) {
 // GET /bills
 func ListBill(c *gin.Context) {
 	var bills []entity.Bill
-	if err := entity.DB().Preload("Prescription"). /*Preload("Prescription.MedicineDisbursement").
-		Preload("Prescription.MedicineDisbursement.MedicineStorage").*/Preload("Paymentmethod").
-		Preload("Pharmacist").Raw("SELECT * FROM bills ORDER BY bills.id DESC").Find(&bills).Error; err != nil {
+	if err := entity.DB().Preload("Prescription").Preload("Paymentmethod").
+		Preload("Pharmacist").Raw("SELECT * FROM bills").Find(&bills).Error; err != nil { //SELECT * FROM bills ORDER BY bills.id DESC
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
