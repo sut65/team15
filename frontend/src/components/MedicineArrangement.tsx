@@ -164,7 +164,7 @@ function MedicineArrangements() {
                                     หมายเหตุ
                                 </TableCell>
                                 <TableCell align="center" width="15%">
-                                    วันที่
+                                    วันที่ทำการบันทึก
                                 </TableCell>
                                 <TableCell align="center" width="15%">
                                     ผู้จัดยา
