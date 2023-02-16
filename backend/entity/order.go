@@ -30,9 +30,9 @@ type Unit struct {
 type Order struct{
 	gorm.Model
 
-	Quantity		int				`valid:"range(1|10000)~Consumption must be Positive, required~Consumption cannot be blank"`
-	Priceperunit	int				`valid:"range(1|10000)~Consumption must be Positive, required~Consumption cannot be blank"`
-	Datetime		time.Time		`valid:"DateNotpast~Date must not be in the past, DateNotFuture~Date must not be in the future"`
+	Quantity		uint				`valid:"required~The Quantity must be in the range 1-10000, range(1|10000)~The Quantity must be in the range 1-10000"`
+	Priceperunit	uint				`valid:"required~The Priceperunit must be in the range 1-10000, range(1|10000)~The Priceperunit must be in the range 1-10000"`
+	Datetime		time.Time			`valid:"DateNotpast~Date must not be in the past, DateNotFuture~Date must not be in the future"`
 
 	PharmacistID *uint
 	Pharmacist 	  User				
@@ -51,8 +51,6 @@ type Order struct{
 }
 
 func init() {
-
-	
 
 	govalidator.CustomTypeTagMap.Set("DateNotpast", func(i interface{}, context interface{}) bool {
 		t := i.(time.Time)
