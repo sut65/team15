@@ -164,7 +164,7 @@ function DispenseMedicines() {
                                     ผู้รับยา
                                 </TableCell>
                                 <TableCell align="center" width="20%">
-                                    วันที่และเวลา
+                                    วันที่
                                 </TableCell>
                                 <TableCell align="center" width="15%">
                                     ผู้จ่ายยา
