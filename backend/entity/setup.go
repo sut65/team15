@@ -442,7 +442,7 @@ func SetupDatabase() {
 	//ระบบจ่ายยา
 	dispensemedicine := DispenseMedicine{
 		DispenseNo: 100000,
-		//Bill:		  bill1,
+		Bill:		  bill1,
 		ReceiveName:  "แสนดี มากมาย",
 		Pharmacy:     pharmacy1,
 		Pharmacist:   pharmacist2,
