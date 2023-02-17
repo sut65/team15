@@ -154,7 +154,7 @@ export default function DiscardmedicineUpdate() {
         let data = {
             ID: convertType(discard.ID),
             Datetime: discard.Datetime,
-            Quantity: typeof discard.Quantity == "string" ? parseInt(discard.Quantity) : 0,
+            Quantity: convertType(discard.Quantity),
             Note: discard.Note,
             CauseID: convertType(discard.CauseID),
             MedicineReceiveID: convertType(discard.MedicineReceiveID),
