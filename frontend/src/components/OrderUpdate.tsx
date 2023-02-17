@@ -15,6 +15,7 @@ import { MedicineInterface } from "../models/IMedicine";
 import { UnitInterface } from "../models/IUnit";
 import { CompanyInterface } from "../models/ICompany";
 import { UserInterface } from '../models/IUser';
+import Orders from './Order';
 
 export default function OrderUpdate() {
 
@@ -186,8 +187,8 @@ function getUser() {
     let data = {
       ID: convertType(order.ID),
       DateTime: order.Datetime,
-      Quantity: typeof order.Quantity == "string" ? parseInt(order.Quantity) : 0,
-      Priceperunit: typeof order.Priceperunit == "string" ? parseInt(order.Priceperunit) : 0,
+      Quantity: convertType(order.Quantity),
+      Priceperunit: convertType(order.Priceperunit),
       MedicineID: convertType(order.MedicineID),
       CompanyID: convertType(order.CompanyID),
       UnitID: convertType(order.UnitID),
@@ -223,7 +224,6 @@ function getUser() {
     getCompany();
     getMedicine();
     getUser();
-    // getOrder(id);
     getOrderID(id);
   }, []);
 
