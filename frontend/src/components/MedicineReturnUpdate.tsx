@@ -235,7 +235,7 @@ const getdispensemedicine = async () => {
         color="primary"
         gutterBottom
       >
-        บันทึกการคืนยา
+        แก้ไขใบบันทึกการคืนยา
     
         <Button style={{ float: "right" }}
           component={RouterLink}
@@ -378,7 +378,7 @@ const getdispensemedicine = async () => {
        <Grid item xs={12}>
         <Button
           component={RouterLink}
-          to="/MedicineReturnList"
+          to="/"
           variant="contained"
         >
           กลับ
@@ -389,7 +389,7 @@ const getdispensemedicine = async () => {
           onClick={submit}
           color="primary"
         >
-          บันทึก
+          บันทึกการแก้ไขข้อมูล
         </Button>
       </Grid> 
       </Grid>

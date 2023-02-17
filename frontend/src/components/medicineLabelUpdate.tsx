@@ -219,7 +219,7 @@ export default function MedicinelabelUpdate() {
         color="primary"
         gutterBottom
       >
-        บันทึกฉลากยา
+        แก้ไขใบบันทึกฉลากยา
     
         <Button style={{ float: "right" }}
           component={RouterLink}
@@ -372,7 +372,7 @@ export default function MedicinelabelUpdate() {
                <Grid item xs={12}>
                 <Button
                   component={RouterLink}
-                  to="/medicineLabel"
+                  to="/"
                   variant="contained"
                 >
                   กลับ
@@ -383,7 +383,7 @@ export default function MedicinelabelUpdate() {
                   onClick={submit}
                   color="primary"
                 >
-                  บันทึก
+                  บันทึกการแก้ไขข้อมูล
                 </Button>
               </Grid> 
     </Grid>
