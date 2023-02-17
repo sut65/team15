@@ -13,7 +13,7 @@ type Return struct{
 	
 
 	Note string `valid:"required~Note cannot be blank"`
-	Unitt string    `valid:"range(0|100)~Unitt must be Positive"`
+
     
 
 
@@ -33,7 +33,7 @@ type Return struct{
 	OrderID *uint
 	Order  Order  `gorm:"references:id" valid:"-"`
 
-	ReturnDate        time.Time  `valid:"donotpast~Return not be past"`
+	ReturnDate        time.Time  `valid:"donotpast~Return not be past, DateNotFuture~Date must not be in the future"`
 
 }
 
@@ -55,6 +55,12 @@ func init() {
 	govalidator.CustomTypeTagMap.Set("donotpast", func(i interface{}, context interface{}) bool {
 		t := i.(time.Time)
 		return t.After(time.Now().Add(time.Minute * -1)) //เวลา > เวลาปัจจุบัน - 1 นาที
+	})
+
+	govalidator.CustomTypeTagMap.Set("DateNotFuture", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		now := time.Now().Add(time.Minute * 10)
+		return t.Before(now) || t.Equal(now)
 	})
 }
 

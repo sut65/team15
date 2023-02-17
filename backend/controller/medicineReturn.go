@@ -56,7 +56,7 @@ func CreateMedicineReturn(c *gin.Context) {
 		Reason:            Reason,
 		DispenseMedicine:  dispensemedicine,
 		Note:          Return.Note,
-		Unitt:         Return.Unitt,
+		
 	}
 
 	if _, err := govalidator.ValidateStruct(wv); err != nil {
@@ -145,7 +145,7 @@ func UpdateMedicineReturn(c *gin.Context) {
 		Reason:            Return.Reason,
 		DispenseMedicine:  Return.DispenseMedicine,
 		Note:              Return.Note,
-		Unitt:             Return.Unitt,
+		
 
 	}
 		// ขั้นตอนการ validate
