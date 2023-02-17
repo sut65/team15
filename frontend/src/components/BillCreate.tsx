@@ -72,8 +72,9 @@ export default function BillCreate() {
     fetch(apiUrl, requestOptions)
         .then((response) => response.json())
         .then((res) => {
-            console.log("Combobox_paymentmethods",res.data);
+            console.log("Combobox_paymentmethod",res);
             if (res.data) {
+              console.log(res.data)
               setPaymentmethod(res.data);
             }else {
           console.log("else");
@@ -93,7 +94,7 @@ export default function BillCreate() {
     fetch(apiUrl, requestOptions)
       .then((response) => response.json())
       .then((res) => {
-        console.log("Combobox_prescriptionNo", res)
+        console.log("Combobox_prescription", res)
         if (res.data) {
           setPrescription(res.data);
         } else {
@@ -133,15 +134,15 @@ export default function BillCreate() {
     setLoading(true)
     let data = {
       PharmacistID: Number(localStorage.getItem("uid")),
+      BillNo: typeof bill.BillNo  == "string" ? parseInt(bill.BillNo) : 0,
       Payer: bill.Payer ?? "" ,
       BillTime: bill.BillTime,
       Total: convertType(bill.Total ?? "" ),
-      BillNo: convertType(bill.BillNo ?? "" ),
-      PaymentmethodsID: convertType(bill.PaymentmethodID),
+      PaymentmethodID: convertType(bill.PaymentmethodID),
       PrescriptionID: convertType(bill.PrescriptionID),
     };
     console.log("Data", data)
-    const apiUrl = "http://localhost:8080/bills";
+    const apiUrl = "http://localhost:8080/bill";
     const requestOptions = {
       method: "POST",
       headers: {
@@ -206,7 +207,7 @@ export default function BillCreate() {
 
             <Button style={{ float: "right" }}
               component={RouterLink}
-              to="/Billlist"
+              to="/bills"
               variant="contained"
               color="primary">
               <SourceIcon />รายการบันทึกการชำระเงิน
@@ -284,7 +285,7 @@ export default function BillCreate() {
                     value={bill.PaymentmethodID}
                     onChange={handleChange}
                     inputProps={{
-                      name: "PaymentmethodsID",
+                      name: "PaymentmethodID",
                     }}
                   >
                  <option aria-label="None" value="">

@@ -399,16 +399,16 @@ func SetupDatabase() {
 	db.Model(&MedicineArrangement{}).Create(&medicinearrangement1)
 
 	//-----------------------------------------------------------ระบบบันทึกการชำระเงิน---------------------------------------
-	//Paymentmethod รูปแบบการชำระเงิน
-	cash := Paymentmethod{
+	//Pay รูปแบบการชำระเงิน
+	pay1 := Paymentmethod{
 		Name: "ชำระด้วยเงินสด",
 	}
-	db.Model(&Paymentmethod{}).Create(&cash)
+	db.Model(&Paymentmethod{}).Create(&pay1)
 
-	payment := Paymentmethod{
+	pay2 := Paymentmethod{
 		Name: "โอนพร้อมเพย์",
 	}
-	db.Model(&Paymentmethod{}).Create(&payment)
+	db.Model(&Paymentmethod{}).Create(&pay2)
 
 	// Bill
 	bill1 := Bill{
@@ -420,7 +420,7 @@ func SetupDatabase() {
 
 		Pharmacist:    pharmacist5,
 		Prescription:  prescription1,
-		Paymentmethod: cash,
+		Paymentmethod: pay1,
 	}
 	db.Model(&Bill{}).Create(&bill1)
 
@@ -441,8 +441,8 @@ func SetupDatabase() {
 
 	//ระบบจ่ายยา
 	dispensemedicine := DispenseMedicine{
-		DispenseNo: 100000,
-		Bill:		  bill1,
+		DispenseNo:   100000,
+		Bill:         bill1,
 		ReceiveName:  "แสนดี มากมาย",
 		Pharmacy:     pharmacy1,
 		Pharmacist:   pharmacist2,

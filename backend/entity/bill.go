@@ -6,23 +6,29 @@ import (
 	"gorm.io/gorm"
 )
 
+type Pay struct {
+	gorm.Model
+
+	Name        string
+	Attendances []Attendance `gorm:"foreignKey:PayID"`
+}
+
 type Bill struct {
 	gorm.Model
 
-	// BillNo   uint
 	BillTime time.Time
 	Payer    string
 	Total    uint
 	BillNo   uint
 
 	PaymentmethodID *uint
-	Paymentmethod   Paymentmethod
+	Paymentmethod   Paymentmethod `gorm:"references:id" valid:"-"`
 
 	PharmacistID *uint
 	Pharmacist   User
 
 	PrescriptionID *uint
-	Prescription   Prescription
+	Prescription   Prescription `gorm:"references:id" valid:"-"`
 
 	DispenseMedicines []DispenseMedicine `gorm:"foreignKey:BillID"`
 }

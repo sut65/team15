@@ -127,19 +127,17 @@ func main() {
 	//-------------------------------------ระบบย่อย ระบบบันทึกการชำระเงิน--------------------------------
 	//Paymentmethod Routes
 	r.GET("/paymentmethods", controller.ListPaymentmethod)
-	r.GET("/paymentmethod/:id", controller.GetPaymentmethod)
-	r.POST("/paymentmethods", controller.CreatePaymentmethod)
-	r.PATCH("/paymentmethods", controller.UpdatePaymentmethod)
-	r.DELETE("/paymentmethods/:id", controller.DeletePaymentmethod)
+	// r.GET("/paymentmethod/:id", controller.GetPaymentmethod)
+	// r.POST("/paymentmethods", controller.CreatePaymentmethod)
+	// r.PATCH("/paymentmethods", controller.UpdatePaymentmethod)
+	// r.DELETE("/paymentmethods/:id", controller.DeletePaymentmethod)
 
 	//Bill Routes
 	r.GET("/bills", controller.ListBill)
 	r.GET("/bill/:id", controller.GetBill)
-	r.POST("/bills", controller.CreateBill)
+	r.POST("/bill", controller.CreateBill)
 	r.PATCH("/bills", controller.UpdateBill)
 	r.DELETE("/bills/:id", controller.DeleteBill)
-	r.GET("/PrescriptionPaymentStatusNotPaid", controller.ListPrescriptionPaymentStatusNotPaid)
-	r.GET("/PrescriptionNo/:id", controller.GetPrescriptionNo)
 
 	//--------------------------------ระบบย่อย ระบบบันทึกการจ่ายยา------------------------------------
 	//Pharmacy

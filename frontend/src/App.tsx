@@ -82,7 +82,7 @@ function App() {
           <Route path="/Prescription" element={<PrescriptionCreate />} />
           <Route path="/Prescriptions" element={<Prescription />} />
           <Route path="/Bill" element={<BillCreate />} />
-          <Route path="/Billlist" element={<Bill />} />
+          <Route path="/Bills" element={<Bill />} />
           <Route path="/MedicineLabelUpdate/:id" element={<MedicineLabelUpdate />} />
           <Route path="/MedicineReturnUpdate/:id" element={<MedicineReturnUpdate />} />
           <Route path="/Discardmedicine" element={<DiscardmedicineCreate />} />
