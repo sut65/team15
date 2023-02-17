@@ -155,7 +155,7 @@ function DispenseMedicines() {
                                     เลขใบจ่ายยา
                                 </TableCell>
                                 <TableCell align="left" width="15%">
-                                    ใบชำระเงิน/ผู้ชำระเงิน
+                                    ใบชำระเงิน/ชื่อยา
                                 </TableCell>
                                 <TableCell align="center" width="10%">
                                     ช่องจ่ายยา
@@ -184,7 +184,7 @@ function DispenseMedicines() {
                             <TableRow key={dispensemedicine.ID}>
                                  <TableCell align="center" size="medium"> {dispensemedicine.ID}            </TableCell>
                                  <TableCell align="center" size="medium"> {dispensemedicine.DispenseNo}    </TableCell>
-                                 <TableCell align="left" size="medium"> {dispensemedicine.Bill.BillNo}  {dispensemedicine.Bill.Payer}  </TableCell>
+                                 <TableCell align="left" size="medium"> {dispensemedicine.Bill.BillNo}  {dispensemedicine.Bill.Prescription.MedicineLabel.Order.Medicine.Name}  </TableCell>
                                  <TableCell align="center" size="medium"> {dispensemedicine.Pharmacy.PharmacyBox}     </TableCell>
                                  <TableCell align="center" size="medium"> {dispensemedicine.ReceiveName}           </TableCell>
                                  <TableCell align="center" > {moment(dispensemedicine.DispenseTime).format('DD MMMM yyyy')} </TableCell>
