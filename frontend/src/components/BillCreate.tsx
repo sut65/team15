@@ -251,8 +251,8 @@ export default function BillCreate() {
                       size="medium"
                       placeholder="ราคา"
                       InputProps={{
-                        inputProps: { min: 10,
-                                      max: 9999 }
+                        inputProps: { min: 1,
+                                      max: 10000 }
                       }}
                       onChange={handleInputChange}
                     />
@@ -261,7 +261,7 @@ export default function BillCreate() {
                 </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
-              <p>ใบสั่งยา </p>
+              <p>ใบสั่งยา | ชื่อยา </p>
               <Select
                     native
                     value={bill.PrescriptionID}
@@ -271,13 +271,11 @@ export default function BillCreate() {
                     }}
                   >
                     <option aria-label="None" value="">
-                      เลือกใบสั่งยา 
-                      {/* | ชื่อยา */}
+                      เลือกใบสั่งยา | ชื่อยา
                     </option>
                     {prescription.map((item: PrescriptionInterface) => (
                       <option value={item.ID} key={item.ID}>
-                        {item.Number} 
-                        {/* {"|"} {item.MedicineLabel.Order.Medicine.Name} */}
+                        {item.Number}{"|"} {item.MedicineLabel.Order.Medicine.Name}
                       </option>
                     ))}
                     </Select>
