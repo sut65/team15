@@ -16,7 +16,7 @@ func TestBillNonotbeBlank(t *testing.T) {
 
 	q := []uint{
 		9999,
-		1000001,
+		100000,
 	}
 
 	for _, qu := range q {

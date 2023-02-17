@@ -13,7 +13,7 @@ import (
 func CreateMedicineArrangement(c *gin.Context) {
 	var pharmacist entity.User
 	var medicinearrangement entity.MedicineArrangement
-	var prescription	entity.Prescription
+	var prescription entity.Prescription
 	var classifydrug entity.ClassifyDrugs
 
 	if err := c.ShouldBindJSON(&medicinearrangement); err != nil {
@@ -40,9 +40,9 @@ func CreateMedicineArrangement(c *gin.Context) {
 
 	// 13: สร้าง MedicineArrangement
 	arrangement := entity.MedicineArrangement{
-		MedicineArrangementNo: medicinearrangement.MedicineArrangementNo,
-		Prescription: 				prescription,								// โยงความสัมพันธ์กับ Entity Prescription
-		ClassifyDrugs: 				classifydrug,							  // โยงความสัมพันธ์กับ Entity ClassifyDrugs
+		MedicineArrangementNo:   medicinearrangement.MedicineArrangementNo,
+		Prescription:            prescription, // โยงความสัมพันธ์กับ Entity Prescription
+		ClassifyDrugs:           classifydrug, // โยงความสัมพันธ์กับ Entity ClassifyDrugs
 		Note:                    medicinearrangement.Note,
 		Pharmacist:              pharmacist,                                  // โยงความสัมพันธ์กับ Entity User
 		MedicineArrangementTime: medicinearrangement.MedicineArrangementTime, // ตั้งค่าฟิลด์ watchedTime
@@ -66,9 +66,9 @@ func GetMedicineArrangement(c *gin.Context) {
 	var medicinearrangements entity.MedicineArrangement
 	id := c.Param("id")
 	if err := entity.DB().Preload("Pharmacist").Preload("Prescription").Preload("Prescription.MedicineLabel").
-	Preload("Prescription.MedicineLabel.Order").Preload("Prescription.MedicineLabel.Order.Medicine").
-	Preload("ClassifyDrugs").Preload("ClassifyDrugs.Cupboard").
-	Raw("SELECT * FROM medicine_arrangements WHERE id = ?", id).Find(&medicinearrangements).Error; err != nil {
+		Preload("Prescription.MedicineLabel.Order").Preload("Prescription.MedicineLabel.Order.Medicine").
+		Preload("ClassifyDrugs").Preload("ClassifyDrugs.Cupboard").
+		Raw("SELECT * FROM medicine_arrangements WHERE id = ?", id).Find(&medicinearrangements).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -79,9 +79,9 @@ func GetMedicineArrangement(c *gin.Context) {
 func ListMedicineArrangement(c *gin.Context) {
 	var medicinearrangements []entity.MedicineArrangement
 	if err := entity.DB().Preload("Pharmacist").Preload("Prescription").Preload("Prescription.MedicineLabel").
-	Preload("Prescription.MedicineLabel.Order").Preload("Prescription.MedicineLabel.Order.Medicine").
-	Preload("ClassifyDrugs").Preload("ClassifyDrugs.Cupboard").
-	Raw("SELECT * FROM medicine_arrangements").Find(&medicinearrangements).Error; err != nil {
+		Preload("Prescription.MedicineLabel.Order").Preload("Prescription.MedicineLabel.Order.Medicine").
+		Preload("ClassifyDrugs").Preload("ClassifyDrugs.Cupboard").
+		Raw("SELECT * FROM medicine_arrangements").Find(&medicinearrangements).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -104,7 +104,7 @@ func DeleteMedicineArrangement(c *gin.Context) {
 func UpdateMedicineArrangement(c *gin.Context) {
 	var pharmacist entity.User
 	var medicinearrangement entity.MedicineArrangement
-	var prescription	entity.Prescription
+	var prescription entity.Prescription
 	var classifydrug entity.ClassifyDrugs
 
 	if err := c.ShouldBindJSON(&medicinearrangement); err != nil {
@@ -128,12 +128,12 @@ func UpdateMedicineArrangement(c *gin.Context) {
 	}
 
 	updatearrangement := entity.MedicineArrangement{
-		MedicineArrangementNo: 		medicinearrangement.MedicineArrangementNo,
-		Prescription: 				medicinearrangement.Prescription,								
-		ClassifyDrugs: 				medicinearrangement.ClassifyDrugs,							  
-		Note:                    	medicinearrangement.Note,
-		Pharmacist:              	medicinearrangement.Pharmacist,                                 
-		MedicineArrangementTime: 	medicinearrangement.MedicineArrangementTime,
+		MedicineArrangementNo:   medicinearrangement.MedicineArrangementNo,
+		Prescription:            medicinearrangement.Prescription,
+		ClassifyDrugs:           medicinearrangement.ClassifyDrugs,
+		Note:                    medicinearrangement.Note,
+		Pharmacist:              medicinearrangement.Pharmacist,
+		MedicineArrangementTime: medicinearrangement.MedicineArrangementTime,
 	}
 	if _, err := govalidator.ValidateStruct(updatearrangement); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
