@@ -9,8 +9,6 @@ export interface ReturnInterface {
 
     Note: string,
 
-    Unitt: string,
-
     ReturnDate: Date | null,
   
     PharmacistID: number,
