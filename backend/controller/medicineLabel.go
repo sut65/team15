@@ -77,7 +77,7 @@ func CreateMedicineLabel(c *gin.Context) {
 func GetMedicineLabel(c *gin.Context) {
 	var medicineLabel entity.MedicineLabel
 	id := c.Param("id")
-	if err := entity.DB().Preload("Order").Preload("Order.Medicine").Preload("Suggestion").Preload("Effect").Preload("Pharmacist").Raw("SELECT * FROM medicine_labels WHERE id = ?", id).Find(&medicineLabel).Error; err != nil {
+	if err := entity.DB().Preload("Order").Preload("Order.Medicine").Preload("Order.Unit").Preload("Order.Company").Preload("Suggestion").Preload("Effect").Preload("Pharmacist").Raw("SELECT * FROM medicine_labels WHERE id = ?", id).Find(&medicineLabel).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -87,7 +87,7 @@ func GetMedicineLabel(c *gin.Context) {
 // GET /ambulances
 func ListMedicineLabel(c *gin.Context) {
 	var medicineLabels []entity.MedicineLabel
-	if err := entity.DB().Preload("Order").Preload("Order.Medicine").Preload("Suggestion").Preload("Effect").Preload("Pharmacist").Raw("SELECT * FROM medicine_labels").Find(&medicineLabels).Error; err != nil {
+	if err := entity.DB().Preload("Order").Preload("Order.Medicine").Preload("Order.Unit").Preload("Order.Company").Preload("Suggestion").Preload("Effect").Preload("Pharmacist").Raw("SELECT * FROM medicine_labels").Find(&medicineLabels).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

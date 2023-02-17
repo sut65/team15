@@ -37,7 +37,6 @@ func TestNotBlank(t *testing.T) {
 	Return := Return{
 
 		Note: "",
-		Unitt: "2",
 		ReturnDate:        time.Now(),
 	}
 
@@ -59,7 +58,6 @@ func TestUnittpositive(t *testing.T) {
 	Return := Return{
 		
 		Note: "",
-		Unitt: "-1",
 		ReturnDate:        time.Now(),
 	}
 	// ตรวจสอบด้วย govalidator
@@ -84,7 +82,6 @@ func TestDateBePast(t *testing.T) {
 	Return := Return{
 
 		Note: "ไม่มีซองยา",
-		Unitt: "2",
 		ReturnDate:  time.Now().Add(time.Minute * -10), // อดีตผิด วันที่เวลาต้องไม่เป็นอดีต
 
 	}
@@ -100,4 +97,25 @@ func TestDateBePast(t *testing.T) {
 
 	// err.Error ต้องมี error message แสดงออกมา
 	g.Expect(err.Error()).To(Equal("Date not be past"))
+}
+
+func TestDateBeFuture(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	Return := Return{
+		Note: "ไม่มีซองยา",
+		ReturnDate:        time.Now().Add(time.Minute * +100), // อดีตผิด วันที่เวลาต้องไม่เป็นอนาคต
+	}
+
+	// ตรวจสอบด้วย govalidator
+	ok, err := govalidator.ValidateStruct(Return)
+
+	// ok ต้องไม่เป็นค่า true แปลว่าต้องจับ error ได้
+	g.Expect(ok).ToNot(BeTrue())
+
+	// err ต้องไม่เป็นค่า nil แปลว่าต้องจับ error ได้
+	g.Expect(err).ToNot(BeNil())
+
+	// err.Error ต้องมี error message แสดงออกมา
+	g.Expect(err.Error()).To(Equal("Date must not be in the future"))
 }
