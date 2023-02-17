@@ -127,9 +127,10 @@ func main() {
 	//-------------------------------------ระบบย่อย ระบบบันทึกการชำระเงิน--------------------------------
 	//Paymentmethod Routes
 	r.GET("/paymentmethods", controller.ListPaymentmethod)
-	// r.GET("/paymentmethod/:id", controller.GetPaymentmethod)
-	// r.POST("/paymentmethods", controller.CreatePaymentmethod)
-	// r.PATCH("/paymentmethods", controller.UpdatePaymentmethod)
+	r.GET("/paymentmethod/:id", controller.GetPaymentmethod)
+	r.POST("/paymentmethods", controller.CreatePaymentmethod)
+
+	r.PATCH("/paymentmethods", controller.UpdatePaymentmethod)
 	// r.DELETE("/paymentmethods/:id", controller.DeletePaymentmethod)
 
 	//Bill Routes

@@ -104,23 +104,56 @@ func DeleteBill(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
 
-// PATCH /bills รอแก้
+// var bills entity.Bill
+// 	var prescriptions entity.Prescription
+// 	var paymentmethods entity.Paymentmethod
+
+// PATCH /medicinearrangements
 func UpdateBill(c *gin.Context) {
+	var pharmacist entity.User
 	var bills entity.Bill
+	var prescriptions entity.Prescription
+	var paymentmethods entity.Paymentmethod
+
 	if err := c.ShouldBindJSON(&bills); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", bills.ID).First(&bills); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "bills 2 not found"})
+	if tx := entity.DB().Where("id = ?", bills.PrescriptionID).First(&prescriptions); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "prescription_id not found"})
 		return
 	}
 
-	if err := entity.DB().Save(&bills).Error; err != nil {
+	if tx := entity.DB().Where("id = ?", bills.PaymentmethodID).First(&paymentmethods); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "paymentmethods_id not found"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", bills.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacist_id not found"})
+		return
+	}
+
+	updatebill := entity.Bill{
+		Prescription:  bills.Prescription,
+		Paymentmethod: bills.Paymentmethod,
+		Pharmacist:    bills.Pharmacist,
+
+		BillTime: bills.BillTime,
+		Payer:    bills.Payer,
+		Total:    bills.Total,
+		BillNo:   bills.BillNo,
+	}
+	if _, err := govalidator.ValidateStruct(updatebill); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": bills})
+	if tx := entity.DB().Where("id = ?", bills.ID).Updates(&bills); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "bills not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": updatebill})
 }

@@ -44,7 +44,7 @@ function Bills() {
           },
         };
       
-        fetch(`${apiUrl}/bill/${id}`, requestOptions)
+        fetch(`${apiUrl}/bills/${id}`, requestOptions)
         .then((response) => response.json())
         .then(
           (res) => {
@@ -126,7 +126,7 @@ function Bills() {
 
                             component={RouterLink}
 
-                            to="/bills"
+                            to="/bill"
 
                             variant="contained"
 
@@ -134,7 +134,7 @@ function Bills() {
 
                         >
 
-                            เพิ่มข้อมูลการจัดยา
+                            เพิ่มข้อมูลการชำระเงิน
 
                         </Button>
 
@@ -160,8 +160,8 @@ function Bills() {
                                 <TableCell align="center" width="10%">
                                     เลขใบสั้งยา/ชื่อยา
                                 </TableCell>
-                                <TableCell align="center" width="10%">
-                                    ชั้นยา
+                                <TableCell align="center" width="30%">
+                                    รูปแบบการชำระเงิน
                                 </TableCell>
                                 <TableCell align="center" width="20%">
                                     วันที่ชำระเงิน

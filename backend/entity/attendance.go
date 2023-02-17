@@ -28,11 +28,11 @@ type Attendance struct {
 	Datetime    time.Time
 
 	PharmacistID *uint
-	Pharmacist   User
+	Pharmacist   User `gorm:"references:id" valid:"-"`
 
 	ShiftID *uint
-	Shift   Shift
+	Shift   Shift `gorm:"references:id" valid:"-"`
 
 	StatID *uint
-	Stat   Stat
+	Stat   Stat `gorm:"references:id" valid:"-"`
 }

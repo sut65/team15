@@ -52,33 +52,33 @@ func ListPaymentmethod(c *gin.Context) {
 }
 
 // // DELETE /paymentmethods/:id
-// func DeletePaymentmethod(c *gin.Context) {
-// 	id := c.Param("id")
-// 	if tx := entity.DB().Exec("DELETE FROM paymentmethods WHERE id = ?", id); tx.RowsAffected == 0 {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": "paymentmethods 2 not found"})
-// 		return
-// 	}
+func DeletePaymentmethod(c *gin.Context) {
+	id := c.Param("id")
+	if tx := entity.DB().Exec("DELETE FROM paymentmethods WHERE id = ?", id); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "paymentmethods 2 not found"})
+		return
+	}
 
-// 	c.JSON(http.StatusOK, gin.H{"data": id})
-// }
+	c.JSON(http.StatusOK, gin.H{"data": id})
+}
 
 // PATCH /paymentmethods
-// func UpdatePaymentmethod(c *gin.Context) {
-// 	var paymentmethods entity.Paymentmethod
-// 	if err := c.ShouldBindJSON(&paymentmethods); err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
+func UpdatePaymentmethod(c *gin.Context) {
+	var paymentmethods entity.Paymentmethod
+	if err := c.ShouldBindJSON(&paymentmethods); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
-// 	if tx := entity.DB().Where("id = ?", paymentmethods.ID).First(&paymentmethods); tx.RowsAffected == 0 {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": "paymentmethods 3 not found"})
-// 		return
-// 	}
+	if tx := entity.DB().Where("id = ?", paymentmethods.ID).First(&paymentmethods); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "paymentmethods 3 not found"})
+		return
+	}
 
-// 	if err := entity.DB().Save(&paymentmethods).Error; err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
+	if err := entity.DB().Save(&paymentmethods).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
-// 	c.JSON(http.StatusOK, gin.H{"data": paymentmethods})
-//}
+	c.JSON(http.StatusOK, gin.H{"data": paymentmethods})
+}
