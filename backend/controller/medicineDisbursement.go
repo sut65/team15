@@ -63,8 +63,8 @@ func CreatemedicineDisbursement(c *gin.Context) {
 func GetMedicineDisbursement(c *gin.Context) {
 	var medicineDisbursement entity.MedicineDisbursement
 	id := c.Param("id")
-	if err := entity.DB().Preload("Pharmacist").Preload("MedicineRoom").Preload("DrugUnit").
-	Preload("MedicineReceive").Preload("MedicineReceive.MedicineLabel").Preload("MedicineReceive.MedicineLabel.Order.Medicine").Raw("SELECT * FROM medicine_disbursements WHERE id = ?", id).Find(&medicineDisbursement).Error; err != nil {
+	if err := entity.DB().Preload("Pharmacist").Preload("MedicineRoom").Preload("MedicineReceive").Preload("MedicineReceive.MedicineLabel").Preload("MedicineReceive.MedicineLabel.Order").Preload("MedicineReceive.MedicineLabel.Order.Unit").
+	Preload("MedicineReceive.MedicineLabel.Order.Medicine").Raw("SELECT * FROM medicine_disbursements WHERE id = ?", id).Find(&medicineDisbursement).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -74,8 +74,8 @@ func GetMedicineDisbursement(c *gin.Context) {
 // GET /medicineDisbursements
 func ListMedicineDisbursement(c *gin.Context) {
 	var medicineDisbursement []entity.MedicineDisbursement
-	if err := entity.DB().Preload("Pharmacist").Preload("MedicineRoom").Preload("DrugUnit").
-	Preload("MedicineReceive").Preload("MedicineReceive.MedicineLabel").Preload("MedicineReceive.MedicineLabel.Order.Medicine").Raw("SELECT * FROM medicine_disbursements").Find(&medicineDisbursement).Error; err != nil {
+	if err := entity.DB().Preload("Pharmacist").Preload("MedicineRoom").Preload("MedicineReceive").Preload("MedicineReceive.MedicineLabel").Preload("MedicineReceive.MedicineLabel.Order").Preload("MedicineReceive.MedicineLabel.Order.Unit").
+	Preload("MedicineReceive.MedicineLabel.Order.Medicine").Raw("SELECT * FROM medicine_disbursements").Find(&medicineDisbursement).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

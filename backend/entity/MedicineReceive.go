@@ -10,6 +10,7 @@ type MedicineReceive struct {
 	gorm.Model
 
 	MedicineReceiveNo int
+	MedicineReAmount int
 	RecievedDate      time.Time
 
 	PharmacistID *uint
@@ -23,7 +24,6 @@ type MedicineReceive struct {
 
 	Discardmedicine       []Discardmedicine      `gorm:"foreignkey:MedicineReceiveID"`
 	MedicineDisbursements []MedicineDisbursement `gorm:"foreignKey:MedicineReceiveID"`
-	
 }
 type Zone struct {
 	gorm.Model

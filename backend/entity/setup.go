@@ -247,6 +247,7 @@ func SetupDatabase() {
 	medicineReceive := MedicineReceive{
 		MedicineReceiveNo: 0111,
 		Pharmacist:        pharmacist3,
+		MedicineReAmount: 10,
 		Zone:              Zone1,
 		RecievedDate:      time.Now(),
 		MedicineLabel:     medicinelabel01,
@@ -290,11 +291,12 @@ func SetupDatabase() {
 
 	//ระบบเบิกยา
 	medicineDisbursement01 := MedicineDisbursement{
-		MedicineDisNo:   2543,
-		Pharmacist:      pharmacist3,
-		MedicineRoom:    medicineRoom1,
-		Dtime:           time.Now(),
-		MedicineReceive: medicineReceive,
+		MedicineDisNo: 2543,
+		Pharmacist:        pharmacist3,
+		MedicineRoom: medicineRoom1,
+		MedicineDisAmount: 10,
+		Dtime:      time.Now(),
+		MedicineReceive:     medicineReceive,
 	}
 	db.Model(&MedicineDisbursement{}).Create(&medicineDisbursement01)
 

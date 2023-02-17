@@ -45,6 +45,7 @@ func CreatemedicineReceive(c *gin.Context) {
 		MedicineLabel:     medicineLabel,
 		Zone:              zone,
 		MedicineReceiveNo: medicineReceive.MedicineReceiveNo,
+		MedicineReAmount: medicineReceive.MedicineReAmount,
 	}
 	if _, err := govalidator.ValidateStruct(wv); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
