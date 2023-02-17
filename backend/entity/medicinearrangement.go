@@ -28,7 +28,7 @@ type MedicineArrangement struct {
 func init() {
 	govalidator.CustomTypeTagMap.Set("donotpast", func(i interface{}, context interface{}) bool {
 		t := i.(time.Time)
-		return t.After(time.Now().Add(time.Minute * -1)) //เวลา > เวลาปัจจุบัน - 1 นาที
+		return t.After(time.Now().Add(time.Minute * -10)) //เวลา > เวลาปัจจุบัน - 1 นาที
 	})
 	govalidator.CustomTypeTagMap.Set("donotfuture", func(i interface{}, context interface{}) bool {
 		t := i.(time.Time)
