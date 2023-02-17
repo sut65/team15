@@ -162,9 +162,6 @@ export default function MedicineReturnList() {
                 <TableCell align="center" width="14%">
                   ชื่อยา
                 </TableCell>
-                <TableCell align="center" width="14%">
-                  เหตุผลการคืนยา
-                </TableCell>
                 <TableCell align="center" width="13%">
                   จำนวนยาที่คืน
                 </TableCell>
@@ -185,7 +182,9 @@ export default function MedicineReturnList() {
                 </TableCell>  
                 <TableCell align="left" width="20%">
                   แก้ไขข้อมูล
-                </TableCell>    
+                </TableCell>  
+                 
+                 
               </TableRow>
             </TableHead>
              <TableBody>
@@ -194,7 +193,6 @@ export default function MedicineReturnList() {
                   <TableCell align="center">{Return.DispenseMedicine.DispenseNo}</TableCell>
                   <TableCell align="center">{Return.Order.Medicine.Name}</TableCell>
                   <TableCell align="center">{Return.Reason.ReasonName}</TableCell>
-                  <TableCell align="center" vertical-align= "middle" >{Return.Unitt}</TableCell>
                   <TableCell align="center">{Return.Staff.StaffName}</TableCell>
                   <TableCell align="center" vertical-align= "middle" >{Return.Note}</TableCell>
                   <TableCell align="center" > {moment(Return.ReturnDate).format('MMMM DD yyyy')}     </TableCell>

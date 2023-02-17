@@ -359,7 +359,7 @@ export default function MedicineLabelCreate() {
            <Grid item xs={12}>
             <Button
               component={RouterLink}
-              to="/medicineLabel"
+              to="/"
               variant="contained"
             >
               กลับ
