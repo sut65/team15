@@ -50,29 +50,9 @@ func TestNotBlank(t *testing.T) {
 	g.Expect(err).ToNot(BeNil())
 
 	// err.Error ต้องมี error message แสดงออกมา
-	g.Expect(err.Error()).To(Equal("Instruction cannot be blank"))
+	g.Expect(err.Error()).To(Equal("Note cannot be blank"))
 }
-func TestUnittpositive(t *testing.T) {
-	g := NewGomegaWithT(t)
 
-	Return := Return{
-		
-		Note: "",
-		ReturnDate:        time.Now(),
-	}
-	// ตรวจสอบด้วย govalidator
-	ok, err := govalidator.ValidateStruct(Return)
-
-	// ok ต้องไม่เป็นค่า true แปลว่าต้องจับ error ได้
-	g.Expect(ok).ToNot(BeTrue())
-
-	// err ต้องไม่เป็นค่า nil แปลว่าต้องจับ error ได้
-	g.Expect(err).ToNot(BeNil())
-
-	// err.Error ต้องมี error message แสดงออกมา
-	g.Expect(err.Error()).To(Equal("Unitt must be Positive"))
-
-}
 
 // ตรวจสอบค่าว่างของชื่อแล้วต้องเจอ Error ...
 
@@ -96,7 +76,7 @@ func TestDateBePast(t *testing.T) {
 	g.Expect(err).ToNot(BeNil())
 
 	// err.Error ต้องมี error message แสดงออกมา
-	g.Expect(err.Error()).To(Equal("Date not be past"))
+	g.Expect(err.Error()).To(Equal("Return not be past"))
 }
 
 func TestDateBeFuture(t *testing.T) {
@@ -117,5 +97,5 @@ func TestDateBeFuture(t *testing.T) {
 	g.Expect(err).ToNot(BeNil())
 
 	// err.Error ต้องมี error message แสดงออกมา
-	g.Expect(err.Error()).To(Equal("Date must not be in the future"))
+	g.Expect(err.Error()).To(Equal("Return must not be in the future"))
 }

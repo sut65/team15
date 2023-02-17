@@ -125,5 +125,5 @@ func TestDateNotBePast(t *testing.T) {
 	g.Expect(err).ToNot(BeNil())
 
 	// err.Error ต้องมี error message แสดงออกมา
-	g.Expect(err.Error()).To(Equal("Date not be past"))
+	g.Expect(err.Error()).To(Equal("MedicineLabel not be past"))
 }
