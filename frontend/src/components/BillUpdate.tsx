@@ -15,6 +15,7 @@ import { UserInterface } from '../models/IUser';
 import { BillsInterface } from "../models/IBill";
 import { PrescriptionInterface } from "../models/IPrescription";
 import { PaymentmethodsInterface } from "../models/IPaymentmethod";
+import Bills from './Bill';
 
 
 // Bill  = MedicineArrangement 
@@ -54,10 +55,10 @@ export default function BillUpdate() {
             },
         };
 
-        fetch(`${apiUrl}/bills/${id}`, requestOptions)
+        fetch(`${apiUrl}/bill/${id}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
-            console.log("bills", res)
+            console.log("bill", res)
             if (res.data) {
             setBill(res.data);
             } else {
@@ -163,9 +164,9 @@ export default function BillUpdate() {
   
       let data = {
         ID: convertType(bill.ID),
-        Payer: bill.Payer ?? "" ,
+        Payer: bill.Payer  ,
         BillTime: bill.BillTime,
-        BillNo: typeof bill.BillNo  == "string" ? parseInt(bill.BillNo) : 0,
+        BillNo:  bill.BillNo ,
         PaymentmethodID: convertType(bill.PaymentmethodID),
         PrescriptionID: convertType(bill.PrescriptionID),
         PharmacistID: Number(localStorage.getItem("uid")),
@@ -248,7 +249,7 @@ export default function BillUpdate() {
           </Box>
           </Box>
           <Divider />
-{/* ============================================================ */}
+
 
           <Grid container spacing={4}>
         <Grid item xs={6}>
@@ -278,6 +279,7 @@ export default function BillUpdate() {
             <TextField
                       id="Total"
                       variant="outlined"
+                      value={bill.Total}
                       type="number"
                       size="medium"
                       placeholder="ราคา"
@@ -342,8 +344,9 @@ export default function BillUpdate() {
                     variant="outlined"
                     type="string"
                     size="medium"
+                    value={bill.Payer}
                     placeholder="*ชื่อผู้จ่าย"
-                    value={bill.Payer|| ""}
+                    
                     onChange={handleInputChange}
                   />
                 </FormControl>

@@ -219,14 +219,14 @@ export default function AttendanceCreate(this: any) {
             color="primary"
             gutterBottom
           >
-            บันทึกใบสั่งซื้อ
+            บันทึกการเข้าเวร
 
             <Button style={{ float: "right" }}
               component={RouterLink}
               to="/Attendanceslist"
               variant="contained"
               color="primary">
-              <SourceIcon />รายการสั่งซื้อ
+              <SourceIcon />รายการบันทึกการเข้าเวร
             </Button>
           </Typography>
         </Box>

@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/asaskevich/govalidator"
 	"github.com/sut65/team15/entity"
 
 	"github.com/gin-gonic/gin"
@@ -94,39 +95,66 @@ func ListAttendance(c *gin.Context) {
 
 }
 
+// DELETE /attendances/:id
+func DeleteAttendance(c *gin.Context) {
+	id := c.Param("id")
+	if tx := entity.DB().Exec("DELETE FROM attendances WHERE id = ?", id); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "attendances not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": id})
+}
+
 // PATCH
 func UpdateAttendance(c *gin.Context) {
-	var attendance entity.Attendance
+
+	var stat entity.Stat             //medicine = ยา   | หน้าที่ = Stat
+	var shift entity.Shift           //Unit = หน่วย      | ช่วงเข้าเวร = Shift
+	var pharmacist entity.User       //pharmacist = เภสัชกร | เหมือนเดิม
+	var attendance entity.Attendance // order (en หลัก)  |  Attendance
+
 	if err := c.ShouldBindJSON(&attendance); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", attendance.ID).First(&attendance); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "user not found"})
+	if tx := entity.DB().Where("id = ?", attendance.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบสมาชิก"})
 		return
 	}
 
-	if err := entity.DB().Save(&attendance).Error; err != nil {
+	if tx := entity.DB().Where("id = ?", attendance.StatID).First(&stat); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "หน้าที่"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", attendance.ShiftID).First(&shift); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ช่วงเวลาที่เข้าเวร"})
+		return
+	}
+
+	update := entity.Attendance{
+
+		Phone:       attendance.Phone,
+		Description: attendance.Description,
+		Datetime:    attendance.Datetime,
+
+		Stat:       attendance.Stat,       // โยงความสัมพันธ์กับ Entity stat
+		Shift:      attendance.Shift,      // โยงความสัมพันธ์กับ Entity Shift
+		Pharmacist: attendance.Pharmacist, // โยงความสัมพันธ์กับ Entity user
+	}
+
+	// ขั้นตอนการ validate
+	if _, err := govalidator.ValidateStruct(update); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": attendance})
-}
-
-// DELETE /attendances/:id
-func DeleteAttendance(c *gin.Context) {
-	id := c.Param("id")
-	if tx := entity.DB().Exec("DELETE FROM orsers WHERE id = ?", id); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "orsers not found"})
+	if err := entity.DB().Where("id = ?", attendance.ID).Updates(&attendance).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	/*
-		if err := entity.DB().Where("id = ?", id).Delete(&entity.User{}).Error; err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}*/
 
-	c.JSON(http.StatusOK, gin.H{"data": id})
+	c.JSON(http.StatusOK, gin.H{"data": update})
 }

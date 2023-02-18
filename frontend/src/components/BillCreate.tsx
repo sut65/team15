@@ -134,10 +134,10 @@ export default function BillCreate() {
     setLoading(true)
     let data = {
       PharmacistID: Number(localStorage.getItem("uid")),
-      BillNo: typeof bill.BillNo  == "string" ? parseInt(bill.BillNo) : 0,
+      BillNo: typeof bill.BillNo == "string" ? parseInt(bill.BillNo) : 0,
       Payer: bill.Payer ?? "" ,
       BillTime: bill.BillTime,
-      Total: convertType(bill.Total ?? "" ),
+      Total: typeof bill.Total == "string" ? parseInt(bill.Total) : 0,
       PaymentmethodID: convertType(bill.PaymentmethodID),
       PrescriptionID: convertType(bill.PrescriptionID),
     };
