@@ -1,17 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Container from '@mui/material/Container'
 import TableCell from '@mui/material/TableCell';
-import { Box, Grid, Select, TextField, Typography, Table, TableHead, TableRow, TableBody } from '@mui/material'
+import { Box, Grid, Select, TextField, Typography, Table, TableHead, TableRow, TableBody, IconButton, Alert } from '@mui/material'
 import Button from '@mui/material/Button'
 import { Link as RouterLink } from "react-router-dom";
 import TableContainer from '@mui/material/TableContainer';
 import moment from 'moment';
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import Snackbar from '@mui/material/Snackbar'
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 import { AttendanceInterface } from "../models/IAttendance";
 import { format } from "path";
 function Attendances() {
 
+    
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
+    const [ErrorMessage, setErrorMessage] = React.useState("");
     const [attendance, SetAttendance] = React.useState<AttendanceInterface[]>([]);
 
     const getAttendance = async () => {
@@ -29,16 +35,70 @@ function Attendances() {
                 }
             });
     };
+    const DeleteAttendance = async (id: string | number | undefined) => {
+        const apiUrl = "http://localhost:8080";
+        const requestOptions = {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "application/json",
+            },
+        };
+
+        fetch(`${apiUrl}/attendance/${id}`, requestOptions)
+            .then((response) => response.json())
+            .then(
+                (res) => {
+                    if (res.data) {
+                        setSuccess(true)
+                        console.log("ยกเลิกสำเร็จ")
+                        setErrorMessage("")
+                    }
+                    else {
+                        setErrorMessage(res.error)
+                        setError(true)
+                        console.log("ยกเลิกไม่สำเร็จ")
+                    }
+                    getAttendance();
+                }
+            )
+    }
+
 
     useEffect(() => {
         getAttendance();
     }, []);
+    
+    const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+        props,
+        ref,
+    ) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
+
+    const handleClose = (res: any) => {
+        if (res === "clickaway") {
+            return;
+        }
+        setSuccess(false);
+        setError(false);
+    };
 
     return (
 
         <div>
 
             <Container maxWidth="md">
+            <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="success">
+                        บันทึกข้อมูลสำเร็จ
+                    </Alert>
+                </Snackbar>
+                <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="error">
+                        บันทึกข้อมูลไม่สำเร็จ: {ErrorMessage}
+                    </Alert>
+                </Snackbar>
 
                 <Box
 
@@ -125,9 +185,31 @@ function Attendances() {
                                     <TableCell align="center" > {attendance.Phone}    </TableCell>
                                     <TableCell align="center" > {attendance.Description}         </TableCell>
                                     <TableCell align="center" > {attendance.Shift.Name}     </TableCell>
-                                    <TableCell align="center" > {attendance.Pharmacist.Name}     </TableCell>
-                                    {/* <TableCell align="center">  {format(Date(attendance.Datetime?), 'dd-mm-yyyy')}</TableCell> */}
+                                    <TableCell align="center" > {attendance.Pharmacist.Name}     </TableCell>                                    
                                     <TableCell align="center" > {moment(attendance.Datetime).format('DD MMMM yyyy')}     </TableCell>
+                                    <TableCell align="center">
+                                        <IconButton aria-label="delete" vertical-align="middle" onClick={() => DeleteAttendance(attendance.ID)}><DeleteIcon /></IconButton >
+                                    </TableCell>
+
+                                    <TableCell align="center">
+                                        <Button
+                                            variant='outlined'
+                                            color="primary"
+                                            component={RouterLink}
+                                            to={"/attendanceUpdate/" + attendance.ID}
+                                        >
+                                            แก้ไขข้อมูล
+                                        </Button>
+                                    </TableCell>
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
                                 </TableRow>
                             ))}
                         </TableBody>

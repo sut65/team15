@@ -182,6 +182,7 @@ func main() {
 	r.GET("/attendances", controller.ListAttendance)
 	r.GET("/attendance/:id", controller.GetAttendance)
 	r.PATCH("/attendance", controller.UpdateAttendance)
+	r.DELETE("/attendance/:id", controller.DeleteAttendance)
 
 	// Run the server
 
