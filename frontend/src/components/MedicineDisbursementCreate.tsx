@@ -30,7 +30,7 @@ export default function MedicineDisbursementCreate() {
     const [loading, setLoading] = React.useState(false);
     const [ErrorMessage, setErrorMessage] = React.useState<String>();
 
-    
+
 
     const handleClose = (res: any) => {
         if (res === "clickaway") {
@@ -49,7 +49,7 @@ export default function MedicineDisbursementCreate() {
         console.log("ID", id, "Value", value)
         setMedicineDisbursement({ ...MedicineDisbursement, [id]: value });
     };
-    
+
     const handleChange: any = (
         event: React.ChangeEvent<{ name?: string; value: unknown }>
     ) => {
@@ -107,6 +107,7 @@ export default function MedicineDisbursementCreate() {
             });
     }
 
+
     function getUser() {
         const UserID = localStorage.getItem("uid")
         const apiUrl = `http://localhost:8080/users/${UserID}`;
@@ -128,7 +129,7 @@ export default function MedicineDisbursementCreate() {
                 }
             });
     }
-    
+
 
     const convertType = (data: string | number | undefined | null) => {
         let val = typeof data === "string" ? parseInt(data) : data;
@@ -140,7 +141,9 @@ export default function MedicineDisbursementCreate() {
         let data = {
             PharmacistID: Number(localStorage.getItem("uid")),
             MedicineDisNo: typeof MedicineDisbursement.MedicineDisNo == "string" ? parseInt(MedicineDisbursement.MedicineDisNo) : 0,
+            MedicineDisAmount: typeof MedicineDisbursement.MedicineDisAmount == "string" ? parseInt(MedicineDisbursement.MedicineDisAmount) : 0,
             MedicineRoomID: convertType(MedicineDisbursement.MedicineRoomID),
+
             Dtime: MedicineDisbursement.Dtime,
             MedicineReceiveID: convertType(MedicineDisbursement.MedicineReceiveID),
         };
@@ -167,7 +170,7 @@ export default function MedicineDisbursementCreate() {
                 }
             });
     }
-   
+
 
 
     //ดึงข้อมูล ใส่ combobox
@@ -178,7 +181,7 @@ export default function MedicineDisbursementCreate() {
         getUser();
 
     }, []);
-    
+
 
     const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
         props,
@@ -221,7 +224,7 @@ export default function MedicineDisbursementCreate() {
                 </Box>
                 </Box>
                 <Grid container spacing={4}>
-                    <Grid item xs={4}>
+                    <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
                             <p>เลขใบเบิกยา</p>
                             <FormControl fullWidth variant="outlined">
@@ -237,7 +240,6 @@ export default function MedicineDisbursementCreate() {
                         </FormControl>
                     </Grid>
 
-
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
                             <p>ชื่อยา </p>
@@ -251,16 +253,52 @@ export default function MedicineDisbursementCreate() {
                                 <MenuItem value={0} key={0}>เลือกชื่อยา </MenuItem>
                                 {MedicineReceive.map((item: MedicineReceiveInterface) =>
                                 (
-                                <MenuItem value={item.ID} key={item.ID}>
-                                    {item.MedicineLabel.Order.Medicine.Name}  
+                                    <MenuItem value={item.ID} key={item.ID}>
+                                        {item.MedicineLabel.Order.Medicine.Name}
                                     </MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                     </Grid>
                 </Grid>
-                
+                <Grid item xs={6}>
 
+                    <FormControl fullWidth variant="outlined" style={{ width: '90%' }}>
+                        <p>หน่วยยา</p>
+                        <Select
+                            native
+                            value={MedicineDisbursement.MedicineReceiveID}
+                            onChange={handleChange}
+                            inputProps={{
+                                name: "MedicineReceiveID",
+                            }}
+                        >
+                            <option aria-label="None" value="">
+                                โปรดเลือกหน่วยยา
+                            </option>
+                            {MedicineReceive.map((item: MedicineReceiveInterface) => (
+                                <option value={item.ID} key={item.ID}>
+                                    {item.MedicineLabel.Order.Unit.Name}
+                                </option>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Grid>
+                    <Grid item xs={6}>
+                        <FormControl fullWidth variant="outlined" style={{ width: '105%' }}>
+                            <p>จำนวนยา</p>
+                            <FormControl fullWidth variant="outlined">
+                                <TextField
+                                    id="MedicineDisAmount"
+                                    variant="outlined"
+                                    type="number"
+                                    size="medium"
+                                    placeholder="จำนวน"
+                                    onChange={handleInputChange}
+                                />
+                            </FormControl>
+                        </FormControl>
+                    </Grid>
                 <Grid item xs={4}>
 
                     <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
@@ -274,7 +312,7 @@ export default function MedicineDisbursementCreate() {
                             }}
                         >
                             <option aria-label="None" value="">
-                            โปรดเลือกยาสำหรับผู้ป่วย
+                                โปรดเลือกยาสำหรับผู้ป่วย
                             </option>
                             {medicineRoom.map((item: MedicineRoomInterface) => (
                                 <option value={item.ID} key={item.ID}>
@@ -282,8 +320,10 @@ export default function MedicineDisbursementCreate() {
                                 </option>
                             ))}
                         </Select>
-                    </FormControl> 
+                    </FormControl>
                 </Grid>
+
+
                 <Grid item xs={4}>
                     <FormControl fullWidth variant="outlined" style={{ width: '100%' }}>
                         <p>ผู้บันทึกการเบิกยา</p>
