@@ -52,7 +52,7 @@ func CreateClassifyDrugs(c *gin.Context)  {
 		return
 	}
 
-	// 14: สร้าง DispenseMedicine 
+	// 14: สร้าง classifydrug 
 	classifydrug := entity.ClassifyDrugs{
 		
 		Cupboard:   	cupboard, 							// โยงความสัมพันธ์กับ Entity cupboard
@@ -117,21 +117,67 @@ func DeleteClassifyDrug(c *gin.Context) {
 
 // PATCH /classifydrug
 func UpdateClassifyDrug(c *gin.Context) {
+	var pharmacist entity.User
+	var cupboard entity.Cupboard
+	var zonee entity.Zonee
+	var floor entity.Floor
 	var classifydrugs entity.ClassifyDrugs
+	var medicinedisbursement entity.MedicineDisbursement
+	
+
 	if err := c.ShouldBindJSON(&classifydrugs); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", classifydrugs.ID).First(&classifydrugs); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "classifydrugs not found"})
+	if tx := entity.DB().Where("id = ?", classifydrugs.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบสมาชิก"})
 		return
 	}
 
-	if err := entity.DB().Save(&classifydrugs).Error; err != nil {
+	if tx := entity.DB().Where("id = ?", classifydrugs.CupboardID).First(&cupboard); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", classifydrugs.ZoneeID).First(&zonee); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", classifydrugs.FloorID).First(&floor); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", classifydrugs.MedicineDisbursementID).First(&medicinedisbursement); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ"})
+		return
+	}
+
+	update := entity.ClassifyDrugs{
+		Cupboard:                classifydrugs.Cupboard,
+		Zonee:                   classifydrugs.Zonee,
+		Floor:                   classifydrugs.Floor,
+		Pharmacist:              classifydrugs.Pharmacist,
+		MedicineDisbursement:    classifydrugs.MedicineDisbursement,
+		Note:			classifydrugs.Note,
+		Datetime:		classifydrugs.Datetime, 		// ตั้งค่าฟิลด์ watchedTime
+		Number:			classifydrugs.Number,
+
+	}
+
+	// ขั้นตอนการ validate
+	if _, err := govalidator.ValidateStruct(update); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": classifydrugs})
+	if err := entity.DB().Where("id = ?", classifydrugs.ID).Updates(&classifydrugs).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": update})
 }
+

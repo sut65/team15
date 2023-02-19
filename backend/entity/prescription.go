@@ -25,13 +25,13 @@ type Prescription struct {
 	Number   int	`valid:"required~Number: non zero value required, range(10000|99999)~Number: range 10000|99999"`
 
 	DoctorID *uint
-	Doctor   User
+	Doctor   User	
 
 	PatientID *uint
-	Patient   Patient
+	Patient   Patient	`gorm:"references:id" valid:"-"`
 
 	MedicineLabelID *uint
-	MedicineLabel   MedicineLabel
+	MedicineLabel   MedicineLabel	`gorm:"references:id" valid:"-"`
 
 	MedicineArrangements []MedicineArrangement `gorm:"foreignKey: PrescriptionID"`
 	Bills                []Bill                `gorm:"foreignKey: PrescriptionID"`
@@ -40,6 +40,6 @@ type Prescription struct {
 func init() {
 	govalidator.CustomTypeTagMap.Set("donotpast", func(i interface{}, context interface{}) bool {
 		t := i.(time.Time)
-		return t.After(time.Now().Add(time.Minute * -1)) //เวลา > เวลาปัจจุบัน - 1 นาที
+		return t.After(time.Now().Add(time.Minute * -10)) //เวลา > เวลาปัจจุบัน - 1 นาที
 	})
 }

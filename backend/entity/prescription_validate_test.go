@@ -37,7 +37,7 @@ func TestNotePrescriptionNotBlank(t *testing.T) {
 	})
 }
 
-func TestNoPrescription2(t *testing.T) {
+func TestNoPrescription1(t *testing.T) {
 	g := NewGomegaWithT(t)
 	t.Run("check pattern number non zero", func(t *testing.T) {
 			prescription := Prescription{
@@ -53,12 +53,12 @@ func TestNoPrescription2(t *testing.T) {
 	})
 }
 
-func TestNoPrescription3(t *testing.T) {
+func TestNoPrescription2(t *testing.T) {
 	g := NewGomegaWithT(t)
 	t.Run("check pattern number range 10000|99999", func(t *testing.T) {
 			prescription := Prescription{
 				Number: 		200000,		//ผิด
-				Note:						"สั่งยาแล้ว"	,	                  		
+				Note:			"สั่งยาแล้ว"	,	                  		
 				Datetime:	time.Now(),
 			}
 
