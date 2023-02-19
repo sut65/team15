@@ -16,7 +16,7 @@ type Cause struct {
 type Discardmedicine struct {
 	gorm.Model
 
-	Quantity int
+	Quantity int			`valid:"required~The Quantity must be in the range 1-10000, range(1|10000)~The Quantity must be in the range 1-10000"`
 	Note	string
 	Datetime time.Time		`valid:"DateNotpast~Date must not be in the past, DateNotFuture~Date must not be in the future"`
 
