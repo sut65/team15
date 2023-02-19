@@ -78,7 +78,7 @@ export default function ClassifydrugsCreate() {
     fetch(apiUrl, requestOptions)
       .then((response) => response.json())
       .then((res) => {
-        console.log("Combobox_bill", res)
+        console.log("Combobox_cupboard", res)
         if (res.data) {
           setCupboard(res.data);
         } else {
@@ -100,7 +100,7 @@ export default function ClassifydrugsCreate() {
     fetch(apiUrl, requestOptions)
       .then((response) => response.json())
       .then((res) => {
-        console.log("Combobox_bill", res)
+        console.log("Combobox_zonee", res)
         if (res.data) {
           setZonee(res.data);
         } else {
@@ -122,7 +122,7 @@ export default function ClassifydrugsCreate() {
     fetch(apiUrl, requestOptions)
       .then((response) => response.json())
       .then((res) => {
-        console.log("Combobox_bill", res)
+        console.log("Combobox_floor", res)
         if (res.data) {
           setFloor(res.data);
         } else {
@@ -144,7 +144,7 @@ export default function ClassifydrugsCreate() {
     fetch(apiUrl, requestOptions)
       .then((response) => response.json())
       .then((res) => {
-        console.log("Combobox_bill", res)
+        console.log("Combobox_medicine", res)
         if (res.data) {
           setMedicine(res.data);
         } else {
@@ -436,7 +436,7 @@ export default function ClassifydrugsCreate() {
                 variant="contained"
                 color="error"
                 component={RouterLink}
-                to="/ClassifyDrugs"
+                to="/"
               >
                 ถอยกลับ
               </Button>

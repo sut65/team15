@@ -340,7 +340,7 @@ export default function PrescriptionCreate() {
                 variant="contained"
                 color="error"
                 component={RouterLink}
-                to="/ClassifyDrugs"
+                to="/"
               >
                 ถอยกลับ
               </Button>

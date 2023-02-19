@@ -23,8 +23,10 @@ import MedicineReceive from './components/MedicineReceive';
 import MedicineReturnList from './components/MedicineReturnList';
 import ClassifiesCreate from './components/ClassifiesCreate';
 import Classifies from './components/Classifies';
+import ClassifiesUpdate from './components/ClassifiesUpdate';
 import Prescription from './components/Prescription';
 import PrescriptionCreate from './components/PrescriptionCreate';
+import PrescriptionUpdate from './components/PrescriptionUpdate';
 import MedicineDisbursementCreate from './components/MedicineDisbursementCreate';
 import MedicineDisbursement from './components/MedicineDisbursement';
 import OrderUpdate from './components/OrderUpdate';
@@ -82,8 +84,10 @@ function App() {
           <Route path="/MedicineReturnList" element={<MedicineReturnList />} />
           <Route path="/ClassifyDrugs" element={<ClassifiesCreate />} />
           <Route path="/ClassifyDrug" element={<Classifies />} />
+          <Route path="/ClassifydrugsUpdate/:id" element={<ClassifiesUpdate />} />
           <Route path="/Prescription" element={<PrescriptionCreate />} />
           <Route path="/Prescriptions" element={<Prescription />} />
+          <Route path="/PrescriptionUpdate/:id" element={<PrescriptionUpdate />} />
           <Route path="/Bill" element={<BillCreate />} />
           <Route path="/Bills" element={<Bill />} />
           <Route path="/BillUpdate/:id" element={<BillUpdate />} />
