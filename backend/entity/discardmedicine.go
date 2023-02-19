@@ -17,7 +17,7 @@ type Discardmedicine struct {
 	gorm.Model
 
 	Quantity int			`valid:"required~The Quantity must be in the range 1-10000, range(1|10000)~The Quantity must be in the range 1-10000"`
-	Note	string
+	Note	string			`valid:"required~Note cant be blank"`
 	Datetime time.Time		`valid:"DateNotpast~Date must not be in the past, DateNotFuture~Date must not be in the future"`
 
 	CauseID *uint
