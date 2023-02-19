@@ -103,6 +103,8 @@ func main() {
 	r.GET("/ClassifyDrug", controller.ListClassifyDrug)
 	r.GET("/ClassifyDrug/:id", controller.GetClassifyDrug)
 	r.PATCH("/ClassifyDrug", controller.UpdateClassifyDrug)
+	r.GET("/classifydrugs/:id", controller.GetClassifyDrug)
+	r.DELETE("/classifydrugs/:id", controller.DeleteClassifyDrug)
 
 	//-----------------------------------ระบบย่อย ระบบบันทึกการสั่งยา--------------------------------------
 	//Patient
@@ -113,8 +115,8 @@ func main() {
 	r.GET("/Prescriptions", controller.ListPrescription)
 	r.GET("/Prescription/:id", controller.GetPrescription)
 	r.PATCH("/Prescription", controller.UpdatePrescription)
-
-	//-----------------------------------ระบบย่อย ระบบบันทึกการสั่งยา--------------------------------------
+	r.GET("/prescription/:id", controller.GetPrescription)
+	r.DELETE("/prescription/:id", controller.DeletePrescription)
 
 	//-------------------------------ระบบย่อย ระบบบันทึกการจัดยา--------------------------------------
 	//MedicineArrangement
@@ -129,16 +131,17 @@ func main() {
 	r.GET("/paymentmethods", controller.ListPaymentmethod)
 	r.GET("/paymentmethod/:id", controller.GetPaymentmethod)
 	r.POST("/paymentmethods", controller.CreatePaymentmethod)
-
 	r.PATCH("/paymentmethods", controller.UpdatePaymentmethod)
-	// r.DELETE("/paymentmethods/:id", controller.DeletePaymentmethod)
+	r.DELETE("/paymentmethods/:id", controller.DeletePaymentmethod)
 
 	//Bill Routes
 	r.GET("/bills", controller.ListBill)
 	r.GET("/bill/:id", controller.GetBill)
-	r.POST("/bill", controller.CreateBill)
+	r.POST("/bills", controller.CreateBill)
 	r.PATCH("/bills", controller.UpdateBill)
 	r.DELETE("/bills/:id", controller.DeleteBill)
+	r.GET("/PrescriptionPaymentStatusNotPaid", controller.ListPrescriptionPaymentStatusNotPaid)
+	r.GET("/PrescriptionNo/:id", controller.GetPrescriptionNo)
 
 	//--------------------------------ระบบย่อย ระบบบันทึกการจ่ายยา------------------------------------
 	//Pharmacy
@@ -182,7 +185,6 @@ func main() {
 	r.GET("/attendances", controller.ListAttendance)
 	r.GET("/attendance/:id", controller.GetAttendance)
 	r.PATCH("/attendance", controller.UpdateAttendance)
-	r.DELETE("/attendance/:id", controller.DeleteAttendance)
 
 	// Run the server
 

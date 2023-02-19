@@ -39,7 +39,7 @@ func CreatePrescription(c *gin.Context)  {
 		return
 	}
 
-	// 13: สร้าง DispenseMedicine 
+	// 13: สร้าง prescription 
 	prescriptionmedicine := entity.Prescription{
 		
 		Patient:   		patient, 							// โยงความสัมพันธ์กับ Entity patient
@@ -98,21 +98,52 @@ func DeletePrescription(c *gin.Context) {
 
 // PATCH /prescription
 func UpdatePrescription(c *gin.Context) {
+	var doctor entity.User
+	var patient entity.Patient
 	var prescription entity.Prescription
+	var medicinelabel entity.MedicineLabel
+	
+
 	if err := c.ShouldBindJSON(&prescription); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", prescription.ID).First(&prescription); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "prescription not found"})
+	if tx := entity.DB().Where("id = ?", prescription.DoctorID).First(&doctor); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบสมาชิก"})
 		return
 	}
 
-	if err := entity.DB().Save(&prescription).Error; err != nil {
+	if tx := entity.DB().Where("id = ?", prescription.PatientID).First(&patient); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", prescription.MedicineLabelID).First(&medicinelabel); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ"})
+		return
+	}
+
+	update := entity.Prescription{
+		Doctor:                 prescription.Doctor,
+		Patient:              	prescription.Patient,
+		MedicineLabel:    		prescription.MedicineLabel,
+		Note:					prescription.Note,
+		Datetime:				prescription.Datetime, 		// ตั้งค่าฟิลด์ watchedTime
+		Number:					prescription.Number,
+
+	}
+
+	// ขั้นตอนการ validate
+	if _, err := govalidator.ValidateStruct(update); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": prescription})
+	if err := entity.DB().Where("id = ?", prescription.ID).Updates(&prescription).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": update})
 }

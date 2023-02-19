@@ -39,16 +39,16 @@ type ClassifyDrugs struct{
 	Pharmacist 	  User
 
 	CupboardID		 *uint
-	Cupboard		 Cupboard
+	Cupboard		 Cupboard		`gorm:"references:id" valid:"-"`
 
 	ZoneeID		 *uint
-	Zonee		 Zonee
+	Zonee		 Zonee				`gorm:"references:id" valid:"-"`
 
 	FloorID		 *uint
-	Floor		 Floor
+	Floor		 Floor				`gorm:"references:id" valid:"-"`
 
 	MedicineDisbursementID          *uint
-	MedicineDisbursement           MedicineDisbursement
+	MedicineDisbursement           MedicineDisbursement	`gorm:"references:id" valid:"-"`
 
 	Medicinearrangements		[]MedicineArrangement `gorm:"foreignKey:ClassifyDrugsID"`
 
@@ -57,6 +57,6 @@ type ClassifyDrugs struct{
 func init() {
 	govalidator.CustomTypeTagMap.Set("donotpast", func(i interface{}, context interface{}) bool {
 		t := i.(time.Time)
-		return t.After(time.Now().Add(time.Minute * -1)) //เวลา > เวลาปัจจุบัน - 1 นาที
+		return t.After(time.Now().Add(time.Minute * -10)) //เวลา > เวลาปัจจุบัน - 1 นาที
 	})
 }
