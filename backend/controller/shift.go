@@ -8,8 +8,8 @@ import (
 	"net/http"
 )
 
-// Shift   shift
-// POST
+// unit  =  ช่วงเข้าเวร Shift shift
+// POST /medicine
 func CreateShift(c *gin.Context) {
 	var shift entity.Shift
 	if err := c.ShouldBindJSON(&shift); err != nil {
@@ -24,7 +24,7 @@ func CreateShift(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"data": shift})
 }
 
-// GET /shift/:id
+// GET /medicine/:id
 func GetShift(c *gin.Context) {
 	var shift entity.Shift
 	id := c.Param("id")
@@ -43,12 +43,12 @@ func GetShift(c *gin.Context) {
 // List
 func ListShift(c *gin.Context) {
 
-	var shifts []entity.Shift
-	if err := entity.DB().Raw("SELECT * FROM shifts").Find(&shifts).Error; err != nil {
+	var companys []entity.Medicine
+	if err := entity.DB().Raw("SELECT * FROM shifts").Find(&companys).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": shifts})
+	c.JSON(http.StatusOK, gin.H{"data": companys})
 
 }

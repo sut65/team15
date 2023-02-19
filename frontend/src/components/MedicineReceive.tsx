@@ -103,12 +103,15 @@ function MedicineReceive() {
                                 <TableCell align="left" width="5%">
                                     ชื่อยา
                                 </TableCell>
-                                {/* <TableCell align="left" width="5%">
+                                <TableCell align="left" width="5%">
                                     วันหมดอายุ
-                                </TableCell> */}
-                                {/* <TableCell align="left" width="10%">
+                                </TableCell>
+                                 <TableCell align="left" width="5%">
+                                    หน่วยยา
+                                </TableCell> 
+                                <TableCell align="left" width="10%">
                                     จำนวนยา
-                                </TableCell> */}
+                                </TableCell>
                                 <TableCell align="center" width="5%">
                                     โซนยา
                                 </TableCell>
@@ -129,7 +132,9 @@ function MedicineReceive() {
                                  <TableCell align="center" size="medium"> {medicineReceive.ID}            </TableCell>
                                  <TableCell align="center" size="medium"> {medicineReceive.MedicineReceiveNo}    </TableCell>
                                  <TableCell align="center" size="medium"> {medicineReceive.MedicineLabel.Order.Medicine.Name}     </TableCell>
-                                 {/* <TableCell align="center" size="medium"> {medicineReceive.MedicineLable.Date}     </TableCell> */}
+                                 <TableCell align="center" > {moment(medicineReceive.MedicineLabel.Date).format('DD MMMM yyyy')}     </TableCell>
+                                 <TableCell align="center" size="medium"> {medicineReceive.MedicineLabel.Order.Unit.Name}     </TableCell>
+                                 <TableCell align="center" size="medium"> {medicineReceive.MedicineReAmount}     </TableCell>
                                  <TableCell align="center" size="medium"> {medicineReceive.Zone.ZoneName}           </TableCell>
                                  <TableCell align="center" size="medium"> {medicineReceive.Pharmacist.Name}           </TableCell>
                                  <TableCell align="center" > {moment(medicineReceive.RecievedDate).format('DD MMMM yyyy')}     </TableCell>

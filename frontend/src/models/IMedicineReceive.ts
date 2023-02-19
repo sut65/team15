@@ -6,9 +6,9 @@ export interface MedicineReceiveInterface {
 
     ID: number,
     MedicineReceiveNo: number,
-    
+    MedicineReAmount: number,
     RecievedDate: Date | null,
-
+    
     PharmacistID: number,
     Pharmacist: UserInterface,
 

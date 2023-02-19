@@ -2,9 +2,8 @@ package controller
 
 import (
 	"github.com/asaskevich/govalidator"
-	"github.com/sut65/team15/entity"
-
 	"github.com/gin-gonic/gin"
+	"github.com/sut65/team15/entity"
 
 	"net/http"
 )
@@ -13,10 +12,10 @@ import (
 
 func CreateAttendance(c *gin.Context) {
 
-	var stat entity.Stat             //medicine = ยา   | หน้าที่ = Stat
-	var shift entity.Shift           //Unit = หน่วย      | ช่วงเข้าเวร = Shift
-	var pharmacist entity.User       //pharmacist = เภสัชกร | เหมือนเดิม
-	var attendance entity.Attendance // order (en หลัก)  |  Attendance
+	var statt entity.Statt
+	var shift entity.Shift
+	var pharmacist entity.User
+	var attendance entity.Attendance
 
 	// ผลลัพธ์ที่ได้จากขั้นตอนที่ 8 จะถูก bind เข้าตัวแปร Patient
 	if err := c.ShouldBindJSON(&attendance); err != nil {
@@ -24,9 +23,9 @@ func CreateAttendance(c *gin.Context) {
 		return
 	}
 
-	// 9: ค้นหา stat ด้วย id
-	if tx := entity.DB().Where("id = ?", attendance.StatID).First(&stat); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "stat not found"})
+	// 10: ค้นหา statt ด้วย id
+	if tx := entity.DB().Where("id = ?", attendance.StattID).First(&statt); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "statt not found"})
 		return
 	}
 
@@ -44,21 +43,21 @@ func CreateAttendance(c *gin.Context) {
 
 	entity.DB().Joins("Role").Find(&pharmacist)
 
-	// if pharmacist.Role.Name != "Nurse" {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "only for dentsit"})
-	// 	return
-	// }
-
 	// 13: สร้าง Attendance
 	wp := entity.Attendance{
 		Phone:       attendance.Phone,
 		Description: attendance.Description,
 		Datetime:    attendance.Datetime,
 
-		Stat:       stat,       // โยงความสัมพันธ์กับ Entity stat
+		Statt:      statt,      // โยงความสัมพันธ์กับ Entity Statt
 		Shift:      shift,      // โยงความสัมพันธ์กับ Entity Shift
 		Pharmacist: pharmacist, // โยงความสัมพันธ์กับ Entity user
 
+	}
+
+	if _, err := govalidator.ValidateStruct(wp); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	// 15: บันทึก
@@ -70,11 +69,11 @@ func CreateAttendance(c *gin.Context) {
 
 }
 
-// GET /payment/:id
+// GET /attendance/:id
 func GetAttendance(c *gin.Context) {
 	var attendance entity.Attendance
 	id := c.Param("id")
-	if err := entity.DB().Preload("Stat").Preload("Pharmacist").Preload("Shift").Raw("SELECT * FROM attendances WHERE id = ?", id).Find(&attendance).Error; err != nil {
+	if err := entity.DB().Preload("Statt").Preload("Pharmacist").Preload("Shift").Raw("SELECT * FROM attendances WHERE id = ?", id).Find(&attendance).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -86,7 +85,7 @@ func GetAttendance(c *gin.Context) {
 func ListAttendance(c *gin.Context) {
 
 	var attendances []entity.Attendance
-	if err := entity.DB().Preload("Stat").Preload("Pharmacist").Preload("Shift").Raw("SELECT * FROM attendances").Find(&attendances).Error; err != nil {
+	if err := entity.DB().Preload("Statt").Preload("Pharmacist").Preload("Shift").Raw("SELECT * FROM attendances").Find(&attendances).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -95,24 +94,13 @@ func ListAttendance(c *gin.Context) {
 
 }
 
-// DELETE /attendances/:id
-func DeleteAttendance(c *gin.Context) {
-	id := c.Param("id")
-	if tx := entity.DB().Exec("DELETE FROM attendances WHERE id = ?", id); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "attendances not found"})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"data": id})
-}
-
 // PATCH
 func UpdateAttendance(c *gin.Context) {
 
-	var stat entity.Stat             //medicine = ยา   | หน้าที่ = Stat
-	var shift entity.Shift           //Unit = หน่วย      | ช่วงเข้าเวร = Shift
-	var pharmacist entity.User       //pharmacist = เภสัชกร | เหมือนเดิม
-	var attendance entity.Attendance // order (en หลัก)  |  Attendance
+	var statt entity.Statt
+	var shift entity.Shift
+	var pharmacist entity.User
+	var attendance entity.Attendance
 
 	if err := c.ShouldBindJSON(&attendance); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -124,25 +112,24 @@ func UpdateAttendance(c *gin.Context) {
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", attendance.StatID).First(&stat); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "หน้าที่"})
+	if tx := entity.DB().Where("id = ?", attendance.StattID).First(&statt); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ บริษัท"})
 		return
 	}
 
 	if tx := entity.DB().Where("id = ?", attendance.ShiftID).First(&shift); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ช่วงเวลาที่เข้าเวร"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบหน่วย"})
 		return
 	}
 
 	update := entity.Attendance{
-
 		Phone:       attendance.Phone,
 		Description: attendance.Description,
 		Datetime:    attendance.Datetime,
 
-		Stat:       attendance.Stat,       // โยงความสัมพันธ์กับ Entity stat
-		Shift:      attendance.Shift,      // โยงความสัมพันธ์กับ Entity Shift
-		Pharmacist: attendance.Pharmacist, // โยงความสัมพันธ์กับ Entity user
+		Statt:      attendance.Statt,
+		Shift:      attendance.Shift,
+		Pharmacist: attendance.Pharmacist,
 	}
 
 	// ขั้นตอนการ validate
@@ -157,4 +144,20 @@ func UpdateAttendance(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": update})
+}
+
+// DELETE /attendances/:id
+func DeleteAttendance(c *gin.Context) {
+	id := c.Param("id")
+	if tx := entity.DB().Exec("DELETE FROM attendances WHERE id = ?", id); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "attendance not found"})
+		return
+	}
+	/*
+		if err := entity.DB().Where("id = ?", id).Delete(&entity.User{}).Error; err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}*/
+
+	c.JSON(http.StatusOK, gin.H{"data": id})
 }

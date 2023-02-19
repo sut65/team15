@@ -103,12 +103,12 @@ function MedicineDisbursement() {
                                 <TableCell align="left" width="5%">
                                     ชื่อยา
                                 </TableCell>
-                                {/* <TableCell align="left" width="5%">
-                                    วันหมดอายุ
-                                </TableCell> */}
-                                {/* <TableCell align="left" width="10%">
+                                 <TableCell align="left" width="5%">
+                                    หน่วย
+                                </TableCell> 
+                                <TableCell align="left" width="10%">
                                     จำนวนยา
-                                </TableCell> */}
+                                </TableCell> 
                                 <TableCell align="center" width="5%">
                                     ผู้ป่วยนอก/ใน
                                 </TableCell>
@@ -129,7 +129,8 @@ function MedicineDisbursement() {
                                  <TableCell align="center" size="medium"> {MedicineDisbursement.ID}            </TableCell>
                                  <TableCell align="center" size="medium"> {MedicineDisbursement.MedicineDisNo}    </TableCell>
                                  <TableCell align="center" size="medium"> {MedicineDisbursement.MedicineReceive.MedicineLabel.Order.Medicine.Name}     </TableCell>
-                                 {/* <TableCell align="center" size="medium"> {medicineReceive.MedicineLable.Date}     </TableCell> */}
+                                 <TableCell align="center" size="medium"> {MedicineDisbursement.MedicineReceive.MedicineLabel.Order.Unit.Name}     </TableCell> 
+                                 <TableCell align="center" size="medium"> {MedicineDisbursement.MedicineDisAmount}     </TableCell> 
                                  <TableCell align="center" size="medium"> {MedicineDisbursement.MedicineRoom.MRname}           </TableCell>
                                  <TableCell align="center" size="medium"> {MedicineDisbursement.Pharmacist.Name}           </TableCell>
                                  <TableCell align="center" > {moment(MedicineDisbursement.Dtime).format('DD MMMM yyyy')}     </TableCell>

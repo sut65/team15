@@ -1,52 +1,48 @@
-import React from "react";
-import { Box, FormControl, Grid, Select, TextField, Typography } from '@mui/material'
-import Alert from '@mui/material/Alert'
-import Button from '@mui/material/Button'
-import Container from '@mui/material/Container';
-import Paper from '@mui/material/Paper'
-import Snackbar from '@mui/material/Snackbar'
-import { Link as RouterLink, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
-
-import SaveIcon from '@mui/icons-material/Save';
-import Divider from '@mui/material/Divider';
-import SourceIcon from '@mui/icons-material/Source';
+import React, { useEffect, useState } from 'react'
+import { Box, Button, CssBaseline, FormControl, Grid, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { Container } from '@mui/system'
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import Divider from '@mui/material/Divider';
+import Paper from '@mui/material/Paper'
+import SourceIcon from '@mui/icons-material/Source';
 
-import { StatInterface } from "../models/IStat";
-
-import { ShiftInterface } from "../models/IShift";
-import { UserInterface } from "../models/IUser";
 import { AttendanceInterface } from "../models/IAttendance";
 
+import { ShiftInterface } from "../models/IShift";
+import { StattInterface } from "../models/IStatt";
+import { UserInterface } from '../models/IUser';
+import Attendances from './Attendance';
 
-
+// Quantity = Phone
+// Priceperunit = Description
 
 export default function AttendanceUpdate() {
-  const [stat, setStat] = React.useState<StatInterface[]>([]);
-  
-  const [shift, setShift] = React.useState<ShiftInterface[]>([]);
-  const [Attendance, setAttendance] = React.useState<Partial<AttendanceInterface>>({
-    Datetime: new Date(),
-    Description: "",
-    Phone: "",
-  })
+
   const [user, setUser] = React.useState<UserInterface>();
-  const [success, setSuccess] = React.useState(false);
-  const [error, setError] = React.useState(false);
   const [ErrorMessage, setErrorMessage] = React.useState<String>();
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
       return;
     }
     setSuccess(false);
     setError(false);
-    
   };
 
+  const [statt, setStatt] = useState<StattInterface[]>([]);
+  const [shift, setShift] = useState<ShiftInterface[]>([]);
+  
+  const [attendance, setAttendance] = React.useState<Partial<AttendanceInterface>>({
+    Phone: "",
+    Description: "",
+    Datetime: new Date(),
+  })
+  
   let {id} = useParams();
   const getAttendanceID = async (id: string | undefined | null) => {
     const apiUrl = "http://localhost:8080";
@@ -58,7 +54,7 @@ export default function AttendanceUpdate() {
       },
     };
 
-    fetch(`${apiUrl}/order/${id}`, requestOptions)
+    fetch(`${apiUrl}/attendance/${id}`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
         console.log("attendance", res)
@@ -69,35 +65,13 @@ export default function AttendanceUpdate() {
         }
       });
   };
-
-  //น่าจะแดง
-
+  
 
   
-//pass
-  const handleInputChange = (
-    event: React.ChangeEvent<{ id?: string; value: any }>
-  ) => {
-    const id = event.target.id as keyof typeof Attendance;
-    const { value } = event.target;
-    setAttendance({ ...Attendance, [id]: value });
-  };
-//pass
-  const handleChange: any = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>
-  ) => {
-    console.log(event.target.value)
-    const name = event.target.name as keyof typeof Attendance
-    console.log(name)
-    setAttendance({
-      ...Attendance,
-      [name]: event.target.value,
-    });
-  };
 
-  //ดึงข้อมูลหน้าที่
-  function getStat() {
-    const apiUrl = "http://localhost:8080/stats";
+  //ดึงข้อมูล บ
+  function getStatt() {
+    const apiUrl = "http://localhost:8080/statts";
     const requestOptions = {
       method: "GET",
       headers: {
@@ -108,16 +82,16 @@ export default function AttendanceUpdate() {
     fetch(apiUrl, requestOptions)
       .then((response) => response.json())
       .then((res) => {
-        console.log("Combobox_stat", res)
+        console.log("Combobox_statts", res)
         if (res.data) {
-          setStat(res.data);
+          setStatt(res.data);
         } else {
           console.log("else");
         }
       });
   }
 
-  //ช่วงเข้าเวณ
+  //หน่วย
   function getShift() {
     const apiUrl = "http://localhost:8080/shifts";
     const requestOptions = {
@@ -137,45 +111,70 @@ export default function AttendanceUpdate() {
           console.log("else");
         }
       });
+      
   }
 
-  //real useronline
-  function getUser() {
-    const UserID = localStorage.getItem("uid")
-    const apiUrl = `http://localhost:8080/users/${UserID}`;
-    const requestOptions = {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-    };
-    fetch(apiUrl, requestOptions)
-      .then((response) => response.json())
-      .then((res) => {
-        console.log("Combobox_User", res)
-        if (res.data) {
-          setUser(res.data);
-        } else {
-          console.log("else");
-        }
-      });
-  }
-//pass
+//real useronline
+function getUser() {
+  const UserID = localStorage.getItem("uid")
+  const apiUrl = `http://localhost:8080/users/${UserID}`;
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
+  };
+  fetch(apiUrl, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      // console.log("Combobox_User", res)
+      if (res.data) {
+        setUser(res.data);
+      } else {
+        console.log("else");
+      }
+    });
+}
+
+ 
+
   const convertType = (data: string | number | undefined | null) => {
     let val = typeof data === "string" ? parseInt(data) : data;
     return val;
   };
 
-  function submit() {
-    
+  
+  const handleChange: any = (
+    event: React.ChangeEvent<{ name?: string; value: unknown }>
+  ) => {
+    console.log(event.target.value)
+    const name = event.target.name as keyof typeof attendance
+    console.log(name)
+    setAttendance({
+      ...attendance,
+      [name]: event.target.value,
+    });
+  };
+
+  const handleInputChange = (
+    event: React.ChangeEvent<{ id?: string; value: any }>
+  ) => {
+    const id = event.target.id as keyof typeof attendance;
+    const { value } = event.target;
+    setAttendance({ ...attendance, [id]: value });
+  };
+
+  async function submit() {
+
     let data = {
-        ID:convertType(Attendance.ID),
-      DateTime: Attendance.Datetime,
-      Phone: typeof Attendance.Phone == "string" ? Attendance.Phone : 0,
-      Description: typeof Attendance.Description == "string" ? Attendance.Description : 0,
-      StatID: convertType(Attendance.StatID),
-      ShiftID: convertType(Attendance.ShiftID),
+      ID: convertType(attendance.ID),
+      DateTime: attendance.Datetime,
+      Phone: attendance.Phone ?? "" ,
+      Description: attendance.Description ?? "" ,
+      
+      StattID: convertType(attendance.StattID),
+      ShiftID: convertType(attendance.ShiftID),
       PharmacistID: Number(localStorage.getItem("uid")),
     };
     console.log("Data", data)
@@ -203,13 +202,12 @@ export default function AttendanceUpdate() {
       });
   }
 
-  //ดึงข้อมูล ใส่ combobox
   useEffect(() => {
-
-    getStat();
     getShift();
+    getStatt();
+    
     getUser();
-
+    getAttendanceID(id);
   }, []);
 
   const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
@@ -219,19 +217,18 @@ export default function AttendanceUpdate() {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });
 
-
-
+  
 
   return (
     <Container maxWidth="lg">
       <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success">
-        แก้ไขข้อมูลสำเร็จ
+          แก้ไขข้อมูลสำเร็จ
         </Alert>
       </Snackbar>
       <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error">
-        แก้ไขข้อมูลไม่สำเร็จ: {ErrorMessage}
+          แก้ไขข้อมูลไม่สำเร็จ: {ErrorMessage}
         </Alert>
       </Snackbar>
 
@@ -244,14 +241,14 @@ export default function AttendanceUpdate() {
             color="primary"
             gutterBottom
           >
-            แก้ไขบันทึกการเข้าเวร
+            แก้ไขการเข้าเวร
 
             <Button style={{ float: "right" }}
               component={RouterLink}
               to="/Attendanceslist"
               variant="contained"
               color="primary">
-              <SourceIcon />รายการบันทึกการเข้าเวร
+              <SourceIcon />รายการการเข้าเวร
             </Button>
           </Typography>
         </Box>
@@ -259,37 +256,16 @@ export default function AttendanceUpdate() {
         <Divider />
 
         <Grid container spacing={4}>
-          <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
-              <p>หน้าที่</p>
-              <Select
-                native
-                value={Attendance.StatID}
-                onChange={handleChange}
-                inputProps={{
-                  name: "StatID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  เลือกหน้าที่
-                </option>
-                {stat.map((item: StatInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.Name}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-        
+         
+
           <Grid item xs={4} >
-            <p>เบอร์</p>
+            <p>เบอร์โทร</p>
             <TextField style={{ width: '105%', }}
 
               id="Phone"
-              label="เบอร์"
+              label="เบอรฺโทร"
               variant="outlined"
-              value={Attendance.Phone}
+              value={attendance.Phone}
               type="string"
               size="medium"
               onChange={handleInputChange}
@@ -298,17 +274,17 @@ export default function AttendanceUpdate() {
           <Grid item xs={4}>
 
             <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
-              <p>ช่วงเวลาที่เข้าเวร</p>
+              <p>ช่วงของเวร</p>
               <Select
                 native
-                value={Attendance.ShiftID}
+                value={attendance.ShiftID}
                 onChange={handleChange}
                 inputProps={{
                   name: "ShiftID",
                 }}
               >
                 <option aria-label="None" value="">
-                  เลือกช่วงเวลาที่เข้าเวร
+                เลือกช่วงของเวร
                 </option>
                 {shift.map((item: ShiftInterface) => (
                   <option value={item.ID} key={item.ID}>
@@ -328,43 +304,54 @@ export default function AttendanceUpdate() {
               id="Description"
               label="หมายเหตุ"
               variant="outlined"
-              value={Attendance.Description}
+              value={attendance.Description}
               type="string"
               size="medium"
               onChange={handleInputChange}
             /></Grid>
 
+          <Grid item xs={4}>
+            <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
+              <p>หน้าที่</p>
+              <Select
+                native
+                value={attendance.StattID}
+                onChange={handleChange}
+                inputProps={{
+                  name: "StattID",
+                }}
+              >
+                <option aria-label="None" value="">
+                เลือกหน้าที่
+                </option>
+                {statt.map((item: StattInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.Name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
         </Grid>
 
         <Grid item xs={2}>
           <FormControl fullWidth variant="outlined">
-            <p>วันที่สั่งซื้อ</p>
+            <p>วันที่เข้าเวร</p>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
-                  value={Attendance.Datetime}
-                  
-                  onChange={(newValue) => {
-                    setAttendance({
-                      ...Attendance,
-                      Datetime: newValue,
-                    });
-                    
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                  
-                />
-              {/* <DesktopDatePicker
-                label="Date"
-                inputFormat="MM/DD/YYYY" 
-                value={Attendance.Datetime}
+                value={attendance.Datetime}
                 onChange={(newValue) => {
                   setAttendance({
-                    ...Attendance,
+                    ...attendance,
                     Datetime: newValue,
                   });
+
                 }}
                 renderInput={(params) => <TextField {...params} />}
-              /> */}
+
+              />
+
             </LocalizationProvider>
           </FormControl>
         </Grid>
@@ -385,17 +372,35 @@ export default function AttendanceUpdate() {
         </Grid>
 
         <Grid item xs={12}>
-          <Button style={{ float: "right" }}
-            variant="contained"
-            color="primary"
-            onClick={submit}
+          <Stack
+            spacing={2}
+            direction="row"
+            justifyContent="space-between"
+            alignItems="flex-start"
+            sx={{ mt: 3 }}
           >
-            <SaveIcon />บันทึกการแก้ไขข้อมูล
-          </Button>
+            <Button
+              variant="contained"
+              color="error"
+              component={RouterLink}
+              to="/Attendanceslist"
+            >
+              ถอยกลับ
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={submit}
+            >
+              บันทึกการแก้ไขข้อมูล
+            </Button>
 
-
+          </Stack>
         </Grid>
       </Paper >
     </Container>
+
+
   )
 }
+

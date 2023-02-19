@@ -10,7 +10,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Button, CssBaseline, FormControl, Grid, Select, MenuItem, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material'
-
+import moment from 'moment';
 import { UserInterface } from "../models/IUser";
 import { ZoneInterface } from "../models/IZone";
 import { MedicineReceiveInterface } from "../models/IMedicineReceive";
@@ -24,7 +24,9 @@ export default function MedicineReceiveCreate() {
     const [user, setUser] = React.useState<UserInterface>();
     const [zone, setzone] = React.useState<ZoneInterface[]>([]);
     const [medicineLabel, setMedicineLable] = React.useState<MedicineLabelsInterface[]>([]);
-    const [MedicineReceive, setMedicineReceive] = React.useState<Partial<MedicineReceiveInterface>>({});
+    const [MedicineReceive, setMedicineReceive] = React.useState<Partial<MedicineReceiveInterface>>({
+        RecievedDate: new Date(),
+    });
     const [loading, setLoading] = React.useState(false);
     const [ErrorMessage, setErrorMessage] = React.useState<String>();
 
@@ -135,6 +137,7 @@ export default function MedicineReceiveCreate() {
         let data = {
             PharmacistID: Number(localStorage.getItem("uid")),
             MedicineReceiveNo: typeof MedicineReceive.MedicineReceiveNo == "string" ? parseInt(MedicineReceive.MedicineReceiveNo) : 0,
+            MedicineReAmount: typeof MedicineReceive.MedicineReAmount == "string" ? parseInt(MedicineReceive.MedicineReAmount) : 0,
             ZoneID: convertType(MedicineReceive.ZoneID),
             RecievedDate: MedicineReceive.RecievedDate,
             MedicineLabelID: convertType(MedicineReceive.MedicineLabelID),
@@ -235,22 +238,65 @@ export default function MedicineReceiveCreate() {
                         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
                             <p>ชื่อยา | วันหมดอายุ</p>
                             <Select
-                                variant="outlined"
-                                defaultValue={0}
+                                native
                                 value={MedicineReceive.MedicineLabelID}
                                 onChange={handleChange}
-                                inputProps={{ name: "MedicineLabelID" }}
-                            >
-                                <MenuItem value={0} key={0}>เลือกชื่อยา | วันหมดอายุ</MenuItem>
-                                {medicineLabel.map((item: MedicineLabelsInterface) =>
-                                (
-                                    <MenuItem value={item.ID} key={item.ID}>
-                                        {item.Order.Medicine.Name} {"|"} 
-                                    </MenuItem>
+                                inputProps={{
+                                  name: "MedicineLabelID",
+                                }}
+                              >
+                                <option aria-label="None" value="">
+                                  กรุณาเลือกชื่อยา
+                                </option>
+                                {medicineLabel.map((item: MedicineLabelsInterface) => (
+                                  <option value={item.ID} key={item.ID}>
+                                    {item.Order.Medicine.Name} {"|"} {moment(item.Date).format('DD MMMM yyyy')}
+                                  </option>
                                 ))}
                             </Select>
                         </FormControl>
                     </Grid>
+                </Grid>
+
+                <Grid item xs={6}>
+
+                    <FormControl fullWidth variant="outlined" style={{ width: '90%' }}>
+                        <p>หน่วยยา</p>
+                        <Select
+                            disabled
+                            native
+                            value={MedicineReceive.MedicineLabelID}
+                            onChange={handleChange}
+                            inputProps={{
+                                name: "MedicineLabelID",
+                            }}
+                        >
+                            <option aria-label="None" value="">
+                                โปรดเลือกหน่วยยา
+                            </option>
+                            {medicineLabel.map((item: MedicineLabelsInterface) => (
+                                <option value={item.ID} key={item.ID}>
+                                    {item.Order.Unit.Name}
+                                </option>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Grid>
+
+                <Grid item xs={6}>
+                    <FormControl fullWidth variant="outlined" style={{ width: '105%' }}>
+                        <p>จำนวนยา</p>
+                        <FormControl fullWidth variant="outlined">
+                            <TextField
+                                id="MedicineReAmount"
+                                variant="outlined"
+                                type="number"
+                                size="medium"
+                                placeholder="จำนวน"
+                                onChange={handleInputChange}
+                            />
+                        </FormControl>
+                    </FormControl>
                 </Grid>
 
                 <Grid item xs={4}>
@@ -274,8 +320,10 @@ export default function MedicineReceiveCreate() {
                                 </option>
                             ))}
                         </Select>
-                    </FormControl> 
+                    </FormControl>
                 </Grid>
+                
+
                 <Grid item xs={4}>
                     <FormControl fullWidth variant="outlined" style={{ width: '100%' }}>
                         <p>ผู้บันทึกคลังยา</p>
@@ -292,7 +340,7 @@ export default function MedicineReceiveCreate() {
                 </Grid>
                 <Grid item xs={2}>
                     <FormControl fullWidth variant="outlined">
-                        <p>วันที่สั่งซื้อ</p>
+                        <p>วันที่บันทึกคลังยา</p>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DatePicker
                                 value={MedicineReceive.RecievedDate}

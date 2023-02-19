@@ -75,7 +75,7 @@ func GetBill(c *gin.Context) {
 	id := c.Param("id")
 	if err := entity.DB().Preload("Prescription").Preload("Prescription.MedicineLabel").
 		Preload("Prescription.MedicineLabel.Order").Preload("Prescription.MedicineLabel.Order.Medicine").Preload("Paymentmethod").
-		Preload("Pharmacist").Raw("SELECT * FROM bil_ls WHERE id = ?", id).Find(&bill).Error; err != nil {
+		Preload("Pharmacist").Raw("SELECT * FROM bills WHERE id = ?", id).Find(&bill).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -105,10 +105,6 @@ func DeleteBill(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
-
-// var bills entity.Bill
-// 	var prescriptions entity.Prescription
-// 	var paymentmethods entity.Paymentmethod
 
 // PATCH /medicinearrangements
 func UpdateBill(c *gin.Context) {
