@@ -6,7 +6,7 @@ export interface MedicineDisbursementInterface {
 
     ID: number,
     MedicineDisNo: number,
-    
+    MedicineDisAmount : number,
     Dtime: Date | null,
 
     PharmacistID: number,
