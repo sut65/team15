@@ -7,18 +7,18 @@ import (
 	"gorm.io/gorm"
 )
 
+type Statt struct {
+	gorm.Model
+
+	Name        string       `gorm:"uniqueIndex"`
+	Attendances []Attendance `gorm:"foreignKey:StattID"`
+}
+
 type Shift struct {
 	gorm.Model
 
-	Name        string
+	Name        string       `gorm:"uniqueIndex"`
 	Attendances []Attendance `gorm:"foreignKey:ShiftID"`
-}
-
-type Stat struct {
-	gorm.Model
-
-	Name        string
-	Attendances []Attendance `gorm:"foreignKey:StatID"`
 }
 
 type Attendance struct {
@@ -29,13 +29,13 @@ type Attendance struct {
 	Datetime    time.Time `valid:"DateNotpast~Date must not be in the past, DateNotFuture~Date must not be in the future"`
 
 	PharmacistID *uint
-	Pharmacist   User `gorm:"references:id" valid:"-"`
+	Pharmacist   User
+
+	StattID *uint
+	Statt   Statt `gorm:"references:id" valid:"-"`
 
 	ShiftID *uint
 	Shift   Shift `gorm:"references:id" valid:"-"`
-
-	StatID *uint
-	Stat   Stat `gorm:"references:id" valid:"-"`
 }
 
 func init() {

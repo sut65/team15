@@ -48,7 +48,7 @@ func SetupDatabase() {
 		&Patient{},
 		&Attendance{},
 		&Shift{},
-		&Stat{},
+		&Statt{},
 		&Staff{},
 		&Return{},
 		&Paymentmethod{},
@@ -247,7 +247,7 @@ func SetupDatabase() {
 	medicineReceive := MedicineReceive{
 		MedicineReceiveNo: 0111,
 		Pharmacist:        pharmacist3,
-		MedicineReAmount: 10,
+		MedicineReAmount:  10,
 		Zone:              Zone1,
 		RecievedDate:      time.Now(),
 		MedicineLabel:     medicinelabel01,
@@ -291,12 +291,12 @@ func SetupDatabase() {
 
 	//ระบบเบิกยา
 	medicineDisbursement01 := MedicineDisbursement{
-		MedicineDisNo: 2543,
+		MedicineDisNo:     2543,
 		Pharmacist:        pharmacist3,
-		MedicineRoom: medicineRoom1,
+		MedicineRoom:      medicineRoom1,
 		MedicineDisAmount: 10,
-		Dtime:      time.Now(),
-		MedicineReceive:     medicineReceive,
+		Dtime:             time.Now(),
+		MedicineReceive:   medicineReceive,
 	}
 	db.Model(&MedicineDisbursement{}).Create(&medicineDisbursement01)
 
@@ -454,44 +454,6 @@ func SetupDatabase() {
 
 	//------------------------------------------------------------ระบบบันทึกการคืนยา-------------------------------------
 
-	//------------------------------------------------------------ระบบบันทึกการเข้าเวร-------------------------------------
-	//ช่วงเข้าเวร
-	morning := Shift{
-		Name: "9.00 - 16.00 น.",
-	}
-	db.Model(&Shift{}).Create(&morning)
-
-	evening := Shift{
-		Name: "16.00 - 0.00 น.",
-	}
-	db.Model(&Shift{}).Create(&evening)
-	night := Shift{
-		Name: "0.00 - 9.00 น.",
-	}
-	db.Model(&Shift{}).Create(&night)
-
-	//หน้าที่
-	m1 := Stat{
-		Name: "จัดสรรยา",
-	}
-	db.Model(&Stat{}).Create(&m1)
-
-	m2 := Stat{
-		Name: "การเงิน",
-	}
-	db.Model(&Stat{}).Create(&m2)
-
-	attendance1 := Attendance{
-		Phone:       "09999",
-		Description: "เกือบไม่ได้มา",
-		Datetime:    time.Now(),
-
-		Pharmacist: pharmacist4,
-		Shift:      night,
-		Stat:       m2,
-	}
-	db.Model(&Attendance{}).Create(&attendance1)
-
 	//-------ระบบบันทึกการคืนยา-------------
 	//Staff
 	stff1 := Staff{
@@ -518,7 +480,7 @@ func SetupDatabase() {
 	// --- MedicineLabel Data
 	Return1 := Return{
 		DispenseMedicine: dispensemedicine,
-		Order:       order1,
+		Order:            order1,
 		Staff:            stff1,
 		Reason:           Reason1,
 		Note:             "ยามีความชื้น",
@@ -527,4 +489,42 @@ func SetupDatabase() {
 	}
 	db.Model(&Return{}).Create(&Return1)
 
+	//-------------------------------------------------------------ระบบบันทึกการเข้าเวรใหม่-------------------------------------------
+
+	//statt
+	statt1 := Statt{
+		Name: "จัดสรรยา",
+	}
+	db.Model(&Statt{}).Create(&statt1)
+
+	statt2 := Statt{
+		Name: "การเงิน",
+	}
+	db.Model(&Statt{}).Create(&statt2)
+
+	//หน่วย
+	shift1 := Shift{
+		Name: "9.00 - 16.00 น.",
+	}
+	db.Model(&Shift{}).Create(&shift1)
+
+	shift2 := Shift{
+		Name: "16.00 - 0.00 น.",
+	}
+	db.Model(&Shift{}).Create(&shift2)
+	shift3 := Shift{
+		Name: "0.00 - 9.00 น.",
+	}
+	db.Model(&Shift{}).Create(&shift3)
+
+	attendance1 := Attendance{
+		Phone:       "0999999999",
+		Description: "เกือบไม่ได้มา",
+		Datetime:    time.Now(),
+
+		Pharmacist: pharmacist4,
+		Statt:      statt1,
+		Shift:      shift1,
+	}
+	db.Model(&Attendance{}).Create(&attendance1)
 }

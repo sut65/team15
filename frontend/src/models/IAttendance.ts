@@ -1,10 +1,11 @@
 
-import { StatInterface } from "./IStat";
+import { StattInterface } from "./IStatt";
 import { ShiftInterface } from "./IShift";
 import { UserInterface } from "./IUser";
 
 export interface AttendanceInterface {
 
+    
     ID: number,
     Phone: string,
     Description: string,
@@ -13,11 +14,16 @@ export interface AttendanceInterface {
     PharmacistID: number,
     Pharmacist: UserInterface,
 
-    StatID: number,
-    Stat: StatInterface,
+    StattID: number,     // company
+    Statt: StattInterface,
 
-    ShiftID: number,
+    ShiftID: number,        // unit
     Shift: ShiftInterface,
 
-    
+    // ID: number,
+    // Phone: string,
+    // Description: string,
+    // Datetime: Date | null,
 }
+// Quantity = Phone
+// Priceperunit = Description

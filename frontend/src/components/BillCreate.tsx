@@ -142,7 +142,7 @@ export default function BillCreate() {
       PrescriptionID: convertType(bill.PrescriptionID),
     };
     console.log("Data", data)
-    const apiUrl = "http://localhost:8080/bill";
+    const apiUrl = "http://localhost:8080/bills";
     const requestOptions = {
       method: "POST",
       headers: {

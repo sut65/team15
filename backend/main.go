@@ -140,8 +140,6 @@ func main() {
 	r.POST("/bills", controller.CreateBill)
 	r.PATCH("/bills", controller.UpdateBill)
 	r.DELETE("/bills/:id", controller.DeleteBill)
-	r.GET("/PrescriptionPaymentStatusNotPaid", controller.ListPrescriptionPaymentStatusNotPaid)
-	r.GET("/PrescriptionNo/:id", controller.GetPrescriptionNo)
 
 	//--------------------------------ระบบย่อย ระบบบันทึกการจ่ายยา------------------------------------
 	//Pharmacy
@@ -173,18 +171,21 @@ func main() {
 	r.GET("/reason/:id", controller.GetReason)
 	r.PATCH("/reasons", controller.UpdateReason)
 	r.DELETE("/reasons/:id", controller.DeleteReason)
-	//-----------------------------------ระบบย่อย ระบบบันทึกการเข้าเวร---------------------------------
-	//shift
+
+	//------------------------------------------ระบบย่อย ระบบบันทึกการเข้าเวร--------------------------
+
+	//statts
+	r.GET("/statts", controller.ListStatt)
+
+	//shifts
 	r.GET("/shifts", controller.ListShift)
 
-	//Status
-	r.GET("/stats", controller.ListStat)
-
-	//Attendance
-	r.POST("attendance", controller.CreateAttendance)
+	//attendance
+	r.POST("/attendance", controller.CreateAttendance)
 	r.GET("/attendances", controller.ListAttendance)
 	r.GET("/attendance/:id", controller.GetAttendance)
 	r.PATCH("/attendance", controller.UpdateAttendance)
+	r.DELETE("/attendance/:id", controller.DeleteAttendance)
 
 	// Run the server
 

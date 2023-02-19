@@ -42,7 +42,6 @@ func TestPhone(t *testing.T) {
 	g.Expect(err.Error()).To(Equal("Phone must be 10 Digit")) //ส่ง error ms
 
 }
-
 func TestDateAttendanceNotBePast(t *testing.T) {
 	g := NewGomegaWithT(t)
 

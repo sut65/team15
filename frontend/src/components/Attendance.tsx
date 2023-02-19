@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from "react";
 import Container from '@mui/material/Container'
 import TableCell from '@mui/material/TableCell';
-import { Box, Grid, Select, TextField, Typography, Table, TableHead, TableRow, TableBody, IconButton, Alert } from '@mui/material'
+import { Box, Grid, Select, TextField, Typography, Table, TableHead, TableRow, TableBody } from '@mui/material'
 import Button from '@mui/material/Button'
 import { Link as RouterLink } from "react-router-dom";
 import TableContainer from '@mui/material/TableContainer';
 import moment from 'moment';
+import ClearIcon from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
-
 import { AttendanceInterface } from "../models/IAttendance";
 import { format } from "path";
+// Quantity = Phone
+// Priceperunit = Description
 function Attendances() {
-
-    
+//attendance
+    const [attendance, SetAttendance] = React.useState<AttendanceInterface[]>([]);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const [ErrorMessage, setErrorMessage] = React.useState("");
-    const [attendance, SetAttendance] = React.useState<AttendanceInterface[]>([]);
+
 
     const getAttendance = async () => {
         const apiUrl = "http://localhost:8080/attendances";
@@ -35,6 +38,7 @@ function Attendances() {
                 }
             });
     };
+
     const DeleteAttendance = async (id: string | number | undefined) => {
         const apiUrl = "http://localhost:8080";
         const requestOptions = {
@@ -64,11 +68,10 @@ function Attendances() {
             )
     }
 
-
     useEffect(() => {
         getAttendance();
     }, []);
-    
+
     const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
         props,
         ref,
@@ -83,13 +86,12 @@ function Attendances() {
         setSuccess(false);
         setError(false);
     };
-
     return (
 
         <div>
 
             <Container maxWidth="md">
-            <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
+                <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity="success">
                         บันทึกข้อมูลสำเร็จ
                     </Alert>
@@ -149,29 +151,36 @@ function Attendances() {
 
                     <Table aria-label="simple table">
 
-                        <TableHead>
+                        <TableHead sx = {{ width: 'auto' }}>
                             <TableRow>
                                 <TableCell align="center" width="5%">
-                                    ลำดับ
-                                </TableCell>
-                                <TableCell align="center" width="15%">
-                                    หน้าที่
-                                </TableCell>
-                                <TableCell align="center" width="5%">
-                                    เบอร์โทร
+                                    ID
                                 </TableCell>
                                 
-                                <TableCell align="center" width="10%">
-                                    หมายเหตุ
+                                <TableCell align="center" width="5%">
+                                เบอร์โทร
                                 </TableCell>
                                 <TableCell align="center" width="20%">
-                                    ช่วงเวลาเข้าเวร
+                                หมายเหตุ
                                 </TableCell>
+                                <TableCell align="center" width="10%">
+                                ช่วงของเวร
+                                </TableCell>
+                                <TableCell align="center" width="10%">
+                                หน้าที่
+                                </TableCell>
+                                
                                 <TableCell align="center" width="15%">
                                     ผู้บันทึก
                                 </TableCell>
                                 <TableCell align="center" width="15%">
                                     วันที่บันทึก
+                                </TableCell>
+                                <TableCell align="center" width="6%">
+                                    
+                                </TableCell>
+                                <TableCell align="center" width="6%">
+
                                 </TableCell>
                             </TableRow>
 
@@ -181,11 +190,12 @@ function Attendances() {
                             {attendance.map((attendance: AttendanceInterface) => (
                                 <TableRow key={attendance.ID}>
                                     <TableCell align="center" > {attendance.ID}            </TableCell>
-                                    <TableCell align="center" > {attendance.Stat.Name}    </TableCell>
+                                    
                                     <TableCell align="center" > {attendance.Phone}    </TableCell>
-                                    <TableCell align="center" > {attendance.Description}         </TableCell>
+                                    <TableCell align="center" > {attendance.Description + " บาท"}         </TableCell>
                                     <TableCell align="center" > {attendance.Shift.Name}     </TableCell>
-                                    <TableCell align="center" > {attendance.Pharmacist.Name}     </TableCell>                                    
+                                    <TableCell align="center" > {attendance.Statt.Name}           </TableCell>
+                                    <TableCell align="center" > {attendance.Pharmacist.Name}     </TableCell>
                                     <TableCell align="center" > {moment(attendance.Datetime).format('DD MMMM yyyy')}     </TableCell>
                                     <TableCell align="center">
                                         <IconButton aria-label="delete" vertical-align="middle" onClick={() => DeleteAttendance(attendance.ID)}><DeleteIcon /></IconButton >
@@ -201,15 +211,6 @@ function Attendances() {
                                             แก้ไขข้อมูล
                                         </Button>
                                     </TableCell>
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
                                 </TableRow>
                             ))}
                         </TableBody>
