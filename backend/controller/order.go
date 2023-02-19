@@ -170,7 +170,7 @@ func UpdateOrder(c *gin.Context) {
 func DeleteOrder(c *gin.Context) {
 	id := c.Param("id")
 	if tx := entity.DB().Exec("DELETE FROM orders WHERE id = ?", id); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "orsers not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "order not found"})
 		return
 	}
 	/*
