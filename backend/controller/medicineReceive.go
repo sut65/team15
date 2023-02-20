@@ -45,7 +45,7 @@ func CreatemedicineReceive(c *gin.Context) {
 		MedicineLabel:     medicineLabel,
 		Zone:              zone,
 		MedicineReceiveNo: medicineReceive.MedicineReceiveNo,
-		MedicineReAmount: medicineReceive.MedicineReAmount,
+		
 	}
 	if _, err := govalidator.ValidateStruct(wv); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -94,17 +94,48 @@ func DeleteMedicineReceive(c *gin.Context) {
 // PATCH /medicineReceive
 func UpdateMedicineReceive(c *gin.Context) {
 	var medicineReceive entity.MedicineReceive
+	var zone entity.Zone
+	var pharmacist entity.User
+	var medicineLabel entity.MedicineLabel
+
+
+
 	if err := c.ShouldBindJSON(&medicineReceive); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if tx := entity.DB().Where("id = ?", medicineReceive.ID).First(&medicineReceive); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ambulance not found"})
+	if tx := entity.DB().Where("id = ?", medicineReceive.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบสมาชิก"})
 		return
 	}
-	if err := entity.DB().Save(&medicineReceive).Error; err != nil {
+	if tx := entity.DB().Where("id = ?", medicineReceive.MedicineLabelID).First(&medicineLabel); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบฉลากยา"})
+		return
+	}
+	if tx := entity.DB().Where("id = ?", medicineReceive.ZoneID).First(&zone); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบโซนยา"})
+		return
+	}
+
+	update := entity.MedicineReceive{
+		RecievedDate:      medicineReceive.RecievedDate,
+		Pharmacist:        medicineReceive.Pharmacist,
+		MedicineLabel:     medicineReceive.MedicineLabel,
+		Zone:              medicineReceive.Zone,
+		MedicineReceiveNo: medicineReceive.MedicineReceiveNo,
+
+	}
+		// ขั้นตอนการ validate
+	if _, err := govalidator.ValidateStruct(update); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	if err := entity.DB().Where("id = ?", medicineReceive.ID).Updates(&medicineReceive).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	
 	c.JSON(http.StatusOK, gin.H{"data": medicineReceive})
 }

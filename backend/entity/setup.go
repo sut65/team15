@@ -248,7 +248,6 @@ func SetupDatabase() {
 	medicineReceive := MedicineReceive{
 		MedicineReceiveNo: 0111,
 		Pharmacist:        pharmacist3,
-		MedicineReAmount:  10,
 		Zone:              Zone1,
 		RecievedDate:      time.Now(),
 		MedicineLabel:     medicinelabel01,
