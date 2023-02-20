@@ -3,14 +3,15 @@ package entity
 import (
 	"time"
 
+	"github.com/asaskevich/govalidator"
 	"gorm.io/gorm"
 )
 
 type MedicineReceive struct {
 	gorm.Model
 
-	MedicineReceiveNo int
-	RecievedDate      time.Time
+	MedicineReceiveNo int	`valid:"required~Number: must be 4 digits, range(1000|9999)~Number: range 1000|9999"`
+	RecievedDate      time.Time	`valid:"Timenotpast~RecievedDate unsable, Timenotfuture~DispenseTime must not be in the future"`
 
 	PharmacistID *uint
 	Pharmacist   User
@@ -19,7 +20,7 @@ type MedicineReceive struct {
 	MedicineLabel   MedicineLabel `gorm:"references:id" valid:"-"`
 
 	ZoneID *uint
-	Zone   Zone
+	Zone   Zone `gorm:"references:id" valid:"-"`
 
 	Discardmedicine       []Discardmedicine      `gorm:"foreignkey:MedicineReceiveID"`
 	MedicineDisbursements []MedicineDisbursement `gorm:"foreignKey:MedicineReceiveID"`
@@ -27,7 +28,18 @@ type MedicineReceive struct {
 type Zone struct {
 	gorm.Model
 
-	ZoneName string
+	ZoneName string	`gorm:"uniqueIndex"`
 
 	MedicineReceives []MedicineReceive `gorm:"foreignKey:ZoneID"`
+}
+func init() {
+	govalidator.CustomTypeTagMap.Set("Timenotpast", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		return t.After(time.Now().Add(time.Minute * -5)) //เวลา > เวลาปัจจุบัน - 1 นาที
+	})
+	govalidator.CustomTypeTagMap.Set("Timenotfuture", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		now := time.Now().Add(time.Minute * 5)
+		return t.Before(now) || t.Equal(now)
+	})
 }
