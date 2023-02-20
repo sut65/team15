@@ -152,7 +152,7 @@ function Orders() {
                         <TableHead sx = {{ width: 'auto' }}>
                             <TableRow>
                                 <TableCell align="center" width="5%">
-                                    ID
+                                    เลขใบสั่งซื้อ
                                 </TableCell>
                                 <TableCell align="center" width="15%">
                                     ชื่อยา
@@ -188,7 +188,7 @@ function Orders() {
                         <TableBody>
                             {order.map((order: OrderInterface) => (
                                 <TableRow key={order.ID}>
-                                    <TableCell align="center" > {order.ID}            </TableCell>
+                                    <TableCell align="center" > {order.Ordernumber}            </TableCell>
                                     <TableCell align="center" > {order.Medicine.Name}    </TableCell>
                                     <TableCell align="center" > {order.Quantity}    </TableCell>
                                     <TableCell align="center" > {order.Priceperunit + " บาท"}         </TableCell>

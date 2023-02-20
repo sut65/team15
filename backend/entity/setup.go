@@ -169,6 +169,7 @@ func SetupDatabase() {
 	db.Model(&Unit{}).Create(&bottle)
 
 	order1 := Order{
+		Ordernumber: "A1001",
 		Quantity:     50,
 		Priceperunit: 100,
 		Datetime:     time.Now(),
@@ -519,7 +520,7 @@ func SetupDatabase() {
 
 	attendance1 := Attendance{
 		Phone:       "0999999999",
-		Description: "เกือบไม่ได้มา",
+		Description: 2,
 		Datetime:    time.Now(),
 
 		Pharmacist: pharmacist4,

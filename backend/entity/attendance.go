@@ -25,7 +25,7 @@ type Attendance struct {
 	gorm.Model
 
 	Phone       string    `valid:"matches(^\\d{10}$)~Phone must be 10 Digit"`
-	Description string    `valid:"required~Description cannot be blank"`
+	Description uint      `valid:"required~The Description must be in the range 1-10, range(1|10)~The Description must be in the range 1-10"`
 	Datetime    time.Time `valid:"DateNotpast~Date must not be in the past, DateNotFuture~Date must not be in the future"`
 
 	PharmacistID *uint

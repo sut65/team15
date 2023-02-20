@@ -9,7 +9,7 @@ import (
 type MedicineArrangement struct {
 	gorm.Model
 
-	MedicineArrangementNo   		uint				`valid:"range(200000|999999)~MedicineArrangementNo must be 6 digits, required~MedicineArrangementNo must be 6 digits"`
+	MedicineArrangementNo   		uint				`gorm:"uniqueIndex" valid:"range(200000|999999)~MedicineArrangementNo must be 6 digits, required~MedicineArrangementNo must be 6 digits"`
 	Note                    		string				`valid:"required~Note cannot be blank"`
 	MedicineArrangementTime 		time.Time			`valid:"donotpast~MedicineArrangementTime not be past, donotfuture~MedicineArrangementTime must not be in the future"`
 

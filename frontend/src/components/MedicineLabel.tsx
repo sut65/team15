@@ -185,6 +185,9 @@ function Orders() {
                     <TableHead>
               <TableRow>
                 <TableCell align="center" width="10%">
+                  ใบสั่งซื้อ
+                </TableCell>
+                <TableCell align="center" width="10%">
                   ชื่อยา
                 </TableCell>
                 <TableCell align="center" width="14%">
@@ -221,6 +224,7 @@ function Orders() {
                         <TableBody>
                             {medicineLabels.map((medicineLabel: MedicineLabelsInterface) => (
                                 <TableRow key={medicineLabel.ID}>
+                  <TableCell align="center">{medicineLabel.Order.Ordernumber}</TableCell>
   <TableCell align="center">{medicineLabel.Order.Medicine.Name}</TableCell>
                   <TableCell align="center">{medicineLabel.Property}</TableCell>
                   <TableCell align="center" vertical-align= "middle">{medicineLabel.Instruction}</TableCell>

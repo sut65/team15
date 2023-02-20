@@ -12,24 +12,31 @@ import (
 
 func TestDescriptionNotBlank(t *testing.T) {
 	g := NewGomegaWithT(t)
-	attendance := Attendance{
-		Phone:       "0987654321",
-		Description: "",
-		Datetime:    time.Now(),
+	ppu := []uint{
+		0,
+		11,
 	}
-	// ตรวจสอบด้วย govalidator
-	ok, err := govalidator.ValidateStruct(attendance)
-	g.Expect(ok).NotTo(BeTrue())
-	g.Expect(err).ToNot(BeNil())
-	g.Expect(err.Error()).To(Equal("Description cannot be blank"))
+	for _, qu := range ppu {
+		attendance := Attendance{
+			Phone:       "0987654321",
+			Description: qu,
+			Datetime:    time.Now(),
+		}
+		// ตรวจสอบด้วย govalidator
+		ok, err := govalidator.ValidateStruct(attendance)
+		g.Expect(ok).NotTo(BeTrue())
+		g.Expect(err).ToNot(BeNil())
+		g.Expect(err.Error()).To(Equal("The Description must be in the range 1-10"))
 
+	}
 }
 
 func TestPhone(t *testing.T) {
 	g := NewGomegaWithT(t)
+
 	attendance := Attendance{
 		Phone:       "000000",
-		Description: "aaa",
+		Description: 2,
 		Datetime:    time.Now(),
 	}
 	// ตรวจสอบด้วย govalidator
@@ -40,14 +47,14 @@ func TestPhone(t *testing.T) {
 	g.Expect(err).ToNot(BeNil()) //เช็คว่ามันว่างไหม
 
 	g.Expect(err.Error()).To(Equal("Phone must be 10 Digit")) //ส่ง error ms
-
 }
+
 func TestDateAttendanceNotBePast(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	attendance := Attendance{
 		Phone:       "0987654321",
-		Description: "aaa",
+		Description: 2,
 		Datetime:    time.Now().Add(time.Minute * -100), // อดีตผิด วันที่เวลาต้องไม่เป็นอดีต
 	}
 
@@ -69,7 +76,7 @@ func TestDateAttendanceNotBeFuture(t *testing.T) {
 
 	attendance := Attendance{
 		Phone:       "0987654321",
-		Description: "aaa",
+		Description: 4,
 		Datetime:    time.Now().Add(time.Minute * +100), // อดีตผิด วันที่เวลาต้องไม่เป็นอนาคต
 	}
 

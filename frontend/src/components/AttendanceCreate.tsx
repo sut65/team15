@@ -21,8 +21,7 @@ import { StattInterface } from "../models/IStatt";
 import { ShiftInterface } from "../models/IShift";
 import { UserInterface } from "../models/IUser";
 import { AttendanceInterface } from "../models/IAttendance";
-// Quantity = Phone
-// Priceperunit = Description
+
 
 
 
@@ -151,7 +150,7 @@ export default function AttendanceCreate(this: any) {
     let data = {
       DateTime: Attendance.Datetime,
       Phone: Attendance.Phone ?? "" ,
-      Description:  Attendance.Description ?? "" ,
+      Description:  typeof Attendance.Description == "string" ? parseInt(Attendance.Description) : 0,
       
       StattID: convertType(Attendance.StattID),
       ShiftID: convertType(Attendance.ShiftID),
@@ -279,14 +278,18 @@ export default function AttendanceCreate(this: any) {
 
         <Grid container spacing={4}>
           <Grid item xs={4} >
-            <p>หมายเหตุ</p>
+            <p>จำนวนผู้เข้าเวรก่อนหน้า</p>
             <TextField style={{ width: '105%', }}
 
               id="Description"
-              label="หมายเหตุ"
+              label="จำนวนผู้เข้าเวรก่อนหน้า"
               variant="outlined"
-              type="string"
+              type="number"
               size="medium"
+              InputProps={{
+                inputProps: { min: 1,
+                              max: 10 }
+              }}
               onChange={handleInputChange}
             /></Grid>
 
