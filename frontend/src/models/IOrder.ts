@@ -6,6 +6,7 @@ import { UserInterface } from "./IUser";
 export interface OrderInterface {
 
     ID: number,
+    Ordernumber: string,
     Quantity: number,
     Priceperunit: number,
     Datetime: Date | null,
