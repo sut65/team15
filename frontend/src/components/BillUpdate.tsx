@@ -374,7 +374,7 @@ export default function BillUpdate() {
         </Grid>
         <Grid item xs={6}>
               <FormControl fullWidth variant="outlined" style={{ width: '100%' }}>
-                <p>ผู้จัดยา</p>
+                <p>ผู้รับการชำระเงิน</p>
                 <Select
               disabled
               native

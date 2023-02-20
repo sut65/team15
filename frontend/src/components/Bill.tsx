@@ -117,7 +117,7 @@ function Bills() {
                             color="primary"
                             gutterBottom
                         >
-                            ข้อมูลจัดยา
+                            ข้อมูลการชำระเงิน
                         </Typography>
                     </Box>
                     <Box>

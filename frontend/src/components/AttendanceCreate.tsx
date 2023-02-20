@@ -279,7 +279,7 @@ export default function AttendanceCreate(this: any) {
 
         <Grid container spacing={4}>
           <Grid item xs={4} >
-            <p>เบอร์โทร</p>
+            <p>หมายเหตุ</p>
             <TextField style={{ width: '105%', }}
 
               id="Description"
@@ -375,7 +375,7 @@ export default function AttendanceCreate(this: any) {
                 variant="contained"
                 color="error"
                 component={RouterLink}
-                to="/dispensemedicines"
+                to="/"
               >
                 ถอยกลับ
               </Button>

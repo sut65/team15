@@ -122,7 +122,7 @@ function Attendances() {
                             color="primary"
                             gutterBottom
                         >
-                            ข้อมูลการสั่งซื้อ
+                            ข้อมูลการเข้าเวร
                         </Typography>
                     </Box>
                     <Box>
@@ -139,7 +139,7 @@ function Attendances() {
 
                         >
 
-                            เพิ่มการสั่งซื้อ
+                            เพิ่มการเข้าเวร
 
                         </Button>
 
@@ -192,7 +192,7 @@ function Attendances() {
                                     <TableCell align="center" > {attendance.ID}            </TableCell>
                                     
                                     <TableCell align="center" > {attendance.Phone}    </TableCell>
-                                    <TableCell align="center" > {attendance.Description + " บาท"}         </TableCell>
+                                    <TableCell align="center" > {attendance.Description }         </TableCell>
                                     <TableCell align="center" > {attendance.Shift.Name}     </TableCell>
                                     <TableCell align="center" > {attendance.Statt.Name}           </TableCell>
                                     <TableCell align="center" > {attendance.Pharmacist.Name}     </TableCell>
