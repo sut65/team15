@@ -10,17 +10,52 @@ import (
 	. "github.com/onsi/gomega"
 )
 
+//หมายเลขสั่งซื้อผิด
+func TestOrdernumber(t *testing.T){
+	g := NewGomegaWithT(t)
+
+	ordernumber := []string{
+		"",
+		"A1",
+		"A1",
+		"A123",
+		"A12",
+	}
+
+	for _, o := range ordernumber{
+		order := Order{
+			Ordernumber: o,
+			Quantity:     50, //ผิด
+			Priceperunit: 200,
+			Datetime: time.Now(),
+		}
+
+	// ตรวจสอบด้วย govalidator
+	ok, err := govalidator.ValidateStruct(order)
+
+	g.Expect(ok).ToNot(BeTrue()) //OK ไม่เป็น true
+
+	g.Expect(err).ToNot(BeNil()) //เช็คว่ามันว่างไหม
+
+	g.Expect(err.Error()).To(Equal("Ordernumber not matches")) //ส่ง error msg
+	}
+
+}
+
+
 //จำนวนต้องมีค่าเป็นบวก และอยู่ในช่วง 1-10000
 func TestQuantitynotbeBlank(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	q := []uint{
 		0,
-		100011,
+		10001,
 	}
 
 	for _, qu := range q {
 		order := Order{
+
+			Ordernumber: "A1001",
 			Quantity:     qu, //ผิด
 			Priceperunit: 200,
 			Datetime: time.Now(),
@@ -50,6 +85,7 @@ func TestPriceperunit(t *testing.T){
 
 	for _, qu := range ppu {
 		order := Order{
+			Ordernumber: "A1234",
 			Quantity:     500,
 			Priceperunit: qu,
 			Datetime: time.Now(),
@@ -73,6 +109,7 @@ func TestDateOrderNotBePast(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	order := Order{
+		Ordernumber: "A1001",
 		Quantity:     500,
 		Priceperunit: 20,
 		Datetime:        time.Now().Add(time.Minute * -100), // อดีตผิด วันที่เวลาต้องไม่เป็นอดีต
@@ -96,6 +133,7 @@ func TestDateOrderNotBeFuture(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	order := Order{
+		Ordernumber: "A1001",
 		Quantity:     500,
 		Priceperunit: 20,
 		Datetime:        time.Now().Add(time.Minute * +100), // อดีตผิด วันที่เวลาต้องไม่เป็นอนาคต
@@ -112,4 +150,23 @@ func TestDateOrderNotBeFuture(t *testing.T) {
 
 	// err.Error ต้องมี error message แสดงออกมา
 	g.Expect(err.Error()).To(Equal("Date must not be in the future"))
+}
+
+func TestOrderpass(t *testing.T){
+	g := NewGomegaWithT(t)
+
+	order := Order{
+		Ordernumber: "A1234",
+		Quantity:     500,
+		Priceperunit: 50,
+		Datetime: time.Now(),
+	}
+
+	ok, err := govalidator.ValidateStruct(order)
+
+	// ok ต้องเป็น true แปลว่าไม่มี error
+	g.Expect(ok).To(BeTrue())
+
+	// err เป็นค่า nil แปลว่าไม่มี error
+	g.Expect(err).To(BeNil())
 }

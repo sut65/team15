@@ -54,6 +54,7 @@ func CreateOrder(c *gin.Context) {
 
 	// 13: สร้าง Order
 	wp := entity.Order{
+		Ordernumber: order.Ordernumber,
 		Quantity: order.Quantity,
 		Priceperunit:  order.Priceperunit,
 		Datetime:       order.Datetime,
@@ -141,6 +142,7 @@ func UpdateOrder(c *gin.Context) {
 	}
 
 	update := entity.Order{
+		Ordernumber: order.Ordernumber,
 		Quantity: order.Quantity,
 		Priceperunit:  order.Priceperunit,
 		Datetime:       order.Datetime,
