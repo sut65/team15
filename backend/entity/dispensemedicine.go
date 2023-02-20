@@ -16,7 +16,7 @@ type Pharmacy struct {
 type DispenseMedicine struct {
 	gorm.Model
 
-	DispenseNo			uint					`valid:"range(100000|999999)~DispensemedicineNo must be 6 digits, required~DispensemedicineNo must be 6 digits"`
+	DispenseNo			uint					`gorm:"uniqueIndex" valid:"range(100000|999999)~DispensemedicineNo must be 6 digits, required~DispensemedicineNo must be 6 digits"`
 	ReceiveName			string					`valid:"required~ReceiveName cannot be blank"`
 	DispenseTime		time.Time				`valid:"donotpast~DispenseTime not be past, donotfuture~DispenseTime must not be in the future"`
 
