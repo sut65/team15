@@ -68,7 +68,7 @@ func main() {
 	r.GET("/medicineReceive", controller.ListMedicineReceive)
 	r.GET("/medicineReceive/:id", controller.GetMedicineReceive)
 	r.PATCH("/medicineReceive", controller.UpdateMedicineReceive)
-
+	r.DELETE("/medicineReceives/:id", controller.DeleteMedicineReceive)
 	//Zone
 	r.GET("/Zones", controller.ListZone)
 

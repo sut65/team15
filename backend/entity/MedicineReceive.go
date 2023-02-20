@@ -10,7 +10,6 @@ type MedicineReceive struct {
 	gorm.Model
 
 	MedicineReceiveNo int
-	MedicineReAmount int
 	RecievedDate      time.Time
 
 	PharmacistID *uint
