@@ -113,12 +113,12 @@ func UpdateAttendance(c *gin.Context) {
 	}
 
 	if tx := entity.DB().Where("id = ?", attendance.StattID).First(&statt); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ บริษัท"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบหน้าที่"})
 		return
 	}
 
 	if tx := entity.DB().Where("id = ?", attendance.ShiftID).First(&shift); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบหน่วย"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบช่วงที่เข้าเวร"})
 		return
 	}
 
