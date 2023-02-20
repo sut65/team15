@@ -1,22 +1,22 @@
-import { Link as RouterLink } from "react-router-dom";
-import * as React from 'react';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
-import { Container } from '@mui/system'
-import Snackbar from '@mui/material/Snackbar'
-import Box from '@mui/material/Box';
-import SourceIcon from '@mui/icons-material/Source';
-import Paper from '@mui/material/Paper'
+import React, { useEffect, useState } from 'react'
+import { Box, Button, CssBaseline, FormControl, Grid, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { Button, CssBaseline, FormControl, Grid, Select, MenuItem, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material'
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { Container } from '@mui/system'
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import Divider from '@mui/material/Divider';
+import Paper from '@mui/material/Paper'
+import SourceIcon from '@mui/icons-material/Source';
 import moment from 'moment';
+
 import { UserInterface } from "../models/IUser";
 import { ZoneInterface } from "../models/IZone";
 import { MedicineReceiveInterface } from "../models/IMedicineReceive";
 import { MedicineLabelsInterface } from "../models/IMedicineLabel";
 
-export default function MedicineReceiveCreate() {
+export default function MedicineReceiveUpdate() {
 
     const [success, setSuccess] = React.useState(false);
     const [error, setError] = React.useState(false);
@@ -42,7 +42,7 @@ export default function MedicineReceiveCreate() {
     const handleInputChange = (
         event: React.ChangeEvent<{ id?: string; value: any }>
     ) => {
-        const id = event.target.id as keyof typeof MedicineReceiveCreate;
+        const id = event.target.id as keyof typeof MedicineReceive;
         const { value } = event.target;
         console.log("ID", id, "Value", value)
         setMedicineReceive({ ...MedicineReceive, [id]: value });
@@ -52,13 +52,36 @@ export default function MedicineReceiveCreate() {
         event: React.ChangeEvent<{ name?: string; value: unknown }>
     ) => {
         console.log(event.target.value)
-        const name = event.target.name as keyof typeof MedicineReceiveCreate
+        const name = event.target.name as keyof typeof MedicineReceive
         console.log(name)
         setMedicineReceive({
             ...MedicineReceive,
             [name]: event.target.value,
         });
     };
+
+    let { id } = useParams();
+    const getMedicineReceiveID = async (id: string | undefined | null) => {
+        const apiUrl = "http://localhost:8080";
+        const requestOptions = {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        };
+    
+        fetch(`${apiUrl}/medicineReceive/${id}`, requestOptions)
+          .then((response) => response.json())
+          .then((res) => {
+            console.log("MedicineReceive", res)
+            if (res.data) {
+              setMedicineReceive(res.data);
+            } else {
+              console.log("else");
+            }
+          });
+      };
 
     function getMedicineLable() {
         const apiUrl = "http://localhost:8080/medicineLabels";
@@ -135,16 +158,17 @@ export default function MedicineReceiveCreate() {
     function submit() {
         setLoading(true)
         let data = {
+            ID: convertType(MedicineReceive.ID),
             PharmacistID: Number(localStorage.getItem("uid")),
-            MedicineReceiveNo: typeof MedicineReceive.MedicineReceiveNo == "string" ? parseInt(MedicineReceive.MedicineReceiveNo) : 0,
+            MedicineReceiveNo: convertType(MedicineReceive.MedicineReceiveNo) ,
             ZoneID: convertType(MedicineReceive.ZoneID),
             RecievedDate: MedicineReceive.RecievedDate,
             MedicineLabelID: convertType(MedicineReceive.MedicineLabelID),
         };
         console.log("Data", data)
-        const apiUrl = "http://localhost:8080/medicineReceives";
+        const apiUrl = "http://localhost:8080/medicineReceive";
         const requestOptions = {
-            method: "POST",
+            method: "PATCH",
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
                 "Content-Type": "application/json",
@@ -172,6 +196,7 @@ export default function MedicineReceiveCreate() {
         getzone();
         getMedicineLable();
         getUser();
+        getMedicineReceiveID(id);
 
     }, []);
 
@@ -203,7 +228,7 @@ export default function MedicineReceiveCreate() {
                         color="primary"
                         gutterBottom
                     >
-                        บันทึกคลังยา
+                        แก้ไขบันทึกคลังยา
 
                         <Button style={{ float: "right" }}
                             component={RouterLink}
@@ -223,6 +248,7 @@ export default function MedicineReceiveCreate() {
                                 <TextField
                                     id="MedicineReceiveNo"
                                     variant="outlined"
+                                    value={MedicineReceive.MedicineReceiveNo}
                                     type="number"
                                     size="medium"
                                     placeholder="เลขใบคลังยา"
