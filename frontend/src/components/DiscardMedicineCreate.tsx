@@ -21,6 +21,7 @@ import { DiscardmedicineInterface } from "../models/IDiscardMedicine";
 import { UserInterface } from "../models/IUser";
 import { MedicineReceiveInterface } from "../models/IMedicineReceive";
 import { Causeinterface } from "../models/ICause";
+import MedicineReceive from "./MedicineReceive";
 
 export default function DiscardmedicineCreate(this: any) {
     const [discard, setDiscard] = React.useState<Partial<DiscardmedicineInterface>>({
@@ -212,7 +213,29 @@ export default function DiscardmedicineCreate(this: any) {
                 </Box>
                 </Box>
                 <Divider />
+                <Grid item xs={4}>
+                    <FormControl fullWidth variant="outlined" style={{ width: '100%', float: 'left' }}>
+                        <p>เลขคลังยา</p>
+                        <Select
+                            native
+                            value={discard.MedicineReceiveID}
+                            onChange={handleChange}
+                            inputProps={{
+                                name: "MedicineReceiveID",
+                            }}
+                        >
+                            <option aria-label="None" value="">
+                                เลือกเลขคลังยา
+                            </option>
+                            {receive.map((item: MedicineReceiveInterface) => (
+                                <option value={item.ID} key={item.ID}>
+                                    {item.MedicineReceiveNo}
+                                </option>
+                            ))}
+                        </Select>
+                    </FormControl>
 
+                </Grid>
                 <Grid container spacing={4}>
                     <Grid item xs={4}>
                         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>

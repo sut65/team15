@@ -233,7 +233,29 @@ export default function DiscardmedicineUpdate() {
                 </Box>
                 </Box>
                 <Divider />
+                <Grid item xs={4}>
+                    <FormControl fullWidth variant="outlined" style={{ width: '100%', float: 'left' }}>
+                        <p>เลขคลังยา</p>
+                        <Select
+                            native
+                            value={discard.MedicineReceiveID}
+                            onChange={handleChange}
+                            inputProps={{
+                                name: "MedicineReceiveID",
+                            }}
+                        >
+                            <option aria-label="None" value="">
+                                เลือกเลขคลังยา
+                            </option>
+                            {receive.map((item: MedicineReceiveInterface) => (
+                                <option value={item.ID} key={item.ID}>
+                                    {item.MedicineReceiveNo}
+                                </option>
+                            ))}
+                        </Select>
+                    </FormControl>
 
+                </Grid>
 
                 <Grid container spacing={4}>
                     <Grid item xs={4}>
@@ -394,7 +416,7 @@ export default function DiscardmedicineUpdate() {
                                 variant="contained"
                                 color="error"
                                 component={RouterLink}
-                                to="/"
+                                to="/Discardmedicinelist"
                             >
                                 ถอยกลับ
                             </Button>

@@ -156,8 +156,8 @@ export default function Discardmedicine(this: any) {
 
                         <TableHead sx={{ width: 'auto' }}>
                             <TableRow>
-                                <TableCell align="center" width="5%">
-                                    ID
+                                <TableCell align="center" width="20%">
+                                    เลขคลังยา
                                 </TableCell>
                                 <TableCell align="center" width="15%">
                                     ชื่อยา
@@ -191,7 +191,7 @@ export default function Discardmedicine(this: any) {
                         <TableBody>
                             {discard.map((discard: DiscardmedicineInterface) => (
                                 <TableRow key={discard.ID}>
-                                    <TableCell align="center" > {discard.ID}            </TableCell>
+                                    <TableCell align="center" > {discard.MedicineReceive.MedicineReceiveNo}            </TableCell>
                                     <TableCell align="center" > {discard.MedicineReceive.MedicineLabel.Order.Medicine.Name}    </TableCell>
                                     <TableCell align="center" > {discard.Quantity}    </TableCell>
                                     <TableCell align="center" > {discard.MedicineReceive.MedicineLabel.Order.Unit.Name}     </TableCell>
