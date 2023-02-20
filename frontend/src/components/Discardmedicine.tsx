@@ -98,12 +98,12 @@ export default function Discardmedicine(this: any) {
             <Container maxWidth="md">
                 <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity="success">
-                        บันทึกข้อมูลสำเร็จ
+                        ลบข้อมูลสำเร็จ
                     </Alert>
                 </Snackbar>
                 <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity="error">
-                        บันทึกข้อมูลไม่สำเร็จ: {ErrorMessage}
+                        ลบข้อมูลไม่สำเร็จ: {ErrorMessage}
                     </Alert>
                 </Snackbar>
                 <Box
