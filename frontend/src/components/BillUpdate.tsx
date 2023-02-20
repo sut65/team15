@@ -41,6 +41,7 @@ export default function BillUpdate() {
     const [bill, setBill] = React.useState<Partial<BillsInterface>>({
         BillNo: 0,
         Payer: "",
+        Total: 0,
         BillTime: new Date(),
     })
 

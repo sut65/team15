@@ -520,7 +520,7 @@ func SetupDatabase() {
 
 	attendance1 := Attendance{
 		Phone:       "0999999999",
-		Description: "เกือบไม่ได้มา",
+		Description: 2,
 		Datetime:    time.Now(),
 
 		Pharmacist: pharmacist4,

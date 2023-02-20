@@ -18,7 +18,7 @@ import { UserInterface } from '../models/IUser';
 import Attendances from './Attendance';
 
 // Quantity = Phone
-// Priceperunit = Description
+
 
 export default function AttendanceUpdate() {
 
@@ -39,7 +39,7 @@ export default function AttendanceUpdate() {
   
   const [attendance, setAttendance] = React.useState<Partial<AttendanceInterface>>({
     Phone: "",
-    Description: "",
+    Description: 0,
     Datetime: new Date(),
   })
   
@@ -171,7 +171,7 @@ function getUser() {
       ID: convertType(attendance.ID),
       DateTime: attendance.Datetime,
       Phone: attendance.Phone ?? "" ,
-      Description: attendance.Description ?? "" ,
+      Description: convertType(attendance.Description),
       
       StattID: convertType(attendance.StattID),
       ShiftID: convertType(attendance.ShiftID),
@@ -298,15 +298,19 @@ function getUser() {
 
         <Grid container spacing={4}>
           <Grid item xs={4} >
-            <p>หมายเหตุ</p>
+            <p>จำนวนผู้เข้าเวรก่อนหน้า</p>
             <TextField style={{ width: '105%', }}
 
               id="Description"
-              label="หมายเหตุ"
+              label="จำนวนผู้เข้าเวรก่อนหน้า"
               variant="outlined"
               value={attendance.Description}
-              type="string"
+              type="number"
               size="medium"
+              InputProps={{
+                inputProps: { min: 1,
+                              max: 10 }
+              }}
               onChange={handleInputChange}
             /></Grid>
 

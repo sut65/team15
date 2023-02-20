@@ -161,7 +161,7 @@ function Attendances() {
                                 เบอร์โทร
                                 </TableCell>
                                 <TableCell align="center" width="20%">
-                                หมายเหตุ
+                                จำนวนผู้เข้าเวรก่อนหน้า
                                 </TableCell>
                                 <TableCell align="center" width="10%">
                                 ช่วงของเวร

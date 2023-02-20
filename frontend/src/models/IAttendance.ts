@@ -8,7 +8,7 @@ export interface AttendanceInterface {
     
     ID: number,
     Phone: string,
-    Description: string,
+    Description: number,
     Datetime: Date | null,
 
     PharmacistID: number,

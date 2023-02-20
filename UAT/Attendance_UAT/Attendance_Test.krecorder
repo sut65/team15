@@ -39,7 +39,7 @@
 </tr>
 <tr><td>click</td><td>id=Description<datalist><option>id=Description</option><option>xpath=//input[@id='Description']</option><option>xpath=//div[@id='root']/div[2]/div/div/div[3]/div/div/div/input</option><option>xpath=//div[3]/div/div/div/input</option><option>css=#Description</option></datalist></td><td></td>
 </tr>
-<tr><td>type</td><td>id=Description<datalist><option>id=Description</option><option>xpath=//input[@id='Description']</option><option>xpath=//div[@id='root']/div[2]/div/div/div[3]/div/div/div/input</option><option>xpath=//div[3]/div/div/div/input</option><option>css=#Description</option></datalist></td><td>มาไว</td>
+<tr><td>type</td><td>id=Description<datalist><option>id=Description</option><option>xpath=//input[@id='Description']</option><option>xpath=//div[@id='root']/div[2]/div/div/div[3]/div/div/div/input</option><option>xpath=//div[3]/div/div/div/input</option><option>css=#Description</option></datalist></td><td>1</td>
 </tr>
 <tr><td>click</td><td>name=StattID<datalist><option>name=StattID</option><option>xpath=//select[@name='StattID']</option><option>xpath=//div[@id='root']/div[2]/div/div/div[3]/div[2]/div/div/select</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='หมายเหตุ'])[3]/following::select[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='หมายเหตุ'])[2]/following::select[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='​'])[2]/preceding::select[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='​'])[3]/preceding::select[1]</option><option>xpath=//div[3]/div[2]/div/div/select</option><option>css=select[name="StattID"]</option></datalist></td><td></td>
 </tr>
@@ -87,7 +87,7 @@
 </tr>
 <tr><td>click</td><td>id=Description<datalist><option>id=Description</option><option>xpath=//input[@id='Description']</option><option>xpath=//div[@id='root']/div[2]/div/div/div[3]/div/div/div/input</option><option>xpath=//div[3]/div/div/div/input</option><option>css=#Description</option></datalist></td><td></td>
 </tr>
-<tr><td>type</td><td>id=Description<datalist><option>id=Description</option><option>xpath=//input[@id='Description']</option><option>xpath=//div[@id='root']/div[2]/div/div/div[3]/div/div/div/input</option><option>xpath=//div[3]/div/div/div/input</option><option>css=#Description</option></datalist></td><td>มาแล้ว</td>
+<tr><td>type</td><td>id=Description<datalist><option>id=Description</option><option>xpath=//input[@id='Description']</option><option>xpath=//div[@id='root']/div[2]/div/div/div[3]/div/div/div/input</option><option>xpath=//div[3]/div/div/div/input</option><option>css=#Description</option></datalist></td><td>2</td>
 </tr>
 <tr><td>click</td><td>name=StattID<datalist><option>name=StattID</option><option>xpath=//select[@name='StattID']</option><option>xpath=//div[@id='root']/div[2]/div/div/div[3]/div[2]/div/div/select</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='หมายเหตุ'])[3]/following::select[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='หมายเหตุ'])[2]/following::select[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='​'])[2]/preceding::select[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='​'])[3]/preceding::select[1]</option><option>xpath=//div[3]/div[2]/div/div/select</option><option>css=select[name="StattID"]</option></datalist></td><td></td>
 </tr>
@@ -135,7 +135,7 @@
 </tr>
 <tr><td>click</td><td>id=Description<datalist><option>id=Description</option><option>xpath=//input[@id='Description']</option><option>xpath=//div[@id='root']/div[2]/div/div/div[3]/div/div/div/input</option><option>xpath=//div[3]/div/div/div/input</option><option>css=#Description</option></datalist></td><td></td>
 </tr>
-<tr><td>type</td><td>id=Description<datalist><option>id=Description</option><option>xpath=//input[@id='Description']</option><option>xpath=//div[@id='root']/div[2]/div/div/div[3]/div/div/div/input</option><option>xpath=//div[3]/div/div/div/input</option><option>css=#Description</option></datalist></td><td>wsss</td>
+<tr><td>type</td><td>id=Description<datalist><option>id=Description</option><option>xpath=//input[@id='Description']</option><option>xpath=//div[@id='root']/div[2]/div/div/div[3]/div/div/div/input</option><option>xpath=//div[3]/div/div/div/input</option><option>css=#Description</option></datalist></td><td>3</td>
 </tr>
 <tr><td>click</td><td>name=StattID<datalist><option>name=StattID</option><option>xpath=//select[@name='StattID']</option><option>xpath=//div[@id='root']/div[2]/div/div/div[3]/div[2]/div/div/select</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='หมายเหตุ'])[3]/following::select[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='หมายเหตุ'])[2]/following::select[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='​'])[2]/preceding::select[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='​'])[3]/preceding::select[1]</option><option>xpath=//div[3]/div[2]/div/div/select</option><option>css=select[name="StattID"]</option></datalist></td><td></td>
 </tr>
@@ -233,7 +233,7 @@
 </tr>
 <tr><td>click</td><td>id=Description<datalist><option>id=Description</option><option>xpath=//input[@id='Description']</option><option>xpath=//div[@id='root']/div[2]/div/div/div[3]/div/div/div/input</option><option>xpath=//div[3]/div/div/div/input</option><option>css=#Description</option></datalist></td><td></td>
 </tr>
-<tr><td>type</td><td>id=Description<datalist><option>id=Description</option><option>xpath=//input[@id='Description']</option><option>xpath=//div[@id='root']/div[2]/div/div/div[3]/div/div/div/input</option><option>xpath=//div[3]/div/div/div/input</option><option>css=#Description</option></datalist></td><td>aaa</td>
+<tr><td>type</td><td>id=Description<datalist><option>id=Description</option><option>xpath=//input[@id='Description']</option><option>xpath=//div[@id='root']/div[2]/div/div/div[3]/div/div/div/input</option><option>xpath=//div[3]/div/div/div/input</option><option>css=#Description</option></datalist></td><td>2</td>
 </tr>
 <tr><td>click</td><td>id=Phone<datalist><option>id=Phone</option><option>xpath=//input[@id='Phone']</option><option>xpath=//div[@id='root']/div[2]/div/div/div[2]/div/div/div/input</option><option>xpath=//input</option><option>css=#Phone</option></datalist></td><td></td>
 </tr>
