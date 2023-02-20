@@ -30,8 +30,9 @@ type Unit struct {
 type Order struct{
 	gorm.Model
 
+	Ordernumber		string				`gorm:"uniqueIndex" valid:"matches(^[A]\\d{4}$)~Ordernumber not matche,required~Ordernumber not matches"`
 	Quantity		uint				`valid:"required~The Quantity must be in the range 1-10000, range(1|10000)~The Quantity must be in the range 1-10000"`
-	Priceperunit	uint				`valid:"required~The Priceperunit must be in the range 1-10000, range(1|10000)~The Priceperunit must be in the range 1-10000"`
+	Priceperunit	uint					`valid:"required~The Priceperunit must be in the range 1-10000, range(1|10000)~The Priceperunit must be in the range 1-10000"`
 	Datetime		time.Time			`valid:"DateNotpast~Date must not be in the past, DateNotFuture~Date must not be in the future"`
 
 	PharmacistID *uint
