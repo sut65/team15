@@ -87,7 +87,7 @@ export default function PatientInterfaceUpdate() {
       }
     //ดึงข้อมูลชื่อยา
     function getMedicineLabel() {
-    const apiUrl = "http://localhost:8080/medicinelabels";
+    const apiUrl = "http://localhost:8080/medicineLabels";
     const requestOptions = {
       method: "GET",
       headers: {

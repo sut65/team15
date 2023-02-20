@@ -39,8 +39,8 @@ export default function OrderUpdate() {
     Priceperunit: 0,
     Datetime: new Date(),
   })
-  
-  let {id} = useParams();
+
+  let { id } = useParams();
   const getOrderID = async (id: string | undefined | null) => {
     const apiUrl = "http://localhost:8080";
     const requestOptions = {
@@ -62,7 +62,7 @@ export default function OrderUpdate() {
         }
       });
   };
-  
+
 
   //ดึงข้อมูลชื่อยา
   function getMedicine() {
@@ -128,40 +128,40 @@ export default function OrderUpdate() {
           console.log("else");
         }
       });
-      
+
   }
 
-//real useronline
-function getUser() {
-  const UserID = localStorage.getItem("uid")
-  const apiUrl = `http://localhost:8080/users/${UserID}`;
-  const requestOptions = {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-      "Content-Type": "application/json",
-    },
-  };
-  fetch(apiUrl, requestOptions)
-    .then((response) => response.json())
-    .then((res) => {
-      // console.log("Combobox_User", res)
-      if (res.data) {
-        setUser(res.data);
-      } else {
-        console.log("else");
-      }
-    });
-}
+  //real useronline
+  function getUser() {
+    const UserID = localStorage.getItem("uid")
+    const apiUrl = `http://localhost:8080/users/${UserID}`;
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+    };
+    fetch(apiUrl, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+        // console.log("Combobox_User", res)
+        if (res.data) {
+          setUser(res.data);
+        } else {
+          console.log("else");
+        }
+      });
+  }
 
- 
+
 
   const convertType = (data: string | number | undefined | null) => {
     let val = typeof data === "string" ? parseInt(data) : data;
     return val;
   };
 
-  
+
   const handleChange: any = (
     event: React.ChangeEvent<{ name?: string; value: unknown }>
   ) => {
@@ -186,6 +186,7 @@ function getUser() {
 
     let data = {
       ID: convertType(order.ID),
+      Ordernumber: order.Ordernumber ?? "",
       DateTime: order.Datetime,
       Quantity: convertType(order.Quantity),
       Priceperunit: convertType(order.Priceperunit),
@@ -234,7 +235,7 @@ function getUser() {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });
 
-  
+
 
   return (
     <Container maxWidth="lg">
@@ -273,6 +274,17 @@ function getUser() {
         <Divider />
 
         <Grid container spacing={4}>
+        <Grid item xs={4} >
+            <p>เลขใบสั่งซื้อ</p>
+            <TextField style={{ width: '105%', }}
+              disabled
+              id="Ordernumber"
+              variant="outlined"
+              value={order.Ordernumber}
+              type="string"
+              size="medium"
+              onChange={handleInputChange}
+            /></Grid>
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>ชื่อยา</p>
@@ -309,6 +321,9 @@ function getUser() {
               onChange={handleInputChange}
             /></Grid>
 
+        </Grid>
+
+        <Grid container spacing={4}>
           <Grid item xs={4}>
 
             <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
@@ -332,9 +347,6 @@ function getUser() {
               </Select>
             </FormControl>
           </Grid>
-        </Grid>
-
-        <Grid container spacing={4}>
           <Grid item xs={4} >
             <p>ราคาต่อหน่วย</p>
             <TextField style={{ width: '105%', }}
