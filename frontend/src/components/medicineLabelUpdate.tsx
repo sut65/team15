@@ -233,28 +233,28 @@ export default function MedicinelabelUpdate() {
     </Box>
     <Divider />
     <Grid container spacing={3} >
-              <Grid item xs={6}>
-                <FormControl fullWidth variant="outlined">
-                  <p>ชื่อยา</p>
-                  <Select
-                    native
-                    value={medicineLabel.OrderID}
-                    onChange={handleChange}
-                    inputProps={{
-                      name: "OrderID",
-                    }}
-                  >
-                    <option aria-label="None" value="">
-                      กรุณาเลือกชื่อยา
-                    </option>
-                    {Order.map((item: OrderInterface) => (
-                      <option value={item.ID} key={item.ID}>
-                        {item.Medicine.Name}
-                      </option>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
+    <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+              <p>ชื่อยา/เลขใบสั่งซื้อ</p>
+              <Select
+                native
+                value={medicineLabel.OrderID}
+                onChange={handleChange}
+                inputProps={{
+                  name: "OrderID",
+                }}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือกชื่อยา
+                </option>
+                {Order.map((item: OrderInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    ยา {item.Medicine.Name} เลขใบสั่งซื้อ {item.Ordernumber}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
               <Grid item xs={6}>
                 <FormControl fullWidth variant="outlined">
                   <p>สรรพคุณยา</p>

@@ -222,7 +222,7 @@ export default function MedicineLabelCreate() {
 <Grid container spacing={3} >
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
-              <p>ชื่อยา</p>
+              <p>ชื่อยา/เลขใบสั่งซื้อ</p>
               <Select
                 native
                 value={medicineLabel.OrderID}
@@ -236,7 +236,7 @@ export default function MedicineLabelCreate() {
                 </option>
                 {Order.map((item: OrderInterface) => (
                   <option value={item.ID} key={item.ID}>
-                    {item.Medicine.Name}
+                    ยา {item.Medicine.Name} เลขใบสั่งซื้อ {item.Ordernumber}
                   </option>
                 ))}
               </Select>
