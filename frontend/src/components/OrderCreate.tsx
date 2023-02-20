@@ -168,9 +168,11 @@ export default function OrderCreate(this: any) {
   function submit() {
     setLoading(true)
     let data = {
+
+      Ordernumber: Order.Ordernumber ?? "",
       DateTime: Order.Datetime,
-      Quantity: typeof Order.Quantity == "string" ? parseInt(Order.Quantity) : 0,
-      Priceperunit: typeof Order.Priceperunit == "string" ? parseInt(Order.Priceperunit) : 0,
+      Quantity: convertType(Order.Quantity),
+      Priceperunit: convertType(Order.Priceperunit),
       MedicineID: convertType(Order.MedicineID),
       CompanyID: convertType(Order.CompanyID),
       UnitID: convertType(Order.UnitID),
@@ -260,6 +262,21 @@ export default function OrderCreate(this: any) {
         <Grid container spacing={4}>
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
+              <p>เลขใบสั่งซื้อ</p>
+              <FormControl fullWidth variant="outlined">
+                <TextField
+                  id="Ordernumber"
+                  variant="outlined"
+                  type="string"
+                  size="medium"
+                  placeholder="เลขใบสั่งซื้อ"
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+            </FormControl>
+          </Grid>
+          <Grid item xs={4}>
+            <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
               <p>ชื่อยา</p>
               <Select
                 native
@@ -293,6 +310,9 @@ export default function OrderCreate(this: any) {
               onChange={handleInputChange}
             /></Grid>
 
+        </Grid>
+
+        <Grid container spacing={4}>
           <Grid item xs={4}>
 
             <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
@@ -316,9 +336,6 @@ export default function OrderCreate(this: any) {
               </Select>
             </FormControl>
           </Grid>
-        </Grid>
-
-        <Grid container spacing={4}>
           <Grid item xs={4} >
             <p>ราคาต่อหน่วย</p>
             <TextField style={{ width: '105%', }}
@@ -361,18 +378,18 @@ export default function OrderCreate(this: any) {
             <p>วันที่สั่งซื้อ</p>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
-                  value={Order.Datetime}
+                value={Order.Datetime}
 
-                  onChange={(newValue) => {
-                    setOrder({
-                      ...Order,
-                      Datetime: newValue,
-                    });
-                    
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                  
-                />
+                onChange={(newValue) => {
+                  setOrder({
+                    ...Order,
+                    Datetime: newValue,
+                  });
+
+                }}
+                renderInput={(params) => <TextField {...params} />}
+
+              />
 
             </LocalizationProvider>
           </FormControl>
@@ -393,43 +410,32 @@ export default function OrderCreate(this: any) {
           </FormControl>
         </Grid>
 
-        {/* <Grid item xs={12}>
-          <Button style={{ float: "right" }}
-            variant="contained"
-            color="primary"
-            onClick={submit}
-          >
-            <SaveIcon />บันทึก
-          </Button>
-
-
-        </Grid> */}
         <Grid item xs={12}>
-            <Stack
-              spacing={2}
-              direction="row"
-              justifyContent="space-between"
-              alignItems="flex-start"
-              sx={{ mt: 3 }}
+          <Stack
+            spacing={2}
+            direction="row"
+            justifyContent="space-between"
+            alignItems="flex-start"
+            sx={{ mt: 3 }}
+          >
+            <Button
+              variant="contained"
+              color="error"
+              component={RouterLink}
+              to="/dispensemedicines"
             >
-              <Button
-                variant="contained"
-                color="error"
-                component={RouterLink}
-                to="/dispensemedicines"
-              >
-                ถอยกลับ
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={submit}
-              >
-                บันทึกข้อมูล
-              </Button>
+              ถอยกลับ
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={submit}
+            >
+              บันทึกข้อมูล
+            </Button>
 
-            </Stack>
-            </Grid>
+          </Stack>
+        </Grid>
       </Paper >
     </Container>
   )
