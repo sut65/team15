@@ -39,7 +39,7 @@ import Discardmedicine from './components/Discardmedicine';
 import DiscardmedicineUpdate from './components/DiscardmedicineUpdate';
 import BillUpdate from './components/BillUpdate';
 import AttendanceUpdate from './components/AttendanceUpdate';
-
+import MedicineReceiveUpdate from './components/MedicineReceiveUpdate';
 function App() {
 
   const [token, setToken] = React.useState<String>("");
@@ -78,6 +78,7 @@ function App() {
           <Route path="/MedicineReturn" element={<MedicineReturnCreate />} />
           <Route path="/medicineReceives" element={<MedicineReceiveCreate />} />
           <Route path="/medicineReceive" element={<MedicineReceive />} />
+          <Route path="/MedicineReceiveUpdate/:id" element={<MedicineReceiveUpdate />} />
           <Route path="/medicineDisbursements" element={<MedicineDisbursementCreate />} />
           <Route path="/medicineDisbursement" element={<MedicineDisbursement />} />
           <Route path="/MedicineReturn" element={<MedicineReturnCreate />} />
