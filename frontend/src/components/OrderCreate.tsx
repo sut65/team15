@@ -422,7 +422,7 @@ export default function OrderCreate(this: any) {
               variant="contained"
               color="error"
               component={RouterLink}
-              to="/dispensemedicines"
+              to="/"
             >
               ถอยกลับ
             </Button>
