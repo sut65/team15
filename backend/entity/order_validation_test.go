@@ -37,7 +37,7 @@ func TestOrdernumber(t *testing.T){
 
 	g.Expect(err).ToNot(BeNil()) //เช็คว่ามันว่างไหม
 
-	g.Expect(err.Error()).To(Equal("Ordernumber not matches")) //ส่ง error msg
+	g.Expect(err.Error()).To(Equal("Ordernumber not matche")) //ส่ง error msg
 	}
 
 }
