@@ -36,7 +36,7 @@ func TestNotBlank(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	Return := Return{
-
+		MedicineReturnNo: 500000,
 		Note: "",
 		ReturnDate:        time.Now(),
 	}
@@ -95,7 +95,7 @@ func TestDateBePast(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	Return := Return{
-
+		MedicineReturnNo: 500000,
 		Note: "ไม่มีซองยา",
 		ReturnDate:  time.Now().Add(time.Minute * -10), // อดีตผิด วันที่เวลาต้องไม่เป็นอดีต
 
@@ -118,6 +118,7 @@ func TestDateBeFuture(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	Return := Return{
+		MedicineReturnNo: 500000,
 		Note: "ไม่มีซองยา",
 		ReturnDate:        time.Now().Add(time.Minute * +100), // อดีตผิด วันที่เวลาต้องไม่เป็นอนาคต
 	}
