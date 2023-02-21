@@ -343,7 +343,7 @@ export default function MedicineReturnCreate(){
 
           <Grid item xs={6}>
           <FormControl fullWidth variant="outlined">
-            <p>วันหมดอายุ</p>
+            <p>วันที่คืน</p>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                   value={Return.ReturnDate}
