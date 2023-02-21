@@ -5,7 +5,7 @@ import { MedicineReceiveInterface } from "./IMedicineReceive";
 export interface MedicineDisbursementInterface {
 
     ID: number,
-    MedicineDisNo: number,
+    MedicineDisNo: string,
     MedicineDisAmount : number,
     Dtime: Date | null,
 
