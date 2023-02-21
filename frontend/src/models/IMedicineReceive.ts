@@ -11,7 +11,6 @@ export interface MedicineReceiveInterface {
     PharmacistID: number,
     Pharmacist: UserInterface,
 
-
     ZoneID: number,
 	Zone: ZoneInterface,
 
