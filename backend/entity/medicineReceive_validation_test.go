@@ -30,6 +30,7 @@ func TestNoMedicineReceiveUNnsable(t *testing.T) {
 		"B1",
 		"B1",
 		"B123",
+		"B1234",
 		"B12",
 	}
 	for _, o := range MedicineReceiveNo{
@@ -41,7 +42,7 @@ func TestNoMedicineReceiveUNnsable(t *testing.T) {
 		ok, err := govalidator.ValidateStruct(medicineReceive)
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).ToNot(BeNil())
-		g.Expect(err.Error()).To(Equal("MedicineReceiveNo not matche"))
+		g.Expect(err.Error()).To(Equal("MedicineReceiveNo must be B then 5 digit"))
 	}
 }
 
