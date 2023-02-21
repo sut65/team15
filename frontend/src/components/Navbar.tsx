@@ -71,73 +71,73 @@ function Navbar() {
     { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
 
     {
-      name: "รายการบันทึกการสั่งซื้อยา",
+      name: "บันทึกการสั่งซื้อยา",
       icon: <LocalGroceryStoreIcon />,
       path: "/Order",
     },
 
     {
-      name: "รายการบันทึกฉลากยา",
+      name: "บันทึกฉลากยา",
       icon: <AddCommentIcon />,
       path: "/MedicineLable",
     },
 
     {
-      name: "รายการบันทึกคลังยา",
+      name: "บันทึกคลังยา",
       icon: <StoreIcon/>,
       path: "/medicineReceives",
     },
 
     {
-      name: "รายการบันทึกการทิ้งยา",
+      name: "บันทึกการทิ้งยา",
       icon: <DeleteSweepIcon />,
       path: "/Discardmedicine",
     },
 
     {
-      name: "รายการบันทึกการเบิกยา",
+      name: "บันทึกการเบิกยา",
       icon: <ContentPasteSearchIcon/>,
       path: "/medicineDisbursements"
     },
 
     {
-        name: "รายการบันทึกการจัดชั้นยา",
+        name: "บันทึกการจัดชั้นยา",
         icon: <DnsIcon/>,
         path: "/ClassifyDrugs"
     },
 
     {
-        name: "รายการบันทึกการสั่งยา",
+        name: "บันทึกการสั่งยา",
         icon: <ContentPasteIcon/>,
         path: "/Prescription"
     },
 
     {
-        name: "รายการบันทึกการจัดยา",
+        name: "บันทึกการจัดยา",
         icon: <MedicalServicesIcon/>,
         path: "/MedicineArrangement"
     },
 
     {
-        name: "รายการบันทึกการชำระเงิน",
+        name: "บันทึกการชำระเงิน",
         icon: <PaidIcon/>,
         path: "/Bill"
     },
 
     {
-        name: "รายการบันทึกการจ่ายยา",
+        name: "บันทึกการจ่ายยา",
         icon: <MedicationLiquidIcon/>,
         path: "/DispenseMedicine"
     },
 
     {
-        name: "รายการบันทึกการคืนยา",
+        name: "บันทึกการคืนยา",
         icon: <RestorePageIcon/>,
         path: "/MedicineReturn"
     },
 
     {
-        name: "รายการบันทึกการเข้าเวร",
+        name: "บันทึกการเข้าเวร",
         icon: <ContactEmergencyIcon/>,
         path: "/Attendance"
     }
