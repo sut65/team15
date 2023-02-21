@@ -136,7 +136,7 @@ export default function MedicineReceiveCreate() {
         setLoading(true)
         let data = {
             PharmacistID: Number(localStorage.getItem("uid")),
-            MedicineReceiveNo: typeof MedicineReceive.MedicineReceiveNo == "string" ? parseInt(MedicineReceive.MedicineReceiveNo) : 0,
+            MedicineReceiveNo: MedicineReceive.MedicineReceiveNo ?? "",
             ZoneID: convertType(MedicineReceive.ZoneID),
             RecievedDate: MedicineReceive.RecievedDate,
             MedicineLabelID: convertType(MedicineReceive.MedicineLabelID),
@@ -223,7 +223,7 @@ export default function MedicineReceiveCreate() {
                                 <TextField
                                     id="MedicineReceiveNo"
                                     variant="outlined"
-                                    type="number"
+                                    type="string"
                                     size="medium"
                                     placeholder="เลขใบคลังยา"
                                     onChange={handleInputChange}

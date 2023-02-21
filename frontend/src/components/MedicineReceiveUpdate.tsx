@@ -160,7 +160,7 @@ export default function MedicineReceiveUpdate() {
         let data = {
             ID: convertType(MedicineReceive.ID),
             PharmacistID: Number(localStorage.getItem("uid")),
-            MedicineReceiveNo: convertType(MedicineReceive.MedicineReceiveNo) ,
+            MedicineReceiveNo: MedicineReceive.MedicineReceiveNo ?? "",
             ZoneID: convertType(MedicineReceive.ZoneID),
             RecievedDate: MedicineReceive.RecievedDate,
             MedicineLabelID: convertType(MedicineReceive.MedicineLabelID),
@@ -249,7 +249,7 @@ export default function MedicineReceiveUpdate() {
                                     id="MedicineReceiveNo"
                                     variant="outlined"
                                     value={MedicineReceive.MedicineReceiveNo}
-                                    type="number"
+                                    type="string"
                                     size="medium"
                                     placeholder="เลขใบคลังยา"
                                     onChange={handleInputChange}
