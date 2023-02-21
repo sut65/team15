@@ -6,6 +6,7 @@ export interface MedicineLabelsInterface {
   ID: number,
   Instruction: string,
   Property: string,
+  
   Consumption: number,
   Date: Date | null,
 

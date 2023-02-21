@@ -44,6 +44,7 @@ export default function MedicineReturnUpdate(){
     const [Order, setOrder] = React.useState<OrderInterface[]>([]);
     const [dispensemedicine, setDispensemedicine] = React.useState<DispenseMedicineInterface[]>([]);
     const [Return, setReturn] = React.useState<Partial<ReturnInterface>>({
+        MedicineReturnNo: 0,
         Note: "",  
         ReturnDate: new Date(),
       })
@@ -165,6 +166,7 @@ const getdispensemedicine = async () => {
   async function submit() {
     let data = {
         ID: convertType(Return.ID),
+        MedicineReturnNo: convertType(Return.MedicineReturnNo ?? "" ),
         OrderID: convertType(Return.OrderID),
         DispensemedicineID: convertType(Return.DispenseMedicineID),
         ReasonID: convertType(Return.ReasonID),
@@ -249,6 +251,25 @@ const getdispensemedicine = async () => {
     </Box>
     <Divider />
     <Grid container spacing={3} >
+    <Grid item xs={6}>
+        <FormControl fullWidth variant="outlined" style={{ width: '100%', float: 'left' }}>
+           <p>หมายเลขใบคืนยา</p>
+          <FormControl fullWidth variant="outlined">
+            <TextField
+                      id="MedicineReturnNo"
+                      variant="outlined"
+                      type="number"
+                      size="medium"
+                      value={Return.MedicineReturnNo}
+                      InputProps={{
+                        inputProps: { min: 500000,
+                                      max: 999999 }
+                      }}
+                      onChange={handleInputChange}
+                    />
+                  </FormControl>
+                  </FormControl>
+                </Grid>
       <Grid item xs={6}>
         <FormControl fullWidth variant="outlined">
           <p>หมายเลขจ่ายยา</p>

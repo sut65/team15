@@ -144,7 +144,7 @@ export default function MedicineLabelCreate() {
         OrderID: convertType(medicineLabel.OrderID),
         Instruction: medicineLabel.Instruction ?? "",
         Property: medicineLabel.Property ?? "",
-        Consumption: medicineLabel.Consumption ?? "",
+        Consumption: convertType(medicineLabel.Consumption ?? "" ),
         SuggestionID: convertType(medicineLabel.SuggestionID),
         EffectID: convertType(medicineLabel.EffectID),
         PharmacistID: Number(localStorage.getItem("uid")),
