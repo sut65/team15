@@ -367,7 +367,7 @@ export default function MedicineDisbursementUpdate() {
                 </Grid>
                 <Grid item xs={2}>
                     <FormControl fullWidth variant="outlined">
-                        <p>วันที่สั่งซื้อ</p>
+                        <p>วันที่เบิกยา</p>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DatePicker
                                 value={MedicineDisbursement.Dtime}

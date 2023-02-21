@@ -140,10 +140,9 @@ export default function MedicineDisbursementCreate() {
         setLoading(true)
         let data = {
             PharmacistID: Number(localStorage.getItem("uid")),
-            MedicineDisNo: typeof MedicineDisbursement.MedicineDisNo == "string" ? parseInt(MedicineDisbursement.MedicineDisNo) : 0,
+            MedicineDisNo: MedicineDisbursement.MedicineDisNo ?? "",
             MedicineDisAmount: typeof MedicineDisbursement.MedicineDisAmount == "string" ? parseInt(MedicineDisbursement.MedicineDisAmount) : 0,
             MedicineRoomID: convertType(MedicineDisbursement.MedicineRoomID),
-
             Dtime: MedicineDisbursement.Dtime,
             MedicineReceiveID: convertType(MedicineDisbursement.MedicineReceiveID),
         };
@@ -340,7 +339,7 @@ export default function MedicineDisbursementCreate() {
                 </Grid>
                 <Grid item xs={2}>
                     <FormControl fullWidth variant="outlined">
-                        <p>วันที่สั่งซื้อ</p>
+                        <p>วันที่เบิกยา</p>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DatePicker
                                 value={MedicineDisbursement.Dtime}
