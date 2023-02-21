@@ -5,7 +5,7 @@ import { MedicineLabelsInterface } from "./IMedicineLabel";
 export interface MedicineReceiveInterface {
 
     ID: number,
-    MedicineReceiveNo: number,
+    MedicineReceiveNo: string,
     RecievedDate: Date | null,
     
     PharmacistID: number,
