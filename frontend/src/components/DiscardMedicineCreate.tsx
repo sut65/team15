@@ -367,20 +367,6 @@ export default function DiscardmedicineCreate(this: any) {
 
                             />
                         </LocalizationProvider>
-                        <Grid item xs={4}>
-                            <FormControl fullWidth variant="outlined" style={{ width: '100%' }}>
-                                <p>ผู้บันทึก</p>
-                                <Select
-                                    disabled
-                                    native
-                                >
-                                    <option>
-                                        {user?.Name}
-                                    </option>
-
-                                </Select>
-                            </FormControl>
-                        </Grid>
                     </FormControl>
                     <Grid item xs={12}>
                         <Stack
