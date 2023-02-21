@@ -25,7 +25,7 @@ func TestOrdernumber(t *testing.T){
 	for _, o := range ordernumber{
 		order := Order{
 			Ordernumber: o,
-			Quantity:     50, //ผิด
+			Quantity:     50, 
 			Priceperunit: 200,
 			Datetime: time.Now(),
 		}
@@ -37,7 +37,7 @@ func TestOrdernumber(t *testing.T){
 
 	g.Expect(err).ToNot(BeNil()) //เช็คว่ามันว่างไหม
 
-	g.Expect(err.Error()).To(Equal("Ordernumber not matche")) //ส่ง error msg
+	g.Expect(err.Error()).To(Equal("Ordernumber must be A then 4 digit")) //ส่ง error msg
 	}
 
 }
