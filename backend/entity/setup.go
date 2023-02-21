@@ -246,7 +246,7 @@ func SetupDatabase() {
 
 	//ระบบคลังยา
 	medicineReceive := MedicineReceive{
-		MedicineReceiveNo: 8888,
+		MedicineReceiveNo: "B25430",
 		Pharmacist:        pharmacist3,
 		Zone:              Zone1,
 		RecievedDate:      time.Now(),

@@ -9,8 +9,8 @@ import (
 
 type MedicineReceive struct {
 	gorm.Model
-
-	MedicineReceiveNo int	`valid:"required~Number: must be 4 digits, range(1000|9999)~Number: range 1000|9999"`
+							
+	MedicineReceiveNo string	`gorm:"uniqueIndex" valid:"matches(^[B]\\d{5}$)~MedicineReceiveNo not matche,required~MedicineReceiveNo not matche"`
 	RecievedDate      time.Time	`valid:"Timenotpast~RecievedDate unsable, Timenotfuture~DispenseTime must not be in the future"`
 
 	PharmacistID *uint
