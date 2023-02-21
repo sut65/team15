@@ -156,6 +156,9 @@ export default function MedicineReturnList() {
                     <Table aria-label="simple table">
                     <TableHead>
               <TableRow>
+              <TableCell align="center" width="10%">
+                  หมายเลขใบคืนยา
+                </TableCell>
                 <TableCell align="center" width="10%">
                   หมายเลขใบจ่ายยา
                 </TableCell>
@@ -190,6 +193,7 @@ export default function MedicineReturnList() {
              <TableBody>
               {Return.map((Return: ReturnInterface) => (
                 <TableRow key={Return.ID}>
+                   <TableCell align="center" size="medium"> {Return.MedicineReturnNo}    </TableCell>
                   <TableCell align="center">{Return.DispenseMedicine.DispenseNo}</TableCell>
                   <TableCell align="center">{Return.Order.Medicine.Name}</TableCell>
                   <TableCell align="center">{Return.Reason.ReasonName}</TableCell>
