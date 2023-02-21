@@ -164,7 +164,7 @@ export default function MedicineDisbursementUpdate() {
         let data = {
             ID: convertType(MedicineDisbursement.ID),
             PharmacistID: Number(localStorage.getItem("uid")),
-            MedicineDisNo: convertType(MedicineDisbursement.MedicineDisNo),
+            MedicineDisNo: MedicineDisbursement.MedicineDisNo ?? "",
             MedicineDisAmount: convertType(MedicineDisbursement.MedicineDisAmount),
             MedicineRoomID: convertType(MedicineDisbursement.MedicineRoomID),
             Dtime: MedicineDisbursement.Dtime,

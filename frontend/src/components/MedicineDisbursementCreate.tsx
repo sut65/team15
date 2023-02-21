@@ -223,14 +223,14 @@ export default function MedicineDisbursementCreate() {
                 </Box>
                 </Box>
                 <Grid container spacing={4}>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
                             <p>เลขใบเบิกยา</p>
                             <FormControl fullWidth variant="outlined">
                                 <TextField
                                     id="MedicineDisNo"
                                     variant="outlined"
-                                    type="number"
+                                    type="string"
                                     size="medium"
                                     placeholder="เลขใบเบิกยา"
                                     onChange={handleInputChange}
@@ -239,7 +239,7 @@ export default function MedicineDisbursementCreate() {
                         </FormControl>
                     </Grid>
 
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
                             <p>ชื่อยา </p>
                             <Select
@@ -260,31 +260,32 @@ export default function MedicineDisbursementCreate() {
                         </FormControl>
                     </Grid>
                 </Grid>
-                <Grid item xs={6}>
 
-                    <FormControl fullWidth variant="outlined" style={{ width: '90%' }}>
-                        <p>หน่วยยา</p>
-                        <Select
-                            native
-                            value={MedicineDisbursement.MedicineReceiveID}
-                            onChange={handleChange}
-                            inputProps={{
-                                name: "MedicineReceiveID",
-                            }}
-                        >
-                            <option aria-label="None" value="">
-                                โปรดเลือกหน่วยยา
-                            </option>
-                            {MedicineReceive.map((item: MedicineReceiveInterface) => (
-                                <option value={item.ID} key={item.ID}>
-                                    {item.MedicineLabel.Order.Unit.Name}
+                <Grid container spacing={4}>
+                    <Grid item xs={4}>
+                        <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
+                            <p>หน่วยยา</p>
+                            <Select
+                                native
+                                value={MedicineDisbursement.MedicineReceiveID}
+                                onChange={handleChange}
+                                inputProps={{
+                                    name: "MedicineReceiveID",
+                                }}
+                            >
+                                <option aria-label="None" value="">
+                                    โปรดเลือกหน่วยยา
                                 </option>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </Grid>
-                    <Grid item xs={6}>
-                        <FormControl fullWidth variant="outlined" style={{ width: '105%' }}>
+                                {MedicineReceive.map((item: MedicineReceiveInterface) => (
+                                    <option value={item.ID} key={item.ID}>
+                                        {item.MedicineLabel.Order.Unit.Name}
+                                    </option>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
                             <p>จำนวนยา</p>
                             <FormControl fullWidth variant="outlined">
                                 <TextField
@@ -298,64 +299,69 @@ export default function MedicineDisbursementCreate() {
                             </FormControl>
                         </FormControl>
                     </Grid>
-                <Grid item xs={4}>
-
-                    <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
-                        <p>ยาสำหรับผู้ป่วยนอก-ผู้ป่วยใน</p>
-                        <Select
-                            native
-                            value={MedicineDisbursement.MedicineRoomID}
-                            onChange={handleChange}
-                            inputProps={{
-                                name: "MedicineRoomID",
-                            }}
-                        >
-                            <option aria-label="None" value="">
-                                โปรดเลือกยาสำหรับผู้ป่วย
-                            </option>
-                            {medicineRoom.map((item: MedicineRoomInterface) => (
-                                <option value={item.ID} key={item.ID}>
-                                    {item.MRname}
-                                </option>
-                            ))}
-                        </Select>
-                    </FormControl>
                 </Grid>
-
-
-                <Grid item xs={4}>
-                    <FormControl fullWidth variant="outlined" style={{ width: '100%' }}>
-                        <p>ผู้บันทึกการเบิกยา</p>
-                        <Select
-                            disabled
-                            native
-                        >
-                            <option>
-                                {user?.Name}
-                            </option>
-
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <Grid item xs={2}>
-                    <FormControl fullWidth variant="outlined">
-                        <p>วันที่เบิกยา</p>
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <DatePicker
-                                value={MedicineDisbursement.Dtime}
-                                onChange={(newValue) => {
-                                    setMedicineDisbursement({
-                                        ...MedicineReceive,
-                                        Dtime: newValue,
-                                    });
-
+                <Grid container spacing={4}>
+                    <Grid item xs={4}>
+                        <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
+                            <p>ยาสำหรับผู้ป่วยนอก-ผู้ป่วยใน</p>
+                            <Select
+                                native
+                                value={MedicineDisbursement.MedicineRoomID}
+                                onChange={handleChange}
+                                inputProps={{
+                                    name: "MedicineRoomID",
                                 }}
-                                renderInput={(params) => <TextField {...params} />}
+                            >
+                                <option aria-label="None" value="">
+                                    โปรดเลือกยาสำหรับผู้ป่วย
+                                </option>
+                                {medicineRoom.map((item: MedicineRoomInterface) => (
+                                    <option value={item.ID} key={item.ID}>
+                                        {item.MRname}
+                                    </option>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
 
-                            />
 
-                        </LocalizationProvider>
-                    </FormControl>
+                    <Grid item xs={4}>
+                        <FormControl fullWidth variant="outlined" style={{ width: '100%' }}>
+                            <p>ผู้บันทึกการเบิกยา</p>
+                            <Select
+                                disabled
+                                native
+                            >
+                                <option>
+                                    {user?.Name}
+                                </option>
+
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                </Grid>
+
+                <Grid container spacing={4}>
+                    <Grid item xs={5}>
+                        <FormControl fullWidth variant="outlined" style={{ width: '100%' }}>
+                            <p>วันที่เบิกยา</p>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+                                    value={MedicineDisbursement.Dtime}
+                                    onChange={(newValue) => {
+                                        setMedicineDisbursement({
+                                            ...MedicineReceive,
+                                            Dtime: newValue,
+                                        });
+
+                                    }}
+                                    renderInput={(params) => <TextField {...params} />}
+
+                                />
+
+                            </LocalizationProvider>
+                        </FormControl>
+                    </Grid>
                 </Grid>
                 <Grid item xs={12}>
                     <Stack
