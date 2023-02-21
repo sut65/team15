@@ -241,6 +241,7 @@ export default function DiscardmedicineCreate(this: any) {
                         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
                             <p>ชื่อยา</p>
                             <Select
+                                disabled
                                 native
                                 value={discard.MedicineReceiveID}
                                 onChange={handleChange}
