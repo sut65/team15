@@ -155,6 +155,7 @@ export default function MedicineReturnCreate(){
       function submit() {
         setLoading(true)
         let data = {
+            MedicineReturnNo: convertType(Return.MedicineReturnNo ?? "" ),
             OrderID: convertType(Return.OrderID),
             DispensemedicineID: convertType(Return.DispenseMedicineID),
             ReasonID: convertType(Return.ReasonID),
@@ -232,6 +233,25 @@ export default function MedicineReturnCreate(){
         </Box>
         <Divider />
         <Grid container spacing={3} >
+        <Grid item xs={6}>
+        <FormControl fullWidth variant="outlined" style={{ width: '100%', float: 'left' }}>
+           <p>หมายเลขใบคืนยา</p>
+          <FormControl fullWidth variant="outlined">
+            <TextField
+                      id="MedicineReturnNo"
+                      variant="outlined"
+                      type="number"
+                      size="medium"
+                      placeholder="เลขใบคืนยา"
+                      InputProps={{
+                        inputProps: { min: 500000,
+                                      max: 999999 }
+                      }}
+                      onChange={handleInputChange}
+                    />
+                  </FormControl>
+                  </FormControl>
+                </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
               <p>หมายเลขจ่ายยา</p>
@@ -323,7 +343,7 @@ export default function MedicineReturnCreate(){
 
           <Grid item xs={6}>
           <FormControl fullWidth variant="outlined">
-            <p>วันหมดอายุ</p>
+            <p>วันที่คืน</p>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                   value={Return.ReturnDate}

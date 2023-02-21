@@ -40,11 +40,11 @@ func CreatemedicineDisbursement(c *gin.Context) {
 	// 14: สร้าง MedicineDisbursement
 	wv := entity.MedicineDisbursement{
 
-		Dtime:      medicineDisbursement.Dtime,
+		Dtime:             medicineDisbursement.Dtime,
 		Pharmacist:        pharmacist,
-		MedicineReceive:     medicineReceive,
-		MedicineRoom:              medicineRoom,
-		MedicineDisNo: medicineDisbursement.MedicineDisNo,
+		MedicineReceive:   medicineReceive,
+		MedicineRoom:      medicineRoom,
+		MedicineDisNo:     medicineDisbursement.MedicineDisNo,
 		MedicineDisAmount: medicineDisbursement.MedicineDisAmount,
 	}
 	if _, err := govalidator.ValidateStruct(wv); err != nil {
@@ -64,7 +64,7 @@ func GetMedicineDisbursement(c *gin.Context) {
 	var medicineDisbursement entity.MedicineDisbursement
 	id := c.Param("id")
 	if err := entity.DB().Preload("Pharmacist").Preload("MedicineRoom").Preload("MedicineReceive").Preload("MedicineReceive.MedicineLabel").Preload("MedicineReceive.MedicineLabel.Order").Preload("MedicineReceive.MedicineLabel.Order.Unit").
-	Preload("MedicineReceive.MedicineLabel.Order.Medicine").Raw("SELECT * FROM medicine_disbursements WHERE id = ?", id).Find(&medicineDisbursement).Error; err != nil {
+		Preload("MedicineReceive.MedicineLabel.Order.Medicine").Raw("SELECT * FROM medicine_disbursements WHERE id = ?", id).Find(&medicineDisbursement).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -75,7 +75,7 @@ func GetMedicineDisbursement(c *gin.Context) {
 func ListMedicineDisbursement(c *gin.Context) {
 	var medicineDisbursement []entity.MedicineDisbursement
 	if err := entity.DB().Preload("Pharmacist").Preload("MedicineRoom").Preload("MedicineReceive").Preload("MedicineReceive.MedicineLabel").Preload("MedicineReceive.MedicineLabel.Order").Preload("MedicineReceive.MedicineLabel.Order.Unit").
-	Preload("MedicineReceive.MedicineLabel.Order.Medicine").Raw("SELECT * FROM medicine_disbursements").Find(&medicineDisbursement).Error; err != nil {
+		Preload("MedicineReceive.MedicineLabel.Order.Medicine").Raw("SELECT * FROM medicine_disbursements").Find(&medicineDisbursement).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -85,7 +85,7 @@ func ListMedicineDisbursement(c *gin.Context) {
 // DELETE /medicineDisbursement/:id
 func DeleteMedicineDisbursement(c *gin.Context) {
 	id := c.Param("id")
-	if tx := entity.DB().Exec("DELETE FROM medicinedisbursements WHERE id = ?", id); tx.RowsAffected == 0 {
+	if tx := entity.DB().Exec("DELETE FROM medicine_disbursements WHERE id = ?", id); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "medicineDisbursement not found"})
 		return
 	}
@@ -96,17 +96,46 @@ func DeleteMedicineDisbursement(c *gin.Context) {
 // PATCH /medicineDisbursement
 func UpdateMedicineDisbursement(c *gin.Context) {
 	var medicineDisbursement entity.MedicineDisbursement
+	var pharmacist entity.User
+	var medicineRoom entity.MedicineRoom
+	var medicineReceive entity.MedicineReceive
+
 	if err := c.ShouldBindJSON(&medicineDisbursement); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if tx := entity.DB().Where("id = ?", medicineDisbursement.ID).First(&medicineDisbursement); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ambulance not found"})
+	if tx := entity.DB().Where("id = ?", medicineDisbursement.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบสมาชิก"})
 		return
 	}
-	if err := entity.DB().Save(&medicineDisbursement).Error; err != nil {
+	if tx := entity.DB().Where("id = ?", medicineDisbursement.MedicineReceiveID).First(&medicineReceive); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบชื่อยา"})
+		return
+	}
+	if tx := entity.DB().Where("id = ?", medicineDisbursement.MedicineRoomID).First(&medicineRoom); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบข้อมูลในการแยกห้องยา"})
+		return
+	}
+
+	update := entity.MedicineDisbursement{
+		Dtime:             medicineDisbursement.Dtime,
+		Pharmacist:        medicineDisbursement.Pharmacist,
+		MedicineReceive:   medicineDisbursement.MedicineReceive,
+		MedicineRoom:      medicineDisbursement.MedicineRoom,
+		MedicineDisNo:     medicineDisbursement.MedicineDisNo,
+		MedicineDisAmount: medicineDisbursement.MedicineDisAmount,
+	}
+
+	// ขั้นตอนการ validate
+	if _, err := govalidator.ValidateStruct(update); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": medicineDisbursement})
+
+	if err := entity.DB().Where("id = ?", medicineDisbursement.ID).Updates(&medicineDisbursement).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data":update})
 }

@@ -87,7 +87,7 @@ func main() {
 	r.GET("/medicineDisbursement", controller.ListMedicineDisbursement)
 	r.GET("/medicineDisbursement/:id", controller.GetMedicineDisbursement)
 	r.PATCH("/medicineDisbursement", controller.UpdateMedicineDisbursement)
-
+	r.DELETE("/medicineDisbursements/:id", controller.DeleteMedicineDisbursement)
 	//MedicineRoom
 	r.GET("/MedicineRooms", controller.ListMedicineRoom)
 

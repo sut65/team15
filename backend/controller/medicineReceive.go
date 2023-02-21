@@ -137,5 +137,5 @@ func UpdateMedicineReceive(c *gin.Context) {
 	}
 
 	
-	c.JSON(http.StatusOK, gin.H{"data": medicineReceive})
+	c.JSON(http.StatusOK, gin.H{"data": update})
 }

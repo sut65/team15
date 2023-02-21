@@ -7,6 +7,8 @@ import { OrderInterface } from "./IOrder";
 export interface ReturnInterface {
     ID: number,
 
+    MedicineReturnNo: number,
+
     Note: string,
 
     ReturnDate: Date | null,

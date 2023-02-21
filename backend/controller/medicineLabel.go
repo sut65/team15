@@ -120,21 +120,21 @@ func UpdateMedicineLabel(c *gin.Context) {
 	}
 
 	if tx := entity.DB().Where("id = ?", medicineLabel.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบสมาชิก"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacist not found"})
 		return
 	}
 
 	if tx := entity.DB().Where("id = ?", medicineLabel.EffectID).First(&effect); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบบ"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "effect not found"})
 		return
 	}
 
 	if tx := entity.DB().Where("id = ?", medicineLabel.SuggestionID).First(&suggestion); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "a"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "suggestion not found"})
 		return
 	}
 	if tx := entity.DB().Where("id = ?", medicineLabel.OrderID).First(&order); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "b"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "order not found"})
 		return
 	}
 

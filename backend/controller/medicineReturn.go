@@ -49,6 +49,7 @@ func CreateMedicineReturn(c *gin.Context) {
 	}
 
 	wv := entity.Return{
+		MedicineReturnNo:  Return.MedicineReturnNo,
 		ReturnDate:        Return.ReturnDate,
 		Pharmacist:        pharmacist,
 		Staff:             Staff,
@@ -89,7 +90,7 @@ func ListMedicineReturn(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"data": Return})
 }
-
+//ลบ
 func DeleteMedicineReturn(c *gin.Context) {
 	id := c.Param("id")
 	if tx := entity.DB().Exec("DELETE FROM returns WHERE id = ?", id); tx.RowsAffected == 0 {
@@ -112,32 +113,32 @@ func UpdateMedicineReturn(c *gin.Context) {
 		return
 	}
 	if tx := entity.DB().Where("id = ?", Return.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบสมาชิก"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacist not found"})
 		return
 	}
 
 	if tx := entity.DB().Where("id = ?", Return.DispenseMedicineID).First(&dispensemedicine); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ บ"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "DispenseMedicine not found"})
 		return
 	}
 
 	if tx := entity.DB().Where("id = ?", Return.StaffID).First(&Staff); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "a"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Staff not found"})
 		return
 	}
 
 	if tx := entity.DB().Where("id = ?", Return.OrderID).First(&order); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "b"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Order not found"})
 		return
 	}
 
 	if tx := entity.DB().Where("id = ?", Return.ReasonID).First(&Reason); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "b"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Reason not found"})
 		return
 	}
 
 	update := entity.Return{
-
+        MedicineReturnNo:  Return.MedicineReturnNo,
 		ReturnDate:        Return.ReturnDate,
 		Pharmacist:        Return.Pharmacist,
 		Staff:             Return.Staff,
