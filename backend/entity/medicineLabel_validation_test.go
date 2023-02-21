@@ -18,7 +18,7 @@ func TestInstructionPass(t *testing.T) {
 
 		Instruction: "ก่อนอาหาร",
 		Property:    "แก้ไอ",
-		Consumption: "1",
+		Consumption: 1,
 		Date:        time.Now(),
 	}
 	// ตรวจสอบด้วย govalidator
@@ -39,7 +39,7 @@ func TestInstructionNotBlank(t *testing.T) {
 
 		Instruction: "",
 		Property:    "แก้ไอ",
-		Consumption: "1",
+		Consumption: 1,
 		Date:        time.Now(),
 	}
 
@@ -64,7 +64,7 @@ func TestPropertyNotBlank(t *testing.T) {
 
 		Instruction: "ก่อนอาหาร",
 		Property:    "",
-		Consumption: "1",
+		Consumption: 1,
 		Date:        time.Now(),
 	}
 
@@ -81,26 +81,31 @@ func TestPropertyNotBlank(t *testing.T) {
 	g.Expect(err.Error()).To(Equal("Property cannot be blank"))
 }
 
-func TestConsumptionBePositive(t *testing.T) {
+func TestConsumtion(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	medicineLabel := MedicineLabel{
+	c := []uint{
+		0,
+		101,
+	}
+
+	for _, con := range c {
+		medicineLabel := MedicineLabel{
 		Instruction: "ก่อนอาหาร",
 		Property:    "แก้ไอ",
-		Consumption: "-1",
+		Consumption: con,
 		Date:        time.Now(),
+		}
+		// ตรวจสอบด้วย govalidator
+		ok, err := govalidator.ValidateStruct(medicineLabel)
+
+	g.Expect(ok).ToNot(BeTrue()) //OK ไม่เป็น true
+
+	g.Expect(err).ToNot(BeNil()) //เช็คว่ามันว่างไหม
+
+	g.Expect(err.Error()).To(Equal("The Consumption must be in the range 1-100")) //ส่ง error msg
+
 	}
-	// ตรวจสอบด้วย govalidator
-	ok, err := govalidator.ValidateStruct(medicineLabel)
-
-	// ok ต้องไม่เป็นค่า true แปลว่าต้องจับ error ได้
-	g.Expect(ok).ToNot(BeTrue())
-
-	// err ต้องไม่เป็นค่า nil แปลว่าต้องจับ error ได้
-	g.Expect(err).ToNot(BeNil())
-
-	// err.Error ต้องมี error message แสดงออกมา
-	g.Expect(err.Error()).To(Equal("Consumption must be Positive"))
 
 }
 func TestDateNotBePast(t *testing.T) {
@@ -110,7 +115,7 @@ func TestDateNotBePast(t *testing.T) {
 
 		Instruction: "ก่อนอาหาร",
 		Property:    "แก้ไอ",
-		Consumption: "1",
+		Consumption:  1,
 		Date:        time.Now().Add(time.Minute * -10), // อดีตผิด วันที่เวลาต้องไม่เป็นอดีต
 
 	}

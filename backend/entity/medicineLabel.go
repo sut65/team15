@@ -11,7 +11,7 @@ type MedicineLabel struct {
 	gorm.Model
 	Instruction string    `valid:"required~Instruction cannot be blank"`
 	Property    string    `valid:"required~Property cannot be blank"`
-	Consumption string    `valid:"range(0|100)~Consumption must be Positive, required~Consumption cannot be blank"`
+	Consumption   		uint	`valid:"required~The Consumption must be in the range 1-100, range(1|100)~The Consumption must be in the range 1-100"`
 	// Date        time.Time 
 	Date        time.Time  `valid:"donotpast~MedicineLabel not be past"`
 

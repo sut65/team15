@@ -221,7 +221,7 @@ func SetupDatabase() {
 		Effect:      effect1,
 		Instruction: "ก่อนอาหาร",
 		Property:    "แก้ไอ",
-		Consumption: "1",
+		Consumption: 1,
 		Pharmacist:  pharmacist1,
 		Date:        time.Now(),
 	}
@@ -479,6 +479,7 @@ func SetupDatabase() {
 
 	// --- MedicineLabel Data
 	Return1 := Return{
+		MedicineReturnNo:   500000,
 		DispenseMedicine: dispensemedicine,
 		Order:            order1,
 		Staff:            stff1,
