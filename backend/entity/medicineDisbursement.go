@@ -9,7 +9,7 @@ import (
 type MedicineDisbursement struct {
 	gorm.Model
 
-	MedicineDisNo int
+	MedicineDisNo string
 	Dtime  time.Time
 	MedicineDisAmount int
 

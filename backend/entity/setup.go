@@ -291,7 +291,7 @@ func SetupDatabase() {
 
 	//ระบบเบิกยา
 	medicineDisbursement01 := MedicineDisbursement{
-		MedicineDisNo:     2543,
+		MedicineDisNo:     "C205",
 		Pharmacist:        pharmacist3,
 		MedicineRoom:      medicineRoom1,
 		MedicineDisAmount: 10,
