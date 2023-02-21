@@ -90,7 +90,7 @@ func ListMedicineReturn(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"data": Return})
 }
-
+//ลบ
 func DeleteMedicineReturn(c *gin.Context) {
 	id := c.Param("id")
 	if tx := entity.DB().Exec("DELETE FROM returns WHERE id = ?", id); tx.RowsAffected == 0 {
