@@ -23,7 +23,6 @@ func TestMedicineDisbursementUsable(t *testing.T) {
 
 }
 
-//เวลา
 func TestNotMedicineDisbursementUNnsable(t *testing.T) {
 	g := NewGomegaWithT(t)
 
@@ -76,7 +75,7 @@ func TestMedicineDisAmountnotbeBlank(t *testing.T) {
 
 }
 
-
+//เวลา
 func TestMedicineDisbursementUNnsable(t *testing.T) {
 	g := NewGomegaWithT(t)
 	t.Run("check Dtime unsable", func(t *testing.T) {

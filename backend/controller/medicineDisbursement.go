@@ -22,22 +22,28 @@ func CreatemedicineDisbursement(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	//  10: ค้นหา user ด้วย id
-	if tx := entity.DB().Where("id = ?", medicineDisbursement.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacist not found"})
-		return
-	}
-	// 12: ค้นหา MedicineReceive ด้วย id
-	if tx := entity.DB().Where("id = ?", medicineDisbursement.MedicineReceiveID).First(&medicineReceive); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "medicine not found"})
-		return
-	}
-	// 11: ค้นหา medicineRoom ด้วย id
+	// 9: ค้นหา medicineRoom ด้วย id
 	if tx := entity.DB().Where("id = ?", medicineDisbursement.MedicineRoomID).First(&medicineRoom); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "side effect not found"})
 		return
 	}
-	// 14: สร้าง MedicineDisbursement
+	// 10: ค้นหา MedicineReceive ด้วย id
+	if tx := entity.DB().Where("id = ?", medicineDisbursement.MedicineReceiveID).First(&medicineReceive); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "medicine not found"})
+		return
+	}
+	//  11: ค้นหา user ด้วย id
+	if tx := entity.DB().Where("id = ?", medicineDisbursement.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacist not found"})
+		return
+	}
+	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Phaemacist" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
+		return
+	}
+
+	// 12: สร้าง MedicineDisbursement
 	wv := entity.MedicineDisbursement{
 
 		Dtime:             medicineDisbursement.Dtime,
@@ -137,5 +143,5 @@ func UpdateMedicineDisbursement(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data":update})
+	c.JSON(http.StatusOK, gin.H{"data": update})
 }
