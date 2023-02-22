@@ -11,7 +11,7 @@ type MedicineReceive struct {
 	gorm.Model
 							
 	MedicineReceiveNo string	`gorm:"uniqueIndex" valid:"matches(^[B]\\d{5}$)~MedicineReceiveNo must be B then 5 digit,required~MedicineReceiveNo must be B then 5 digit"`
-	RecievedDate      time.Time	`valid:"Timenotpast~RecievedDate unsable, Timenotfuture~DispenseTime must not be in the future"`
+	RecievedDate      time.Time	`valid:"Timenotpast~RecievedDate unsable, Timenotfuture~RecievedDate must not be in the future"`
 
 	PharmacistID *uint
 	Pharmacist   User
@@ -32,14 +32,18 @@ type Zone struct {
 
 	MedicineReceives []MedicineReceive `gorm:"foreignKey:ZoneID"`
 }
+
 func init() {
+
 	govalidator.CustomTypeTagMap.Set("Timenotpast", func(i interface{}, context interface{}) bool {
 		t := i.(time.Time)
-		return t.After(time.Now().Add(time.Minute * -5)) //เวลา > เวลาปัจจุบัน - 1 นาที
+		now := time.Now().Add(time.Minute * -20)
+		return t.After(now) || t.Equal(now)
 	})
+
 	govalidator.CustomTypeTagMap.Set("Timenotfuture", func(i interface{}, context interface{}) bool {
 		t := i.(time.Time)
-		now := time.Now().Add(time.Minute * 5)
+		now := time.Now().Add(time.Minute * 20)
 		return t.Before(now) || t.Equal(now)
 	})
 }
