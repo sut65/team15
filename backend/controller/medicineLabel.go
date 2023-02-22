@@ -1,17 +1,14 @@
 package controller
 
 import (
-
 	"fmt"
 	"net/http"
-	
+
 	"github.com/asaskevich/govalidator"
 
 	"github.com/sut65/team15/entity"
 
 	"github.com/gin-gonic/gin"
-
-	
 )
 
 // POST /ambulances
@@ -21,7 +18,7 @@ func CreateMedicineLabel(c *gin.Context) {
 	var effect entity.Effect
 	var pharmacist entity.User
 	var suggestion entity.Suggestion
-	
+
 	//เช็คว่าตรงกันมั้ย
 	if err := c.ShouldBindJSON(&medicineLabel); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -33,7 +30,7 @@ func CreateMedicineLabel(c *gin.Context) {
 		return
 	}
 	entity.DB().Joins("Role").Find(&pharmacist)
-	if pharmacist.Role.Name != "Phaemacist" { 
+	if pharmacist.Role.Name != "Phaemacist" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
 		return
 	}
@@ -55,14 +52,14 @@ func CreateMedicineLabel(c *gin.Context) {
 	}
 	// 11: สร้าง Ambulance
 	wv := entity.MedicineLabel{
-		Instruction:          medicineLabel.Instruction,
-		Property:             medicineLabel.Property,
-		Consumption:          medicineLabel.Consumption,
-		Date:                 medicineLabel.Date,
-		Order:                order,
-		Suggestion:           suggestion,
-		Effect:               effect,
-		Pharmacist:           pharmacist,     // โยงความสัมพันธ์กับ Entity user
+		Instruction: medicineLabel.Instruction,
+		Property:    medicineLabel.Property,
+		Consumption: medicineLabel.Consumption,
+		Date:        medicineLabel.Date,
+		Order:       order,
+		Suggestion:  suggestion,
+		Effect:      effect,
+		Pharmacist:  pharmacist, // โยงความสัมพันธ์กับ Entity user
 	}
 
 	fmt.Println(wv.Date)
@@ -118,7 +115,6 @@ func UpdateMedicineLabel(c *gin.Context) {
 	var effect entity.Effect
 	var pharmacist entity.User
 	var suggestion entity.Suggestion
-	
 
 	if err := c.ShouldBindJSON(&medicineLabel); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -130,7 +126,7 @@ func UpdateMedicineLabel(c *gin.Context) {
 		return
 	}
 	entity.DB().Joins("Role").Find(&pharmacist)
-	if pharmacist.Role.Name != "Phaemacist" { 
+	if pharmacist.Role.Name != "Phaemacist" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
 		return
 	}
@@ -150,15 +146,14 @@ func UpdateMedicineLabel(c *gin.Context) {
 	}
 
 	update := entity.MedicineLabel{
-		Instruction:          medicineLabel.Instruction,
-		Property:             medicineLabel.Property,
-		Consumption:          medicineLabel.Consumption,
-		Date:                 medicineLabel.Date,
-		Order:                medicineLabel.Order,
-		Suggestion:           medicineLabel.Suggestion,
-		Effect:               medicineLabel.Effect,
-		Pharmacist:           medicineLabel.Pharmacist,
-
+		Instruction: medicineLabel.Instruction,
+		Property:    medicineLabel.Property,
+		Consumption: medicineLabel.Consumption,
+		Date:        medicineLabel.Date,
+		Order:       medicineLabel.Order,
+		Suggestion:  medicineLabel.Suggestion,
+		Effect:      medicineLabel.Effect,
+		Pharmacist:  medicineLabel.Pharmacist,
 	}
 	// ขั้นตอนการ validate
 	if _, err := govalidator.ValidateStruct(update); err != nil {
@@ -173,5 +168,3 @@ func UpdateMedicineLabel(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": update})
 }
-
-
