@@ -294,7 +294,7 @@ func SetupDatabase() {
 		MedicineDisNo:     "C205",
 		Pharmacist:        pharmacist3,
 		MedicineRoom:      medicineRoom1,
-		MedicineDisAmount: 10,
+		MedicineDisAmount: 100,
 		Dtime:             time.Now(),
 		MedicineReceive:   medicineReceive,
 	}
