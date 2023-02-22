@@ -12,9 +12,9 @@ func TestMedicineDisbursementUsable(t *testing.T) {
 	g := NewGomegaWithT(t)
 	t.Run("check data is validate", func(t *testing.T) {
 		medicineDisbursement := MedicineDisbursement{
-			MedicineDisNo: "C205",
+			MedicineDisNo:     "C205",
 			MedicineDisAmount: 100,
-			Dtime:      time.Now(),
+			Dtime:             time.Now(),
 		}
 		ok, err := govalidator.ValidateStruct(medicineDisbursement)
 		g.Expect(ok).To(BeTrue())
@@ -32,11 +32,11 @@ func TestNotMedicineDisbursementUNnsable(t *testing.T) {
 		"C1234",
 		"C12",
 	}
-	for _, o := range MedicineDisNo{
+	for _, o := range MedicineDisNo {
 		medicineDisbursement := MedicineDisbursement{
-			MedicineDisNo: o,
+			MedicineDisNo:     o,
 			MedicineDisAmount: 100,
-			Dtime:      time.Now(),
+			Dtime:             time.Now(),
 		}
 
 		ok, err := govalidator.ValidateStruct(medicineDisbursement)
@@ -46,7 +46,7 @@ func TestNotMedicineDisbursementUNnsable(t *testing.T) {
 	}
 }
 
-//ในช่วง 1-1000
+// ในช่วง 1-1000
 func TestMedicineDisAmountnotbeBlank(t *testing.T) {
 	g := NewGomegaWithT(t)
 
@@ -58,36 +58,51 @@ func TestMedicineDisAmountnotbeBlank(t *testing.T) {
 	for _, ku := range k {
 		medicineDisbursement := MedicineDisbursement{
 
-			MedicineDisNo: "C555",
+			MedicineDisNo:     "C555",
 			MedicineDisAmount: ku,
-			Dtime:      time.Now(),
+			Dtime:             time.Now(),
 		}
 		// ตรวจสอบด้วย govalidator
 		ok, err := govalidator.ValidateStruct(medicineDisbursement)
 
-	g.Expect(ok).ToNot(BeTrue()) 
+		g.Expect(ok).ToNot(BeTrue())
 
-	g.Expect(err).ToNot(BeNil()) 
+		g.Expect(err).ToNot(BeNil())
 
-	g.Expect(err.Error()).To(Equal("The MedicineDisAmount must be in the range 1-1000")) 
+		g.Expect(err.Error()).To(Equal("The MedicineDisAmount must be in the range 1-1000"))
 
 	}
 
 }
 
-//เวลา
+// เวลา
 func TestMedicineDisbursementUNnsable(t *testing.T) {
 	g := NewGomegaWithT(t)
 	t.Run("check Dtime unsable", func(t *testing.T) {
 		medicineDisbursement := MedicineDisbursement{
-			MedicineDisNo: "C205",
+			MedicineDisNo:     "C205",
 			MedicineDisAmount: 100,
-			Dtime:      time.Now().Add(time.Minute * -5), // ต้องเป็นปัจจุบัน
+			Dtime:             time.Now().Add(time.Minute * -120), // ต้องเป็นปัจจุบัน
 		}
 
 		ok, err := govalidator.ValidateStruct(medicineDisbursement)
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).ToNot(BeNil())
 		g.Expect(err.Error()).To(Equal("Dtime unsable"))
+	})
+}
+func TestMedicineDisbursementUNnsableFuture(t *testing.T) {
+	g := NewGomegaWithT(t)
+	t.Run("check Dtime must not be in the future", func(t *testing.T) {
+		medicineDisbursement := MedicineDisbursement{
+			MedicineDisNo:     "C205",
+			MedicineDisAmount: 100,
+			Dtime:             time.Now().Add(time.Minute * +120), // ต้องเป็นปัจจุบัน
+		}
+
+		ok, err := govalidator.ValidateStruct(medicineDisbursement)
+		g.Expect(ok).NotTo(BeTrue())
+		g.Expect(err).ToNot(BeNil())
+		g.Expect(err.Error()).To(Equal("Dtime must not be in the future"))
 	})
 }

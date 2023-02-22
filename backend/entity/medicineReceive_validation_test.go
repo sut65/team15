@@ -51,7 +51,7 @@ func TestMedicineReceiveUNnsable(t *testing.T) {
 	t.Run("check RecievedDate unsable", func(t *testing.T) {
 		medicineReceive := MedicineReceive{
 			MedicineReceiveNo: "B25430",
-			RecievedDate:      time.Now().Add(time.Minute * -20), // ต้องเป็นปัจจุบัน
+			RecievedDate:      time.Now().Add(time.Minute * -60), // ต้องเป็นปัจจุบัน
 		}
 
 		ok, err := govalidator.ValidateStruct(medicineReceive)
@@ -63,10 +63,10 @@ func TestMedicineReceiveUNnsable(t *testing.T) {
 
 func TestMedicineReceiveUNnsableFuture(t *testing.T) {
 	g := NewGomegaWithT(t)
-	t.Run("check RecievedDate unsable", func(t *testing.T) {
+	t.Run("check RecievedDate future unsable", func(t *testing.T) {
 		medicineReceive := MedicineReceive{
 			MedicineReceiveNo: "B25430",
-			RecievedDate:      time.Now().Add(time.Minute * +20), // ต้องเป็นปัจจุบัน
+			RecievedDate:      time.Now().Add(time.Minute * +60), // ต้องเป็นปัจจุบัน
 		}
 
 		ok, err := govalidator.ValidateStruct(medicineReceive)
