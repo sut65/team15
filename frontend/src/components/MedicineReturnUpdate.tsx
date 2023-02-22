@@ -272,7 +272,7 @@ const getdispensemedicine = async () => {
                 </Grid>
       <Grid item xs={6}>
         <FormControl fullWidth variant="outlined">
-          <p>หมายเลขจ่ายยา</p>
+          <p>หมายเลขใบจ่ายเงิน</p>
           <Select
             native
             value={Return.DispenseMedicineID}
