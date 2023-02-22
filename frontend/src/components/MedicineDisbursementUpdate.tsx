@@ -255,6 +255,7 @@ export default function MedicineDisbursementUpdate() {
                                 <TextField
                                     id="MedicineDisNo"
                                     variant="outlined"
+                                    value={MedicineDisbursement.MedicineDisNo}
                                     type="string"
                                     size="medium"
                                     placeholder="เลขใบเบิกยา"
@@ -266,20 +267,22 @@ export default function MedicineDisbursementUpdate() {
 
                     <Grid item xs={4}>
                         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
-                            <p>ชื่อยา </p>
+                            <p>ชื่อยา</p>
                             <Select
-                                variant="outlined"
-                                defaultValue={0}
+                                native
                                 value={MedicineDisbursement.MedicineReceiveID}
                                 onChange={handleChange}
-                                inputProps={{ name: "MedicineReceiveID" }}
+                                inputProps={{
+                                    name: "MedicineReceiveID",
+                                }}
                             >
-                                <MenuItem value={0} key={0}>เลือกชื่อยา </MenuItem>
-                                {MedicineReceive.map((item: MedicineReceiveInterface) =>
-                                (
-                                    <MenuItem value={item.ID} key={item.ID}>
+                                <option aria-label="None" value="">
+                                    เลือกชื่อยา
+                                </option>
+                                {MedicineReceive.map((item: MedicineReceiveInterface) => (
+                                    <option value={item.ID} key={item.ID}>
                                         {item.MedicineLabel.Order.Medicine.Name}
-                                    </MenuItem>
+                                    </option>
                                 ))}
                             </Select>
                         </FormControl>
@@ -316,6 +319,7 @@ export default function MedicineDisbursementUpdate() {
                                 <TextField
                                     id="MedicineDisAmount"
                                     variant="outlined"
+                                    value={MedicineDisbursement.MedicineDisAmount}
                                     type="number"
                                     size="medium"
                                     placeholder="จำนวน"
