@@ -28,6 +28,11 @@ func CreateMedicineReturn(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacist not found"})
 		return
 	}
+	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Phaemacist" { 
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
+		return
+	}
 
 	if tx := entity.DB().Where("id = ?", Return.DispenseMedicineID).First(&dispensemedicine); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "DispenseMedicine not found"})
@@ -114,6 +119,11 @@ func UpdateMedicineReturn(c *gin.Context) {
 	}
 	if tx := entity.DB().Where("id = ?", Return.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacist not found"})
+		return
+	}
+	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Phaemacist" { 
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
 		return
 	}
 
