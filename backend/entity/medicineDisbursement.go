@@ -12,7 +12,7 @@ type MedicineDisbursement struct {
 
 	MedicineDisNo string	`gorm:"uniqueIndex" valid:"matches(^[C]\\d{3}$)~MedicineDisNo must be C then 3 digit,required~MedicineDisNo must be C then 3 digit"`
 	Dtime  time.Time		`valid:"Timenotpast~Dtime unsable, Timenotfuture~DispenseTime must not be in the future"`
-	MedicineDisAmount int	`valid:"required~The MedicineDisAmount must be in the range 1-1000, range(1|1000)~The MedicineDisAmount must be in the range 1-1000"`
+	MedicineDisAmount uint	`valid:"required~The MedicineDisAmount must be in the range 1-1000, range(1|1000)~The MedicineDisAmount must be in the range 1-1000"`
 
 	PharmacistID *uint
 	Pharmacist   User
