@@ -37,6 +37,11 @@ func CreateDispenseMedicine(c *gin.Context)  {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacist not found"})
 		return
 	}
+	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Pharmacist" { 
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
+		return
+	}
 
 	// 13: สร้าง DispenseMedicine 
 	dispense := entity.DispenseMedicine{
@@ -119,6 +124,11 @@ func UpdateDispenseMedicine(c *gin.Context) {
 
 	if tx := entity.DB().Where("id = ?", dispensemedicine.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacist_id not found"})
+		return
+	}
+	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Pharmacist" { 
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
 		return
 	}
 
