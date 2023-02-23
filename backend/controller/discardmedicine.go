@@ -42,6 +42,12 @@ func  CreateDiscardmedicine(c *gin.Context) {
 	}
 
 	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Phaemacist" { 
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
+		return
+	}
+
+	entity.DB().Joins("Role").Find(&pharmacist)
 
 	
 
@@ -118,6 +124,12 @@ func UpdateDiscardmedicine(c *gin.Context) {
 
 	if tx := entity.DB().Where("id = ?", discardmedicine.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบผู้ใช้"})
+		return
+	}
+
+	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Phaemacist" { 
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
 		return
 	}
 
