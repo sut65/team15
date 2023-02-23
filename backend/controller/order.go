@@ -49,6 +49,12 @@ func CreateOrder(c *gin.Context) {
 	}
 
 	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Phaemacist" { 
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
+		return
+	}
+
+	entity.DB().Joins("Role").Find(&pharmacist)
 
 	
 
@@ -123,6 +129,12 @@ func UpdateOrder(c *gin.Context) {
 
 	if tx := entity.DB().Where("id = ?", order.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบสมาชิก"})
+		return
+	}
+
+	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Phaemacist" { 
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
 		return
 	}
 
