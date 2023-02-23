@@ -1,19 +1,19 @@
 import Box from '@mui/material/Box';
-import logo from './image/MedicineRoom.jpg';
+import img from './image/pramacy.jpg';
 import Paper from '@mui/material/Paper';
-import { Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 
 function Home() {
 
     return (
-        <Box sx={{ display: 'flex', m: 2 }}>
-            <Paper elevation={2} style={{ width: "100%", textAlign: "center", fontSize: 36 }}>
-            <Typography component="h1" variant="h5">
-              <img style={{width:"600px"}} className="img" src={logo}/>
-            </Typography>
-            </Paper>
-        </Box>
+        <div>
+        <Container className="container" maxWidth="md">
+          <h1 style={{ textAlign: "center" }}>ระบบห้องยา</h1>
+        <Typography component="h1" variant="h5">
+          <img style={{width:"850px"}} className="img" src={img}/>
+        </Typography>
+      </Container>
+    </div>
     )
 }
-
 export default Home;
