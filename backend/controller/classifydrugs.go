@@ -52,6 +52,12 @@ func CreateClassifyDrugs(c *gin.Context)  {
 		return
 	}
 
+	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Phaemacist" { 
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
+		return
+	}
+
 	// 14: สร้าง classifydrug 
 	classifydrug := entity.ClassifyDrugs{
 		
@@ -135,23 +141,29 @@ func UpdateClassifyDrug(c *gin.Context) {
 		return
 	}
 
+	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Phaemacist" { 
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
+		return
+	}
+
 	if tx := entity.DB().Where("id = ?", classifydrugs.CupboardID).First(&cupboard); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ cupboard"})
 		return
 	}
 
 	if tx := entity.DB().Where("id = ?", classifydrugs.ZoneeID).First(&zonee); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ zonee"})
 		return
 	}
 
 	if tx := entity.DB().Where("id = ?", classifydrugs.FloorID).First(&floor); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ floor"})
 		return
 	}
 
 	if tx := entity.DB().Where("id = ?", classifydrugs.MedicineDisbursementID).First(&medicinedisbursement); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ medicine"})
 		return
 	}
 
