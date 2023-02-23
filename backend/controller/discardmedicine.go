@@ -30,7 +30,7 @@ func  CreateDiscardmedicine(c *gin.Context) {
 
 	//  ค้นหา medicineReceive ด้วย id
 	if tx := entity.DB().Where("id = ?", discardmedicine.MedicineReceiveID).First(&medicineReceive); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "company not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "medicineReceive not found"})
 		return
 	}
 
