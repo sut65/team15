@@ -66,7 +66,7 @@ func SetupDatabase() {
 
 	//ตำแหน่งงาน
 	role1 := Role{
-		Name: "Phaemacist",
+		Name: "Pharmacist",
 	}
 	db.Model(&Role{}).Create(&role1)
 

@@ -49,7 +49,7 @@ func CreateOrder(c *gin.Context) {
 	}
 
 	entity.DB().Joins("Role").Find(&pharmacist)
-	if pharmacist.Role.Name != "Phaemacist" { 
+	if pharmacist.Role.Name != "Pharmacist" { 
 		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
 		return
 	}
@@ -129,7 +129,7 @@ func UpdateOrder(c *gin.Context) {
 	}
 
 	entity.DB().Joins("Role").Find(&pharmacist)
-	if pharmacist.Role.Name != "Phaemacist" { 
+	if pharmacist.Role.Name != "Pharmacist" { 
 		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
 		return
 	}
@@ -179,13 +179,6 @@ func UpdateOrder(c *gin.Context) {
 // DELETE /orders/:id
 func DeleteOrder(c *gin.Context) {
 	id := c.Param("id")
-	var 	pharmacist entity.User	
-
-	entity.DB().Joins("Role").Find(&pharmacist)
-	if pharmacist.Role.Name != "Phaemacist" { 
-		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
-		return
-	}
 	
 	if tx := entity.DB().Exec("DELETE FROM orders WHERE id = ?", id); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "order not found"})
