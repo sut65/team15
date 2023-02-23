@@ -17,6 +17,7 @@ import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuList from "@mui/material/MenuList";
+
 //icon
 import HomeIcon from "@mui/icons-material/Home";
 import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
@@ -177,7 +178,6 @@ function Navbar() {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: "flex" }}>
-            {/* <IconButton size="large" color="inherit"> */}
             <IconButton
               onClick={() => setOpen((open) => !open)}
               size="small"
