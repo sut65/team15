@@ -39,6 +39,12 @@ func CreatePrescription(c *gin.Context)  {
 		return
 	}
 
+	entity.DB().Joins("Role").Find(&doctor)
+	if doctor.Role.Name != "Doctor" { 
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Doctor"})
+		return
+	}
+
 	// 13: สร้าง prescription 
 	prescriptionmedicine := entity.Prescription{
 		
@@ -114,13 +120,19 @@ func UpdatePrescription(c *gin.Context) {
 		return
 	}
 
+	entity.DB().Joins("Role").Find(&doctor)
+	if doctor.Role.Name != "Doctor" { 
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Doctor"})
+		return
+	}
+
 	if tx := entity.DB().Where("id = ?", prescription.PatientID).First(&patient); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ patient"})
 		return
 	}
 
 	if tx := entity.DB().Where("id = ?", prescription.MedicineLabelID).First(&medicinelabel); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบ medicine"})
 		return
 	}
 

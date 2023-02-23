@@ -33,7 +33,7 @@ type ClassifyDrugs struct{
 
 	Datetime		time.Time	`valid:"donotpast~DateTime not be past"`
 	Note            string		`valid:"required~Note cannot be blank"`
-	Number			int			`valid:"required~Number: non zero value required, range(30000|99999)~Number: range 30000|99999"`
+	Number			int			`gorm:"uniqueIndex" valid:"required~Number: non zero value required, range(30000|99999)~Number: range 30000|99999"`
 
 	PharmacistID *uint
 	Pharmacist 	  User
