@@ -38,6 +38,12 @@ func CreateMedicineArrangement(c *gin.Context) {
 		return
 	}
 
+	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Pharmacist" { 
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
+		return
+	}
+
 	// 13: สร้าง MedicineArrangement
 	arrangement := entity.MedicineArrangement{
 		MedicineArrangementNo:   medicinearrangement.MedicineArrangementNo,
@@ -124,6 +130,12 @@ func UpdateMedicineArrangement(c *gin.Context) {
 
 	if tx := entity.DB().Where("id = ?", medicinearrangement.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacist_id not found"})
+		return
+	}
+	
+	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Pharmacist" { 
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
 		return
 	}
 
