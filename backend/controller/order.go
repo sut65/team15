@@ -54,10 +54,6 @@ func CreateOrder(c *gin.Context) {
 		return
 	}
 
-	entity.DB().Joins("Role").Find(&pharmacist)
-
-	
-
 	// 13: สร้าง Order
 	wp := entity.Order{
 		Ordernumber: order.Ordernumber,
@@ -183,15 +179,19 @@ func UpdateOrder(c *gin.Context) {
 // DELETE /orders/:id
 func DeleteOrder(c *gin.Context) {
 	id := c.Param("id")
+	var 	pharmacist entity.User	
+
+	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Phaemacist" { 
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
+		return
+	}
+	
 	if tx := entity.DB().Exec("DELETE FROM orders WHERE id = ?", id); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "order not found"})
 		return
 	}
-	/*
-		if err := entity.DB().Where("id = ?", id).Delete(&entity.User{}).Error; err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}*/
+	
 
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
