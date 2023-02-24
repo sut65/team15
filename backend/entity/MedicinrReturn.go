@@ -14,7 +14,7 @@ type Return struct{
 
 	Note string `valid:"required~Note cannot be blank"`
 
-	MedicineReturnNo   		uint	`valid:"range(500000|999999)~MedicineReturnNo must be 6 digits, required~MedicineReturnNo must be 6 digits"`
+	MedicineReturnNo   		uint	`gorm:"uniqueIndex" valid:"range(500000|999999)~MedicineReturnNo must be 6 digits, required~MedicineReturnNo must be 6 digits"`
 
 
 	PharmacistID *uint
