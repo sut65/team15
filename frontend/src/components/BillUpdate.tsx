@@ -399,7 +399,7 @@ export default function BillUpdate() {
                         variant="contained"
                         color="error"
                         component={RouterLink}
-                        to="/"
+                        to="/Bills"
                     >
                         ถอยกลับ
                     </Button>
