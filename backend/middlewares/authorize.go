@@ -34,7 +34,6 @@ func Authorizes() gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 			return
 		}
-		// c.Set("email", claims.Email)
 		c.Next()
 	}
 }
