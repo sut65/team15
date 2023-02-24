@@ -240,7 +240,7 @@ export default function DiscardmedicineUpdate() {
                     <FormControl fullWidth variant="outlined" style={{ width: '100%', float: 'left' }}>
                         <p>เลขคลังยา</p>
                         <Select
-                            disabled
+                            
                             native
                             value={discard.MedicineReceiveID}
                             onChange={handleChange}
