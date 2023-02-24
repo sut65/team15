@@ -460,7 +460,7 @@ export default function ClassifydrugsUpdate() {
                         variant="contained"
                         color="error"
                         component={RouterLink}
-                        to="/Classifies"
+                        to="/ClassifyDrug"
                     >
                         ถอยกลับ
                     </Button>
