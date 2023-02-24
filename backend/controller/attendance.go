@@ -42,6 +42,10 @@ func CreateAttendance(c *gin.Context) {
 	}
 
 	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Pharmacist" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
+		return
+	}
 
 	// 13: สร้าง Attendance
 	wp := entity.Attendance{
@@ -109,6 +113,11 @@ func UpdateAttendance(c *gin.Context) {
 
 	if tx := entity.DB().Where("id = ?", attendance.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ไม่พบสมาชิก"})
+		return
+	}
+	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Pharmacist" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
 		return
 	}
 
