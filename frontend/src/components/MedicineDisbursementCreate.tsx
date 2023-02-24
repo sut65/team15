@@ -239,27 +239,30 @@ export default function MedicineDisbursementCreate() {
                         </FormControl>
                     </Grid>
 
-                    <Grid item xs={4}>
+                <Grid item xs={4}>
                         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
                             <p>ชื่อยา </p>
                             <Select
-                                variant="outlined"
-                                defaultValue={0}
+                                native
                                 value={MedicineDisbursement.MedicineReceiveID}
                                 onChange={handleChange}
-                                inputProps={{ name: "MedicineReceiveID" }}
+                                inputProps={{
+                                    name: "MedicineReceiveID",
+                                }}
                             >
-                                <MenuItem value={0} key={0}>เลือกชื่อยา </MenuItem>
-                                {MedicineReceive.map((item: MedicineReceiveInterface) =>
-                                (
-                                    <MenuItem value={item.ID} key={item.ID}>
+                                <option aria-label="None" value="">
+                                    กรุณาเลือกยา
+                                </option>
+                                {MedicineReceive.map((item: MedicineReceiveInterface) => (
+                                    <option value={item.ID} key={item.ID}>
                                         {item.MedicineLabel.Order.Medicine.Name}
-                                    </MenuItem>
+                                    </option>
                                 ))}
                             </Select>
                         </FormControl>
                     </Grid>
                 </Grid>
+
 
                 <Grid container spacing={4}>
                     <Grid item xs={4}>
