@@ -26,6 +26,7 @@ type User struct {
 	Attendances          []Attendance          `gorm:"foreignKey:PharmacistID"`
 	Return               []Return              `gorm:"foreignKey:PharmacistID"`
 	Bill                 []Bill                `gorm:"foreignKey:PharmacistID"`
+	Discardmedicine 	 []Discardmedicine		`gorm:"foreignKey:PharmacistID"`
 
 	RoleID *uint
 	Role   Role `gorm:"foreignKey:RoleID"`
