@@ -26,8 +26,8 @@ export default function MedicineReturnList() {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
-        },
-      };
+      },
+  };
     
       const getMedicineLabels = async () => {
         fetch(`${apiUrl}/medicinereturns`, requestOptions)
