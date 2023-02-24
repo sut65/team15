@@ -23,7 +23,10 @@ function Classifydrugs() {
         const apiUrl = "http://localhost:8080/ClassifyDrug";
         const requestOptions = {
             method: "GET",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "application/json",
+            },
         };
         fetch(apiUrl, requestOptions)
             .then((response) => response.json())

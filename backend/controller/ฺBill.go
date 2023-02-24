@@ -35,12 +35,17 @@ func CreateBill(c *gin.Context) {
 		return
 	}
 
-	// 10: ค้นหา informer ด้วย id
+	// 10: ค้นหา user ด้วย id
 	if tx := entity.DB().Where("id = ?", bills.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "User not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacist not found"})
 		return
 	}
+
 	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Pharmacist" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
+		return
+	}
 
 	// 11: สร้าง Bill   //พิมใหญ่= หลัก //พิมเล็กs = รอง
 	bi := entity.Bill{
@@ -130,6 +135,11 @@ func UpdateBill(c *gin.Context) {
 
 	if tx := entity.DB().Where("id = ?", bills.PharmacistID).First(&pharmacist); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "pharmacist_id not found"})
+		return
+	}
+	entity.DB().Joins("Role").Find(&pharmacist)
+	if pharmacist.Role.Name != "Pharmacist" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
 		return
 	}
 
