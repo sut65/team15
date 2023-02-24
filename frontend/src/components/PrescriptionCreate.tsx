@@ -135,7 +135,7 @@ export default function PrescriptionCreate() {
   function submit() {
     setLoading(true)
     let data = {
-      DOctorID: Number(localStorage.getItem("uid")),
+      DoctorID: Number(localStorage.getItem("uid")),
       Number: convertType(Prescription.Number ?? ""),
       Datetime: Prescription.Datetime,
       Note: Prescription.Note ?? "",

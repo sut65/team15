@@ -367,7 +367,7 @@ export default function PatientInterfaceUpdate() {
                         variant="contained"
                         color="error"
                         component={RouterLink}
-                        to="/"
+                        to="/Prescription"
                     >
                         ถอยกลับ
                     </Button>
