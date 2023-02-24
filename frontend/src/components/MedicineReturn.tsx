@@ -254,7 +254,7 @@ export default function MedicineReturnCreate(){
                 </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
-              <p>หมายเลขใบจ่ายเงิน</p>
+              <p>หมายเลขใบจ่ายยา</p>
               <Select
                 native
                 value={Return.DispenseMedicineID}
