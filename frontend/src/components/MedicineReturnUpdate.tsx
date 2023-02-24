@@ -399,7 +399,7 @@ const getdispensemedicine = async () => {
        <Grid item xs={12}>
         <Button
           component={RouterLink}
-          to="/"
+          to="/MedicineReturnList"
           variant="contained"
         >
           กลับ
