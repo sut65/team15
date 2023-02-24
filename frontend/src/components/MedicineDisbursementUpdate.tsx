@@ -248,7 +248,7 @@ export default function MedicineDisbursementUpdate() {
                 </Box>
                 </Box>
                 <Grid container spacing={4}>
-                    <Grid item xs={4}>
+                    <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
                             <p>เลขใบเบิกยา</p>
                             <FormControl fullWidth variant="outlined">
@@ -265,7 +265,7 @@ export default function MedicineDisbursementUpdate() {
                         </FormControl>
                     </Grid>
 
-                    <Grid item xs={4}>
+                    <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
                             <p>ชื่อยา</p>
                             <Select
@@ -290,7 +290,7 @@ export default function MedicineDisbursementUpdate() {
                 </Grid>
 
                 <Grid container spacing={4}>
-                    <Grid item xs={4}>
+                    <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
                             <p>หน่วยยา</p>
                             <Select
@@ -312,7 +312,7 @@ export default function MedicineDisbursementUpdate() {
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
                             <p>จำนวนยา</p>
                             <FormControl fullWidth variant="outlined">
@@ -330,7 +330,7 @@ export default function MedicineDisbursementUpdate() {
                     </Grid>
                 </Grid>
                 <Grid container spacing={4}>
-                    <Grid item xs={4}>
+                    <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined" style={{ width: '105%', float: 'left' }}>
                             <p>ยาสำหรับผู้ป่วยนอก-ผู้ป่วยใน</p>
                             <Select
@@ -354,7 +354,7 @@ export default function MedicineDisbursementUpdate() {
                     </Grid>
 
 
-                    <Grid item xs={4}>
+                    <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined" style={{ width: '100%' }}>
                             <p>ผู้บันทึกการเบิกยา</p>
                             <Select
@@ -370,8 +370,8 @@ export default function MedicineDisbursementUpdate() {
                     </Grid>
                 </Grid>
 
-                <Grid container spacing={4}>
-                    <Grid item xs={5}>
+                <Grid container spacing={5}>
+                    <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined" style={{ width: '100%' }}>
                             <p>วันที่เบิกยา</p>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
