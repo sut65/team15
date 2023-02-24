@@ -71,7 +71,7 @@ func SetupDatabase() {
 	db.Model(&Role{}).Create(&role1)
 
 	role2 := Role{
-		Name: "Dortor",
+		Name: "Doctor",
 	}
 	db.Model(&Role{}).Create(&role2)
 
