@@ -378,7 +378,7 @@ export default function MedicineDisbursementCreate() {
                             variant="contained"
                             color="error"
                             component={RouterLink}
-                            to="/medicineReceive"
+                            to="/"
                         >
                             ถอยกลับ
                         </Button>

@@ -354,7 +354,7 @@ export default function MedicineReceiveCreate() {
                             variant="contained"
                             color="error"
                             component={RouterLink}
-                            to="/medicineReceive"
+                            to="/"
                         >
                             ถอยกลับ
                         </Button>
