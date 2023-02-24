@@ -160,7 +160,7 @@ export default function MedicineReturnList() {
                   หมายเลขใบคืนยา
                 </TableCell>
                 <TableCell align="center" width="10%">
-                 หมายเลขใบจ่ายเงิน
+                หมายเลขใบจ่ายยา
                 </TableCell>
                 <TableCell align="center" width="14%">
                   ชื่อยา
