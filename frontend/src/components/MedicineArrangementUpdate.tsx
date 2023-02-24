@@ -366,7 +366,7 @@ export default function MedicineArrangementUpdate() {
                         variant="contained"
                         color="error"
                         component={RouterLink}
-                        to="/"
+                        to="/medicinearrangements"
                     >
                         ถอยกลับ
                     </Button>
