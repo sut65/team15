@@ -94,7 +94,10 @@ export default function DiscardmedicineCreate(this: any) {
         const apiUrl = "http://localhost:8080/medicineReceive";
         const requestOptions = {
             method: "GET",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "application/json",
+              },
         };
         fetch(apiUrl, requestOptions)
             .then((response) => response.json())
