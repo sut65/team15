@@ -53,7 +53,7 @@ func CreateClassifyDrugs(c *gin.Context)  {
 	}
 
 	entity.DB().Joins("Role").Find(&pharmacist)
-	if pharmacist.Role.Name != "Phaemacist" { 
+	if pharmacist.Role.Name != "Pharmacist" { 
 		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
 		return
 	}
@@ -142,7 +142,7 @@ func UpdateClassifyDrug(c *gin.Context) {
 	}
 
 	entity.DB().Joins("Role").Find(&pharmacist)
-	if pharmacist.Role.Name != "Phaemacist" { 
+	if pharmacist.Role.Name != "Pharmacist" { 
 		c.JSON(http.StatusBadRequest, gin.H{"error": "The data recorder should be a Pharmacist"})
 		return
 	}
